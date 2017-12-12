@@ -1,9 +1,9 @@
 CREATE TABLE "spent" (
 	"id" serial NOT NULL,
 	"data" time with time zone NOT NULL,
-	"type" varchar NOT NULL,
-	"quantity" float4 NOT NULL,
-	"sum" float4 NOT NULL,
+	"type" character NOT NULL,
+	"quantity" integer NOT NULL,
+	"sum" integer NOT NULL,
 	CONSTRAINT spent_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -13,8 +13,8 @@ CREATE TABLE "spent" (
 
 CREATE TABLE "client" (
 	"id" serial NOT NULL,
-	"last_name" varchar(30) NOT NULL,
-	"first_name" varchar(30) NOT NULL,
+	"last_name" character varying(30) NOT NULL,
+	"first_name" character varying(30) NOT NULL,
 	"tariff_id" bigint NOT NULL,
 	CONSTRAINT client_pk PRIMARY KEY ("id")
 ) WITH (
@@ -25,10 +25,10 @@ CREATE TABLE "client" (
 
 CREATE TABLE "tariff" (
 	"id" serial NOT NULL,
-	"title" varchar(30) NOT NULL,
+	"title" character varying(30) NOT NULL,
 	"operator_id" bigint NOT NULL,
-	"service_id" varchar NOT NULL,
-	"cost" float4 NOT NULL,
+	"service_id" bigint NOT NULL,
+	"cost" integer NOT NULL,
 	"deleted" BOOLEAN NOT NULL DEFAULT 'false',
 	CONSTRAINT tariff_pk PRIMARY KEY ("id")
 ) WITH (
@@ -39,7 +39,7 @@ CREATE TABLE "tariff" (
 
 CREATE TABLE "operator" (
 	"id" serial NOT NULL,
-	"title" varchar(30) NOT NULL,
+	"title" character varying(30) NOT NULL,
 	"deleted" BOOLEAN NOT NULL DEFAULT 'false',
 	CONSTRAINT operator_pk PRIMARY KEY ("id")
 ) WITH (
@@ -50,8 +50,8 @@ CREATE TABLE "operator" (
 
 CREATE TABLE "account" (
 	"id" serial NOT NULL,
-	"email" varchar(50) NOT NULL,
-	"password" varchar(50) NOT NULL,
+	"email" character varying(50) NOT NULL,
+	"password" character varying(50) NOT NULL,
 	CONSTRAINT account_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -71,8 +71,8 @@ CREATE TABLE "account_2_role" (
 CREATE TABLE "invoice" (
 	"id" serial NOT NULL,
 	"type" varchar NOT NULL,
-	"quantity" float4 NOT NULL,
-	"sum" float4 NOT NULL,
+	"quantity" integer NOT NULL,
+	"sum" integer NOT NULL,
 	"day" time with time zone NOT NULL,
 	"month" time with time zone NOT NULL,
 	"year" time with time zone NOT NULL,
@@ -94,8 +94,8 @@ CREATE TABLE "client_2_ivoice" (
 
 CREATE TABLE "service" (
 	"id" serial NOT NULL,
-	"type" varchar(50) NOT NULL,
-	"unit" varchar(50) NOT NULL,
+	"type" character varying(50) NOT NULL,
+	"unit" character varying(50) NOT NULL,
 	CONSTRAINT service_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE

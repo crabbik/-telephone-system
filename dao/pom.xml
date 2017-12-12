@@ -3,9 +3,18 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.itacademy.jd2.lg.mobile_system</groupId>
+	<parent>
+		<groupId>com.itacademy.jd2.lg.mobile_system</groupId>
+		<artifactId>parent-project</artifactId>
+		<version>1.0.0</version>
+	</parent>
 	<artifactId>dao</artifactId>
-	<version>1.0.0</version>
 
 	<packaging>jar</packaging>
+	<dependencies>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+	</dependencies>
 </project>

@@ -1,11 +1,27 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.itacademy.jd2.lg.mobile_system</groupId>
-	<artifactId>services</artifactId>
-	<version>1.0.0</version>
+	<parent>
+		<groupId>com.itacademy.jd2.lg.mobile_system</groupId>
+		<artifactId>parent-project</artifactId>
+		<version>1.0.0</version>
+	</parent>
 
+	<artifactId>services</artifactId>
 	<packaging>jar</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.itacademy.jd2.lg.mobile_system</groupId>
+			<artifactId>dao</artifactId>
+		</dependency>
+
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+
+	</dependencies>
 </project>

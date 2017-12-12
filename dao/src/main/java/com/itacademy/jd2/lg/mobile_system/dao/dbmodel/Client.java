@@ -4,6 +4,7 @@ public class Client {
 	private Integer id;
 	private String lastName;
 	private String firstName;
+	private Integer tariffId;
 
 	public Integer getId() {
 		return id;
@@ -36,7 +37,5 @@ public class Client {
 	public void setTariffId(Integer tariffId) {
 		this.tariffId = tariffId;
 	}
-
-	private Integer tariffId;
 
 }

@@ -1,8 +1,10 @@
 package com.itacademy.jd2.lg.mobile_system.dao.dbmodel;
 
+import java.sql.Date;
+
 public class Spent {
 	private Integer id;
-	private String data;
+	private Date data;
 	private String type;
 	private Integer quantity;
 	private Integer sum;
@@ -15,11 +17,11 @@ public class Spent {
 		this.id = id;
 	}
 
-	public String getData() {
+	public Date getData() {
 		return data;
 	}
 
-	public void setData(String data) {
+	public void setData(Date data) {
 		this.data = data;
 	}
 
