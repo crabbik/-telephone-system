@@ -1,36 +1,22 @@
-CREATE TABLE "spent" (
+CREATE TABLE "service_history" (
 	"id" serial NOT NULL,
-	"data" time with time zone NOT NULL,
-	"type" character NOT NULL,
+	"date" time with time zone NOT NULL,
+	"tariff_item_id" character varying NOT NULL,
 	"quantity" integer NOT NULL,
 	"sum" integer NOT NULL,
-	CONSTRAINT spent_pk PRIMARY KEY ("id")
+	"phone_number_id" bigint NOT NULL,
+	CONSTRAINT service_history_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
 
 
 
-CREATE TABLE "client" (
+CREATE TABLE "account_details" (
 	"id" serial NOT NULL,
 	"last_name" character varying(30) NOT NULL,
 	"first_name" character varying(30) NOT NULL,
-	"tariff_id" bigint NOT NULL,
-	CONSTRAINT client_pk PRIMARY KEY ("id")
-) WITH (
-  OIDS=FALSE
-);
-
-
-
-CREATE TABLE "tariff" (
-	"id" serial NOT NULL,
-	"title" character varying(30) NOT NULL,
-	"operator_id" bigint NOT NULL,
-	"service_id" bigint NOT NULL,
-	"cost" integer NOT NULL,
-	"deleted" BOOLEAN NOT NULL DEFAULT 'false',
-	CONSTRAINT tariff_pk PRIMARY KEY ("id")
+	CONSTRAINT account_details_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
@@ -50,7 +36,7 @@ CREATE TABLE "operator" (
 
 CREATE TABLE "account" (
 	"id" serial NOT NULL,
-	"email" character varying(50) NOT NULL,
+	"email" character varying(50) NOT NULL UNIQUE,
 	"password" character varying(50) NOT NULL,
 	CONSTRAINT account_pk PRIMARY KEY ("id")
 ) WITH (
@@ -70,10 +56,9 @@ CREATE TABLE "account_2_role" (
 
 CREATE TABLE "invoice" (
 	"id" serial NOT NULL,
-	"type" varchar NOT NULL,
+	"type" character varying NOT NULL,
 	"quantity" integer NOT NULL,
 	"sum" integer NOT NULL,
-	"day" time with time zone NOT NULL,
 	"month" time with time zone NOT NULL,
 	"year" time with time zone NOT NULL,
 	CONSTRAINT invoice_pk PRIMARY KEY ("id")
@@ -83,9 +68,9 @@ CREATE TABLE "invoice" (
 
 
 
-CREATE TABLE "client_2_ivoice" (
+CREATE TABLE "account_2_invoice" (
 	"invoice_id" bigint NOT NULL,
-	"client_id" bigint NOT NULL
+	"phone_number_id" bigint NOT NULL
 ) WITH (
   OIDS=FALSE
 );
@@ -96,6 +81,7 @@ CREATE TABLE "service" (
 	"id" serial NOT NULL,
 	"type" character varying(50) NOT NULL,
 	"unit" character varying(50) NOT NULL,
+	"deleted" BOOLEAN NOT NULL DEFAULT 'false',
 	CONSTRAINT service_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -103,20 +89,60 @@ CREATE TABLE "service" (
 
 
 
-ALTER TABLE "spent" ADD CONSTRAINT "spent_fk0" FOREIGN KEY ("id") REFERENCES "client"("id");
+CREATE TABLE "phone_number" (
+	"id" serial NOT NULL,
+	"account_id" bigint NOT NULL,
+	"number" character varying NOT NULL UNIQUE,
+	"tariff_id" bigint NOT NULL,
+	CONSTRAINT phone_number_pk PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
 
-ALTER TABLE "client" ADD CONSTRAINT "client_fk0" FOREIGN KEY ("tariff_id") REFERENCES "tariff"("id");
-
-ALTER TABLE "tariff" ADD CONSTRAINT "tariff_fk0" FOREIGN KEY ("operator_id") REFERENCES "operator"("id");
-ALTER TABLE "tariff" ADD CONSTRAINT "tariff_fk1" FOREIGN KEY ("service_id") REFERENCES "service"("id");
 
 
-ALTER TABLE "account" ADD CONSTRAINT "account_fk0" FOREIGN KEY ("id") REFERENCES "client"("id");
+CREATE TABLE "tariff" (
+	"id" bigint NOT NULL,
+	"operator_id" bigint NOT NULL,
+	"name" character varying NOT NULL
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "tariff_item" (
+	"id" serial NOT NULL,
+	"tariif_id" bigint NOT NULL,
+	"service_id" bigint NOT NULL,
+	"cost" integer NOT NULL,
+	CONSTRAINT tariff_item_pk PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+ALTER TABLE "service_history" ADD CONSTRAINT "service_history_fk0" FOREIGN KEY ("tariff_item_id") REFERENCES "tariff_item"("id");
+ALTER TABLE "service_history" ADD CONSTRAINT "service_history_fk1" FOREIGN KEY ("phone_number_id") REFERENCES "phone_number"("id");
+
+
+
+ALTER TABLE "account" ADD CONSTRAINT "account_fk0" FOREIGN KEY ("id") REFERENCES "account_details"("id");
 
 ALTER TABLE "account_2_role" ADD CONSTRAINT "account_2_role_fk0" FOREIGN KEY ("account_id") REFERENCES "account"("id");
 
 
-ALTER TABLE "client_2_ivoice" ADD CONSTRAINT "client_2_ivoice_fk0" FOREIGN KEY ("invoice_id") REFERENCES "invoice"("id");
-ALTER TABLE "client_2_ivoice" ADD CONSTRAINT "client_2_ivoice_fk1" FOREIGN KEY ("client_id") REFERENCES "client"("id");
+ALTER TABLE "account_2_invoice" ADD CONSTRAINT "account_2_invoice_fk0" FOREIGN KEY ("invoice_id") REFERENCES "invoice"("id");
+ALTER TABLE "account_2_invoice" ADD CONSTRAINT "account_2_invoice_fk1" FOREIGN KEY ("phone_number_id") REFERENCES "phone_number"("id");
 
+
+ALTER TABLE "phone_number" ADD CONSTRAINT "phone_number_fk0" FOREIGN KEY ("account_id") REFERENCES "account"("id");
+ALTER TABLE "phone_number" ADD CONSTRAINT "phone_number_fk1" FOREIGN KEY ("tariff_id") REFERENCES "tariff"("id");
+
+ALTER TABLE "tariff" ADD CONSTRAINT "tariff_fk0" FOREIGN KEY ("operator_id") REFERENCES "operator"("id");
+ALTER TABLE "tariff" ADD CONSTRAINT "tariff_fk1" FOREIGN KEY ("name") REFERENCES ""("");
+
+ALTER TABLE "tariff_item" ADD CONSTRAINT "tariff_item_fk0" FOREIGN KEY ("tariif_id") REFERENCES "tariff"("id");
+ALTER TABLE "tariff_item" ADD CONSTRAINT "tariff_item_fk1" FOREIGN KEY ("service_id") REFERENCES "service"("id");
 
