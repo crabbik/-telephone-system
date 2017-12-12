@@ -1,32 +1,36 @@
-CREATE TABLE "user" (
+CREATE TABLE "spent" (
 	"id" serial NOT NULL,
-	"last_name" varchar(15) NOT NULL,
-	"first_name" varchar(15) NOT NULL,
-	"password" integer(15) NOT NULL,
-	"email" varchar(20) NOT NULL UNIQUE,
-	CONSTRAINT user_pk PRIMARY KEY ("id")
+	"data" time with time zone NOT NULL,
+	"type" varchar NOT NULL,
+	"quantity" float4 NOT NULL,
+	"sum" float4 NOT NULL,
+	CONSTRAINT spent_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
 
 
 
-CREATE TABLE "tarif" (
+CREATE TABLE "client" (
 	"id" serial NOT NULL,
-	"title" varchar(10) NOT NULL UNIQUE,
-	CONSTRAINT tarif_pk PRIMARY KEY ("id")
+	"last_name" varchar(30) NOT NULL,
+	"first_name" varchar(30) NOT NULL,
+	"tariff_id" bigint NOT NULL,
+	CONSTRAINT client_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
 
 
 
-CREATE TABLE "cost" (
+CREATE TABLE "tariff" (
 	"id" serial NOT NULL,
-	"call" integer(5) NOT NULL,
-	"sms" integer(5) NOT NULL,
-	"traffic" integer(5) NOT NULL,
-	CONSTRAINT cost_pk PRIMARY KEY ("id")
+	"title" varchar(30) NOT NULL,
+	"operator_id" bigint NOT NULL,
+	"service_id" varchar NOT NULL,
+	"cost" float4 NOT NULL,
+	"deleted" BOOLEAN NOT NULL DEFAULT 'false',
+	CONSTRAINT tariff_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
@@ -35,30 +39,9 @@ CREATE TABLE "cost" (
 
 CREATE TABLE "operator" (
 	"id" serial NOT NULL,
-	"title" varchar(10) NOT NULL UNIQUE,
+	"title" varchar(30) NOT NULL,
+	"deleted" BOOLEAN NOT NULL DEFAULT 'false',
 	CONSTRAINT operator_pk PRIMARY KEY ("id")
-) WITH (
-  OIDS=FALSE
-);
-
-
-
-CREATE TABLE "operator_2_tarif" (
-	"operator_id" integer NOT NULL,
-	"tarif_id" integer NOT NULL
-) WITH (
-  OIDS=FALSE
-);
-
-
-
-CREATE TABLE "services_received" (
-	"id" serial NOT NULL,
-	"call" integer NOT NULL,
-	"sms" integer NOT NULL,
-	"traffic" integer NOT NULL,
-	"data_id" integer NOT NULL,
-	CONSTRAINT services_received_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
@@ -67,7 +50,8 @@ CREATE TABLE "services_received" (
 
 CREATE TABLE "account" (
 	"id" serial NOT NULL,
-	"login" varchar NOT NULL UNIQUE,
+	"email" varchar(50) NOT NULL,
+	"password" varchar(50) NOT NULL,
 	CONSTRAINT account_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -75,78 +59,64 @@ CREATE TABLE "account" (
 
 
 
-CREATE TABLE "login_2_tarif" (
-	"login_id" integer NOT NULL,
-	"tarif_id" integer NOT NULL
+CREATE TABLE "account_2_role" (
+	"account_id" bigint NOT NULL,
+	"role_id" bigint NOT NULL
 ) WITH (
   OIDS=FALSE
 );
 
 
 
-CREATE TABLE "score" (
+CREATE TABLE "invoice" (
 	"id" serial NOT NULL,
-	"call" integer NOT NULL,
-	"sms" integer NOT NULL,
-	"traffic" integer NOT NULL,
-	"all" integer NOT NULL,
-	"data_id" integer NOT NULL,
-	CONSTRAINT score_pk PRIMARY KEY ("id")
+	"type" varchar NOT NULL,
+	"quantity" float4 NOT NULL,
+	"sum" float4 NOT NULL,
+	"day" time with time zone NOT NULL,
+	"month" time with time zone NOT NULL,
+	"year" time with time zone NOT NULL,
+	CONSTRAINT invoice_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
 
 
 
-CREATE TABLE "login_2_cost" (
-	"score_id" integer NOT NULL,
-	"login_id" integer NOT NULL
+CREATE TABLE "client_2_ivoice" (
+	"invoice_id" bigint NOT NULL,
+	"client_id" bigint NOT NULL
 ) WITH (
   OIDS=FALSE
 );
 
 
 
-CREATE TABLE "data" (
+CREATE TABLE "service" (
 	"id" serial NOT NULL,
-	"time" integer NOT NULL,
-	CONSTRAINT data_pk PRIMARY KEY ("id")
+	"type" varchar(50) NOT NULL,
+	"unit" varchar(50) NOT NULL,
+	CONSTRAINT service_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
 
 
 
-CREATE TABLE "account_2_services_received" (
-	"services_received_id" integer NOT NULL,
-	"account_id" integer NOT NULL
-) WITH (
-  OIDS=FALSE
-);
+ALTER TABLE "spent" ADD CONSTRAINT "spent_fk0" FOREIGN KEY ("id") REFERENCES "client"("id");
+
+ALTER TABLE "client" ADD CONSTRAINT "client_fk0" FOREIGN KEY ("tariff_id") REFERENCES "tariff"("id");
+
+ALTER TABLE "tariff" ADD CONSTRAINT "tariff_fk0" FOREIGN KEY ("operator_id") REFERENCES "operator"("id");
+ALTER TABLE "tariff" ADD CONSTRAINT "tariff_fk1" FOREIGN KEY ("service_id") REFERENCES "service"("id");
 
 
+ALTER TABLE "account" ADD CONSTRAINT "account_fk0" FOREIGN KEY ("id") REFERENCES "client"("id");
 
-ALTER TABLE "user" ADD CONSTRAINT "user_fk0" FOREIGN KEY ("id") REFERENCES "account"("id");
-
-
-ALTER TABLE "cost" ADD CONSTRAINT "cost_fk0" FOREIGN KEY ("id") REFERENCES "tarif"("id");
+ALTER TABLE "account_2_role" ADD CONSTRAINT "account_2_role_fk0" FOREIGN KEY ("account_id") REFERENCES "account"("id");
 
 
-ALTER TABLE "operator_2_tarif" ADD CONSTRAINT "operator_2_tarif_fk0" FOREIGN KEY ("operator_id") REFERENCES "operator"("id");
-ALTER TABLE "operator_2_tarif" ADD CONSTRAINT "operator_2_tarif_fk1" FOREIGN KEY ("tarif_id") REFERENCES "tarif"("id");
+ALTER TABLE "client_2_ivoice" ADD CONSTRAINT "client_2_ivoice_fk0" FOREIGN KEY ("invoice_id") REFERENCES "invoice"("id");
+ALTER TABLE "client_2_ivoice" ADD CONSTRAINT "client_2_ivoice_fk1" FOREIGN KEY ("client_id") REFERENCES "client"("id");
 
-ALTER TABLE "services_received" ADD CONSTRAINT "services_received_fk0" FOREIGN KEY ("data_id") REFERENCES "data"("id");
-
-
-ALTER TABLE "login_2_tarif" ADD CONSTRAINT "login_2_tarif_fk0" FOREIGN KEY ("login_id") REFERENCES "account"("id");
-ALTER TABLE "login_2_tarif" ADD CONSTRAINT "login_2_tarif_fk1" FOREIGN KEY ("tarif_id") REFERENCES "tarif"("id");
-
-ALTER TABLE "score" ADD CONSTRAINT "score_fk0" FOREIGN KEY ("data_id") REFERENCES "data"("id");
-
-ALTER TABLE "login_2_cost" ADD CONSTRAINT "login_2_cost_fk0" FOREIGN KEY ("score_id") REFERENCES "score"("id");
-ALTER TABLE "login_2_cost" ADD CONSTRAINT "login_2_cost_fk1" FOREIGN KEY ("login_id") REFERENCES "account"("id");
-
-
-ALTER TABLE "account_2_services_received" ADD CONSTRAINT "account_2_services_received_fk0" FOREIGN KEY ("services_received_id") REFERENCES "services_received"("id");
-ALTER TABLE "account_2_services_received" ADD CONSTRAINT "account_2_services_received_fk1" FOREIGN KEY ("account_id") REFERENCES "account"("id");
 
