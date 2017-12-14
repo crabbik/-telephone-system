@@ -20,7 +20,8 @@ public class ClientDaoImpl extends AbstractDaoImpl implements IClientDao {
 	public List<Client> getAll() {
 		List<Client> result = new ArrayList<>();
 
-		try (Connection c = getConnection(); Statement stmt = c.createStatement()) {
+		try (Connection c = getConnection();
+				Statement stmt = c.createStatement()) {
 			System.out.println("Opened database successfully");
 
 			ResultSet rs = stmt.executeQuery("select * from client");
@@ -40,10 +41,12 @@ public class ClientDaoImpl extends AbstractDaoImpl implements IClientDao {
 	public Client get(Integer id) {
 		Client result = null;
 
-		try (Connection c = getConnection(); Statement stmt = c.createStatement()) {
+		try (Connection c = getConnection();
+				Statement stmt = c.createStatement()) {
 			System.out.println("Opened database successfully");
 
-			ResultSet rs = stmt.executeQuery("select * from client where id=" + id);
+			ResultSet rs = stmt.executeQuery("select * from client where id="
+					+ id);
 
 			if (rs.next()) {
 				result = mapToClient(rs);
@@ -66,7 +69,6 @@ public class ClientDaoImpl extends AbstractDaoImpl implements IClientDao {
 		return result;
 	}
 
-
 	@Override
 	public void insert(Client client) {
 		throw new RuntimeException("not implemented");
@@ -82,4 +84,9 @@ public class ClientDaoImpl extends AbstractDaoImpl implements IClientDao {
 		return "client";
 	}
 
+	@Override
+	public List<Client> getAll(int limit, int offset) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

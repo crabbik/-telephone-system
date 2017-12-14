@@ -14,5 +14,18 @@ public interface IClientDao {
 
 	void update(Client client);
 
+	/**
+	 * uses default paging params.
+	 * 
+	 * @return
+	 */
+
 	List<Client> getAll();
+
+	/**
+	 * uses default paging params.
+	 * 
+	 * @return
+	 */
+	List<Client> getAll(int limit, int offset);
 }

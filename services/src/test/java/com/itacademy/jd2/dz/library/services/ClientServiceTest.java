@@ -1,7 +1,6 @@
 package com.itacademy.jd2.dz.library.services;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.Client;
