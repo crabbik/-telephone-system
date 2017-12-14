@@ -16,6 +16,8 @@ CREATE TABLE "account_details" (
 	"id" serial NOT NULL,
 	"last_name" character varying(30) NOT NULL,
 	"first_name" character varying(30) NOT NULL,
+	"created " TIMESTAMP NOT NULL,
+	"modified" TIMESTAMP NOT NULL,
 	CONSTRAINT account_details_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -27,6 +29,8 @@ CREATE TABLE "operator" (
 	"id" serial NOT NULL,
 	"title" character varying(30) NOT NULL,
 	"deleted" BOOLEAN NOT NULL DEFAULT 'false',
+	"created " TIMESTAMP NOT NULL,
+	"modified" TIMESTAMP NOT NULL,
 	CONSTRAINT operator_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -38,6 +42,8 @@ CREATE TABLE "account" (
 	"id" serial NOT NULL,
 	"email" character varying(50) NOT NULL UNIQUE,
 	"password" character varying(50) NOT NULL,
+	"created" TIMESTAMP NOT NULL,
+	"modified" TIMESTAMP NOT NULL,
 	CONSTRAINT account_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -94,6 +100,8 @@ CREATE TABLE "phone_number" (
 	"account_id" bigint NOT NULL,
 	"number" character varying NOT NULL UNIQUE,
 	"tariff_id" bigint NOT NULL,
+	"created" TIMESTAMP NOT NULL,
+	"modified" TIMESTAMP NOT NULL,
 	CONSTRAINT phone_number_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -102,9 +110,13 @@ CREATE TABLE "phone_number" (
 
 
 CREATE TABLE "tariff" (
-	"id" bigint NOT NULL,
+	"id" serial NOT NULL,
 	"operator_id" bigint NOT NULL,
-	"name" character varying NOT NULL
+	"name" character varying NOT NULL,
+	"deleted" BOOLEAN NOT NULL DEFAULT 'false',
+	"created " TIMESTAMP NOT NULL,
+	"modified" TIMESTAMP NOT NULL,
+	CONSTRAINT tariff_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
@@ -116,6 +128,9 @@ CREATE TABLE "tariff_item" (
 	"tariif_id" bigint NOT NULL,
 	"service_id" bigint NOT NULL,
 	"cost" integer NOT NULL,
+	"deleted" BOOLEAN NOT NULL DEFAULT 'false',
+	"created " TIMESTAMP NOT NULL,
+	"modified" TIMESTAMP NOT NULL,
 	CONSTRAINT tariff_item_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
