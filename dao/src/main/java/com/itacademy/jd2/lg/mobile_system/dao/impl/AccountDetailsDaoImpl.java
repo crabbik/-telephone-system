@@ -15,11 +15,9 @@ import com.itacademy.jd2.lg.mobile_system.dao.IAccountDetailsDao;
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.AccountDetails;
 import com.itacademy.jd2.lg.mobile_system.dao.exception.SQLExecutionExecption;
 
-public class AccountDetailsDaoImpl extends AbstractDaoImpl implements
-		IAccountDetailsDao {
+public class AccountDetailsDaoImpl extends AbstractDaoImpl implements IAccountDetailsDao {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(AccountDetailsDaoImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AccountDetailsDaoImpl.class);
 	public static final IAccountDetailsDao ACCOUNTDETAILS_DAO = new AccountDetailsDaoImpl();
 
 	private AccountDetailsDaoImpl() {
@@ -27,41 +25,34 @@ public class AccountDetailsDaoImpl extends AbstractDaoImpl implements
 	}
 
 	public AccountDetails get(Integer id) {
-		return this
-				.<AccountDetails> executeWithConnection(new DBAction<AccountDetails>() {
+		return this.<AccountDetails>executeWithConnection(new DBAction<AccountDetails>() {
 
-					@Override
-					public AccountDetails execute(Connection c, Statement stmt)
-							throws SQLException {
-						AccountDetails accountDetails = null;
-						String sqlGet = "select * from \"accountDetails\" where id="
-								+ id;
-						ResultSet rs = stmt.executeQuery(sqlGet);
-						LOGGER.debug("created ResultSet");
-						if (rs.next()) {
-							accountDetails = mapToAccountDetails(rs);
-							LOGGER.debug(
-									"read accountDetails from the database: {}",
-									accountDetails.toString());
-						}
-						rs.close();
-						LOGGER.debug("ResultSet closed");
-						LOGGER.info("return accountDetails from db: {}",
-								accountDetails);
-						return accountDetails;
-					}
+			@Override
+			public AccountDetails execute(Connection c, Statement stmt) throws SQLException {
+				AccountDetails accountDetails = null;
+				String sqlGet = "select * from account_details where id=" + id;
+				ResultSet rs = stmt.executeQuery(sqlGet);
+				LOGGER.debug("created ResultSet");
+				if (rs.next()) {
+					accountDetails = mapToAccountDetails(rs);
+					LOGGER.debug("read accountDetails from the database: {}", accountDetails.toString());
+				}
+				rs.close();
+				LOGGER.debug("ResultSet closed");
+				LOGGER.info("return accountDetails from db: {}", accountDetails);
+				return accountDetails;
+			}
 
-				});
+		});
 
 	}
 
 	@Override
-	public void insert(AccountDetails accountDetails) {
-		String sqlInsert = "insert into \"accountDetails\" (id, last_name,first_name, created, modified) values (?,?,?,?,?)";
+	public int insert(AccountDetails accountDetails) {
+		String sqlInsert = "insert into account_details (id, last_name,first_name, created, modified) values (?,?,?,?,?)";
 		LOGGER.debug("insert SQL:{}", sqlInsert);
 		try (Connection c = getConnection();
-				PreparedStatement preparedStatement = c.prepareStatement(
-						sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
+				PreparedStatement preparedStatement = c.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, accountDetails.getId());
 			preparedStatement.setString(2, accountDetails.getLastName());
 			preparedStatement.setString(3, accountDetails.getFirstName());
@@ -69,6 +60,14 @@ public class AccountDetailsDaoImpl extends AbstractDaoImpl implements
 			preparedStatement.setTimestamp(5, accountDetails.getModified());
 			preparedStatement.executeUpdate();
 			LOGGER.info("insert accountDetails from db:{}", accountDetails);
+			ResultSet rs = preparedStatement.getGeneratedKeys();
+			LOGGER.debug("created ResulSet");
+			rs.next();
+			int id = rs.getInt("id");
+			LOGGER.debug("return generated key {}", id);
+			rs.close();
+			LOGGER.debug("ResulSet closed");
+			return id;
 		} catch (Exception e) {
 			throw new SQLExecutionExecption(e);
 		}
@@ -76,11 +75,9 @@ public class AccountDetailsDaoImpl extends AbstractDaoImpl implements
 
 	@Override
 	public void update(AccountDetails accountDetails) {
-		String sqlUpdate = "update \"accountDetails\" set  last_name=?,first_name=?,  modified=? where id=?";
+		String sqlUpdate = "update account_details set  last_name=?,first_name=?,  modified=? where id=?";
 		LOGGER.debug("update SQL: {}", sqlUpdate);
-		try (Connection c = getConnection();
-				PreparedStatement preparedStatement = c
-						.prepareStatement(sqlUpdate)) {
+		try (Connection c = getConnection(); PreparedStatement preparedStatement = c.prepareStatement(sqlUpdate)) {
 			preparedStatement.setString(1, accountDetails.getLastName());
 			preparedStatement.setString(2, accountDetails.getFirstName());
 			preparedStatement.setTimestamp(3, accountDetails.getModified());
@@ -94,28 +91,22 @@ public class AccountDetailsDaoImpl extends AbstractDaoImpl implements
 
 	@Override
 	public List<AccountDetails> getAll() {
-		return this
-				.<List<AccountDetails>> executeWithConnection(new DBAction<List<AccountDetails>>() {
+		return this.<List<AccountDetails>>executeWithConnection(new DBAction<List<AccountDetails>>() {
 
-					@Override
-					public List<AccountDetails> execute(Connection c,
-							Statement stmt) throws SQLException {
-						String sqlGetAll = "select * from \"accountDetails\"";
-						LOGGER.debug("get all accountDetails SQL:{}", sqlGetAll);
-						List<AccountDetails> listAccountDetails = sqlGetAllUser(
-								sqlGetAll, stmt);
-						LOGGER.info(
-								"received a list of data from the database:{}",
-								listAccountDetails);
-						return listAccountDetails;
-					}
+			@Override
+			public List<AccountDetails> execute(Connection c, Statement stmt) throws SQLException {
+				String sqlGetAll = "select * from account_details";
+				LOGGER.debug("get all accountDetails SQL:{}", sqlGetAll);
+				List<AccountDetails> listAccountDetails = sqlGetAllAccountDetails(sqlGetAll, stmt);
+				LOGGER.info("received a list of data from the database:{}", listAccountDetails);
+				return listAccountDetails;
+			}
 
-				});
+		});
 
 	}
 
-	private AccountDetails mapToAccountDetails(ResultSet rs)
-			throws SQLException {
+	private AccountDetails mapToAccountDetails(ResultSet rs) throws SQLException {
 		AccountDetails accountDetails = new AccountDetails();
 		accountDetails.setId(rs.getInt("id"));
 		accountDetails.setLastName(rs.getString("last_name"));
@@ -127,44 +118,35 @@ public class AccountDetailsDaoImpl extends AbstractDaoImpl implements
 
 	@Override
 	protected String getTableName() {
-		String tableName = "\"accountDetails\"";
+		String tableName = "account_details";
 		LOGGER.debug("return table name to remove data:{}", tableName);
 		return tableName;
 	}
 
 	@Override
 	public List<AccountDetails> getAll(int limit, int offset) {
-		return this
-				.<List<AccountDetails>> executeWithConnection(new DBAction<List<AccountDetails>>() {
+		return this.<List<AccountDetails>>executeWithConnection(new DBAction<List<AccountDetails>>() {
 
-					@Override
-					public List<AccountDetails> execute(Connection c,
-							Statement stmt) throws SQLException {
-						String sqlGetAll = String
-								.format("select * from \"accountDetails\" limit %s offset %s",
-										limit, offset);
-						LOGGER.debug("get all accountDetails SQL:{}", sqlGetAll);
-						List<AccountDetails> listAccountDetails = sqlGetAllUser(
-								sqlGetAll, stmt);
-						LOGGER.info(
-								"received a list of data from the database:{}",
-								listAccountDetails);
-						return listAccountDetails;
-					}
+			@Override
+			public List<AccountDetails> execute(Connection c, Statement stmt) throws SQLException {
+				String sqlGetAll = String.format("select * from account_details limit %s offset %s", limit, offset);
+				LOGGER.debug("get all accountDetails SQL:{}", sqlGetAll);
+				List<AccountDetails> listAccountDetails = sqlGetAllAccountDetails(sqlGetAll, stmt);
+				LOGGER.info("received a list of data from the database:{}", listAccountDetails);
+				return listAccountDetails;
+			}
 
-				});
+		});
 
 	}
 
-	private List<AccountDetails> sqlGetAllUser(String sql, Statement stmt)
-			throws SQLException {
+	private List<AccountDetails> sqlGetAllAccountDetails(String sql, Statement stmt) throws SQLException {
 		List<AccountDetails> listAccountDetails = new ArrayList<>();
 		ResultSet rs = stmt.executeQuery(sql);
 		LOGGER.debug("created ResulSet");
 		while (rs.next()) {
 			AccountDetails accountDetails = mapToAccountDetails(rs);
-			LOGGER.debug("read accountDetails from the database: {}",
-					accountDetails);
+			LOGGER.debug("read accountDetails from the database: {}", accountDetails);
 			listAccountDetails.add(accountDetails);
 			LOGGER.debug("accountDetails added from list");
 		}

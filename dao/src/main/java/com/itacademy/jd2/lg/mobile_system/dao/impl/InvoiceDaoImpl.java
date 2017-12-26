@@ -17,8 +17,7 @@ import com.itacademy.jd2.lg.mobile_system.dao.exception.SQLExecutionExecption;
 
 public class InvoiceDaoImpl extends AbstractDaoImpl implements IInvoiceDao {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(InvoiceDaoImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(InvoiceDaoImpl.class);
 	public static final IInvoiceDao INVOICE_DAO = new InvoiceDaoImpl();
 
 	private InvoiceDaoImpl() {
@@ -26,19 +25,17 @@ public class InvoiceDaoImpl extends AbstractDaoImpl implements IInvoiceDao {
 	}
 
 	public Invoice get(Integer id) {
-		return this.<Invoice> executeWithConnection(new DBAction<Invoice>() {
+		return this.<Invoice>executeWithConnection(new DBAction<Invoice>() {
 
 			@Override
-			public Invoice execute(Connection c, Statement stmt)
-					throws SQLException {
+			public Invoice execute(Connection c, Statement stmt) throws SQLException {
 				Invoice invoice = null;
-				String sqlGet = "select * from \"invoice\" where id=" + id;
+				String sqlGet = "select * from invoice where id=" + id;
 				ResultSet rs = stmt.executeQuery(sqlGet);
 				LOGGER.debug("created ResultSet");
 				if (rs.next()) {
 					invoice = mapToInvoice(rs);
-					LOGGER.debug("read invoice from the database: {}",
-							invoice.toString());
+					LOGGER.debug("read invoice from the database: {}", invoice.toString());
 				}
 				rs.close();
 				LOGGER.debug("ResultSet closed");
@@ -51,12 +48,11 @@ public class InvoiceDaoImpl extends AbstractDaoImpl implements IInvoiceDao {
 	}
 
 	@Override
-	public void insert(Invoice invoice) {
-		String sqlInsert = "insert into \"invoice\" (id,type, quantity, sum, month, year) values (?,?,?,?,?,?)";
+	public int insert(Invoice invoice) {
+		String sqlInsert = "insert into invoice (id,type, quantity, sum, month, year) values (?,?,?,?,?,?)";
 		LOGGER.debug("insert SQL:{}", sqlInsert);
 		try (Connection c = getConnection();
-				PreparedStatement preparedStatement = c.prepareStatement(
-						sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
+				PreparedStatement preparedStatement = c.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, invoice.getId());
 			preparedStatement.setString(2, invoice.getType());
 			preparedStatement.setInt(3, invoice.getQuantity());
@@ -65,6 +61,14 @@ public class InvoiceDaoImpl extends AbstractDaoImpl implements IInvoiceDao {
 			preparedStatement.setInt(6, invoice.getYear());
 			preparedStatement.executeUpdate();
 			LOGGER.info("insert invoice from db:{}", invoice);
+			ResultSet rs = preparedStatement.getGeneratedKeys();
+			LOGGER.debug("created ResulSet");
+			rs.next();
+			int id = rs.getInt("id");
+			LOGGER.debug("return generated key {}", id);
+			rs.close();
+			LOGGER.debug("ResulSet closed");
+			return id;
 		} catch (Exception e) {
 			throw new SQLExecutionExecption(e);
 		}
@@ -72,11 +76,9 @@ public class InvoiceDaoImpl extends AbstractDaoImpl implements IInvoiceDao {
 
 	@Override
 	public void update(Invoice invoice) {
-		String sqlUpdate = "update \"invoice\" set type=?, quantity=?, sum=?, month=?, year=? where id=?";
+		String sqlUpdate = "update invoice set type=?, quantity=?, sum=?, month=?, year=? where id=?";
 		LOGGER.debug("update SQL: {}", sqlUpdate);
-		try (Connection c = getConnection();
-				PreparedStatement preparedStatement = c
-						.prepareStatement(sqlUpdate)) {
+		try (Connection c = getConnection(); PreparedStatement preparedStatement = c.prepareStatement(sqlUpdate)) {
 			preparedStatement.setString(1, invoice.getType());
 			preparedStatement.setInt(2, invoice.getQuantity());
 			preparedStatement.setInt(3, invoice.getSum());
@@ -92,23 +94,18 @@ public class InvoiceDaoImpl extends AbstractDaoImpl implements IInvoiceDao {
 
 	@Override
 	public List<Invoice> getAll() {
-		return this
-				.<List<Invoice>> executeWithConnection(new DBAction<List<Invoice>>() {
+		return this.<List<Invoice>>executeWithConnection(new DBAction<List<Invoice>>() {
 
-					@Override
-					public List<Invoice> execute(Connection c, Statement stmt)
-							throws SQLException {
-						String sqlGetAll = "select * from \"invoice\"";
-						LOGGER.debug("get all invoice SQL:{}", sqlGetAll);
-						List<Invoice> listInvoice = sqlGetAllInvoice(sqlGetAll,
-								stmt);
-						LOGGER.info(
-								"received a list of data from the database:{}",
-								listInvoice);
-						return listInvoice;
-					}
+			@Override
+			public List<Invoice> execute(Connection c, Statement stmt) throws SQLException {
+				String sqlGetAll = "select * from invoice";
+				LOGGER.debug("get all invoice SQL:{}", sqlGetAll);
+				List<Invoice> listInvoice = sqlGetAllInvoice(sqlGetAll, stmt);
+				LOGGER.info("received a list of data from the database:{}", listInvoice);
+				return listInvoice;
+			}
 
-				});
+		});
 
 	}
 
@@ -125,37 +122,29 @@ public class InvoiceDaoImpl extends AbstractDaoImpl implements IInvoiceDao {
 
 	@Override
 	protected String getTableName() {
-		String tableName = "\"invoice\"";
+		String tableName = "invoice";
 		LOGGER.debug("return table name to remove data:{}", tableName);
 		return tableName;
 	}
 
 	@Override
 	public List<Invoice> getAll(int limit, int offset) {
-		return this
-				.<List<Invoice>> executeWithConnection(new DBAction<List<Invoice>>() {
+		return this.<List<Invoice>>executeWithConnection(new DBAction<List<Invoice>>() {
 
-					@Override
-					public List<Invoice> execute(Connection c, Statement stmt)
-							throws SQLException {
-						String sqlGetAll = String.format(
-								"select * from \"invoice\" limit %s offset %s",
-								limit, offset);
-						LOGGER.debug("get all invoice SQL:{}", sqlGetAll);
-						List<Invoice> listInvoice = sqlGetAllInvoice(sqlGetAll,
-								stmt);
-						LOGGER.info(
-								"received a list of data from the database:{}",
-								listInvoice);
-						return listInvoice;
-					}
+			@Override
+			public List<Invoice> execute(Connection c, Statement stmt) throws SQLException {
+				String sqlGetAll = String.format("select * from invoice limit %s offset %s", limit, offset);
+				LOGGER.debug("get all invoice SQL:{}", sqlGetAll);
+				List<Invoice> listInvoice = sqlGetAllInvoice(sqlGetAll, stmt);
+				LOGGER.info("received a list of data from the database:{}", listInvoice);
+				return listInvoice;
+			}
 
-				});
+		});
 
 	}
 
-	private List<Invoice> sqlGetAllInvoice(String sql, Statement stmt)
-			throws SQLException {
+	private List<Invoice> sqlGetAllInvoice(String sql, Statement stmt) throws SQLException {
 		List<Invoice> listInvoice = new ArrayList<>();
 		ResultSet rs = stmt.executeQuery(sql);
 		LOGGER.debug("created ResulSet");

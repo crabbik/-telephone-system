@@ -1,40 +1,59 @@
 package com.itacademy.jd2.lg.mobile_system.services.impl;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.itacademy.jd2.lg.mobile_system.dao.IAccountDao;
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.Account;
+import com.itacademy.jd2.lg.mobile_system.dao.impl.AccountDaoImpl;
 import com.itacademy.jd2.lg.mobile_system.services.IAccountService;
 
 public class AccountServiceImpl implements IAccountService {
+	private static final Logger LOGGER = LoggerFactory.getLogger(AccountServiceImpl.class);
+	public static final IAccountService ACCOUNT_SERVICE = new AccountServiceImpl();
+
+	private AccountServiceImpl() {
+
+	}
+
+	private IAccountDao dao = AccountDaoImpl.ACCOUNT_DAO;
 
 	@Override
 	public Account get(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.get(id);
 	}
 
 	@Override
 	public void remove(Integer id) {
-		// TODO Auto-generated method stub
-
+		dao.remove(id);
 	}
 
 	@Override
 	public Account save(Account account) {
-		// TODO Auto-generated method stub
-		return null;
+		Timestamp modifiedDate = new Timestamp(new Date().getTime());
+		account.setModified(modifiedDate);
+		if (account.getId() == null) {
+			account.setCreated(modifiedDate);
+			int id = dao.insert(account);
+			account.setId(id);
+		} else {
+			dao.update(account);
+		}
+		return account;
 	}
 
 	@Override
 	public List<Account> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.getAll();
 	}
 
 	@Override
 	public List<Account> getAll(int limit, int offset) {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.getAll(limit, offset);
 	}
 
 }

@@ -1,40 +1,59 @@
 package com.itacademy.jd2.lg.mobile_system.services.impl;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.itacademy.jd2.lg.mobile_system.dao.ITariffItemDao;
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.TariffItem;
+import com.itacademy.jd2.lg.mobile_system.dao.impl.TariffItemDaoImpl;
 import com.itacademy.jd2.lg.mobile_system.services.ITariffItemService;
 
 public class TariffItemServiceImpl implements ITariffItemService {
+	private static final Logger LOGGER = LoggerFactory.getLogger(TariffItemServiceImpl.class);
+	public static final ITariffItemService TARIFFITEM_DAO = new TariffItemServiceImpl();
+
+	private TariffItemServiceImpl() {
+
+	}
+
+	private ITariffItemDao dao = TariffItemDaoImpl.TARIFFITEM_DAO;
 
 	@Override
 	public TariffItem get(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.get(id);
 	}
 
 	@Override
 	public void remove(Integer id) {
-		// TODO Auto-generated method stub
-
+		dao.remove(id);
 	}
 
 	@Override
 	public TariffItem save(TariffItem tariffItem) {
-		// TODO Auto-generated method stub
-		return null;
+		Timestamp modifiedDate = new Timestamp(new Date().getTime());
+		tariffItem.setModified(modifiedDate);
+		if (tariffItem.getId() == null) {
+			tariffItem.setCreated(modifiedDate);
+			int id = dao.insert(tariffItem);
+			tariffItem.setId(id);
+		} else {
+			dao.update(tariffItem);
+		}
+		return tariffItem;
 	}
 
 	@Override
 	public List<TariffItem> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.getAll();
 	}
 
 	@Override
 	public List<TariffItem> getAll(int limit, int offset) {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.getAll(limit, offset);
 	}
 
 }

@@ -12,7 +12,7 @@ public interface IInvoiceDao {
 
 	void update(Invoice invoice);
 
-	void insert(Invoice invoice);
+	int insert(Invoice invoice);
 
 	List<Invoice> getAll();
 

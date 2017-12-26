@@ -15,10 +15,8 @@ import com.itacademy.jd2.lg.mobile_system.dao.ITariffItemDao;
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.TariffItem;
 import com.itacademy.jd2.lg.mobile_system.dao.exception.SQLExecutionExecption;
 
-public class TariffItemDaoImpl extends AbstractDaoImpl implements
-		ITariffItemDao {
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(TariffItemDaoImpl.class);
+public class TariffItemDaoImpl extends AbstractDaoImpl implements ITariffItemDao {
+	private static final Logger LOGGER = LoggerFactory.getLogger(TariffItemDaoImpl.class);
 	public static final ITariffItemDao TARIFFITEM_DAO = new TariffItemDaoImpl();
 
 	private TariffItemDaoImpl() {
@@ -26,40 +24,34 @@ public class TariffItemDaoImpl extends AbstractDaoImpl implements
 	}
 
 	public TariffItem get(Integer id) {
-		return this
-				.<TariffItem> executeWithConnection(new DBAction<TariffItem>() {
+		return this.<TariffItem>executeWithConnection(new DBAction<TariffItem>() {
 
-					@Override
-					public TariffItem execute(Connection c, Statement stmt)
-							throws SQLException {
-						TariffItem tariffItem = null;
-						String sqlGet = "select * from \"tariffItem\" where id="
-								+ id;
-						ResultSet rs = stmt.executeQuery(sqlGet);
-						LOGGER.debug("created ResultSet");
-						if (rs.next()) {
-							tariffItem = mapToTariffItem(rs);
-							LOGGER.debug(
-									"read tariffItem from the database: {}",
-									tariffItem.toString());
-						}
-						rs.close();
-						LOGGER.debug("ResultSet closed");
-						LOGGER.info("return tariffItem from db: {}", tariffItem);
-						return tariffItem;
-					}
+			@Override
+			public TariffItem execute(Connection c, Statement stmt) throws SQLException {
+				TariffItem tariffItem = null;
+				String sqlGet = "select * from tariff_item where id=" + id;
+				ResultSet rs = stmt.executeQuery(sqlGet);
+				LOGGER.debug("created ResultSet");
+				if (rs.next()) {
+					tariffItem = mapToTariffItem(rs);
+					LOGGER.debug("read tariffItem from the database: {}", tariffItem.toString());
+				}
+				rs.close();
+				LOGGER.debug("ResultSet closed");
+				LOGGER.info("return tariffItem from db: {}", tariffItem);
+				return tariffItem;
+			}
 
-				});
+		});
 
 	}
 
 	@Override
-	public void insert(TariffItem tariffItem) {
-		String sqlInsert = "insert into \"tariffItem\" (id,tariff_id, service_id, cost, deleted, created, modified) values (?,?,?,?,?,?,?)";
+	public int insert(TariffItem tariffItem) {
+		String sqlInsert = "insert into tariff_item (id,tariff_id, service_id, cost, deleted, created, modified) values (?,?,?,?,?,?,?)";
 		LOGGER.debug("insert SQL:{}", sqlInsert);
 		try (Connection c = getConnection();
-				PreparedStatement preparedStatement = c.prepareStatement(
-						sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
+				PreparedStatement preparedStatement = c.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, tariffItem.getId());
 			preparedStatement.setInt(2, tariffItem.getTariffId());
 			preparedStatement.setInt(3, tariffItem.getServiceId());
@@ -69,6 +61,14 @@ public class TariffItemDaoImpl extends AbstractDaoImpl implements
 			preparedStatement.setTimestamp(7, tariffItem.getModified());
 			preparedStatement.executeUpdate();
 			LOGGER.info("insert tariffItem from db:{}", tariffItem);
+			ResultSet rs = preparedStatement.getGeneratedKeys();
+			LOGGER.debug("created ResulSet");
+			rs.next();
+			int id = rs.getInt("id");
+			LOGGER.debug("return generated key {}", id);
+			rs.close();
+			LOGGER.debug("ResulSet closed");
+			return id;
 		} catch (Exception e) {
 			throw new SQLExecutionExecption(e);
 		}
@@ -76,11 +76,9 @@ public class TariffItemDaoImpl extends AbstractDaoImpl implements
 
 	@Override
 	public void update(TariffItem tariffItem) {
-		String sqlUpdate = "update \"tariffItem\" set tariff_id=?, service_id=?, cost=?, deleted=?, modified=? where id=?";
+		String sqlUpdate = "update tariff_item set tariff_id=?, service_id=?, cost=?, deleted=?, modified=? where id=?";
 		LOGGER.debug("update SQL: {}", sqlUpdate);
-		try (Connection c = getConnection();
-				PreparedStatement preparedStatement = c
-						.prepareStatement(sqlUpdate)) {
+		try (Connection c = getConnection(); PreparedStatement preparedStatement = c.prepareStatement(sqlUpdate)) {
 			preparedStatement.setInt(1, tariffItem.getTariffId());
 			preparedStatement.setInt(2, tariffItem.getServiceId());
 			preparedStatement.setInt(3, tariffItem.getCost());
@@ -96,23 +94,18 @@ public class TariffItemDaoImpl extends AbstractDaoImpl implements
 
 	@Override
 	public List<TariffItem> getAll() {
-		return this
-				.<List<TariffItem>> executeWithConnection(new DBAction<List<TariffItem>>() {
+		return this.<List<TariffItem>>executeWithConnection(new DBAction<List<TariffItem>>() {
 
-					@Override
-					public List<TariffItem> execute(Connection c, Statement stmt)
-							throws SQLException {
-						String sqlGetAll = "select * from \"tariffItem\"";
-						LOGGER.debug("get all tariffItem SQL:{}", sqlGetAll);
-						List<TariffItem> listTariffItem = sqlGetAllTariffItem(
-								sqlGetAll, stmt);
-						LOGGER.info(
-								"received a list of data from the database:{}",
-								listTariffItem);
-						return listTariffItem;
-					}
+			@Override
+			public List<TariffItem> execute(Connection c, Statement stmt) throws SQLException {
+				String sqlGetAll = "select * from tariff_item";
+				LOGGER.debug("get all tariffItem SQL:{}", sqlGetAll);
+				List<TariffItem> listTariffItem = sqlGetAllTariffItem(sqlGetAll, stmt);
+				LOGGER.info("received a list of data from the database:{}", listTariffItem);
+				return listTariffItem;
+			}
 
-				});
+		});
 
 	}
 
@@ -130,37 +123,29 @@ public class TariffItemDaoImpl extends AbstractDaoImpl implements
 
 	@Override
 	protected String getTableName() {
-		String tableName = "\"tariffItem\"";
+		String tableName = "tariff_item";
 		LOGGER.debug("return table name to remove data:{}", tableName);
 		return tableName;
 	}
 
 	@Override
 	public List<TariffItem> getAll(int limit, int offset) {
-		return this
-				.<List<TariffItem>> executeWithConnection(new DBAction<List<TariffItem>>() {
+		return this.<List<TariffItem>>executeWithConnection(new DBAction<List<TariffItem>>() {
 
-					@Override
-					public List<TariffItem> execute(Connection c, Statement stmt)
-							throws SQLException {
-						String sqlGetAll = String
-								.format("select * from \"tariffItem\" limit %s offset %s",
-										limit, offset);
-						LOGGER.debug("get all tariffItem SQL:{}", sqlGetAll);
-						List<TariffItem> listTariffItem = sqlGetAllTariffItem(
-								sqlGetAll, stmt);
-						LOGGER.info(
-								"received a list of data from the database:{}",
-								listTariffItem);
-						return listTariffItem;
-					}
+			@Override
+			public List<TariffItem> execute(Connection c, Statement stmt) throws SQLException {
+				String sqlGetAll = String.format("select * from tariff_item limit %s offset %s", limit, offset);
+				LOGGER.debug("get all tariffItem SQL:{}", sqlGetAll);
+				List<TariffItem> listTariffItem = sqlGetAllTariffItem(sqlGetAll, stmt);
+				LOGGER.info("received a list of data from the database:{}", listTariffItem);
+				return listTariffItem;
+			}
 
-				});
+		});
 
 	}
 
-	private List<TariffItem> sqlGetAllTariffItem(String sql, Statement stmt)
-			throws SQLException {
+	private List<TariffItem> sqlGetAllTariffItem(String sql, Statement stmt) throws SQLException {
 		List<TariffItem> listTariffItem = new ArrayList<>();
 		ResultSet rs = stmt.executeQuery(sql);
 		LOGGER.debug("created ResulSet");

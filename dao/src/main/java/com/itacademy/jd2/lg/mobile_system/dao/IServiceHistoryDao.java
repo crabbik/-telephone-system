@@ -11,7 +11,7 @@ public interface IServiceHistoryDao {
 
 	void update(ServiceHistory serviceHistory);
 
-	void insert(ServiceHistory serviceHistory);
+	int insert(ServiceHistory serviceHistory);
 
 	List<ServiceHistory> getAll();
 

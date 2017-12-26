@@ -9,10 +9,12 @@ public interface IInvoiceService {
 
 	void remove(Integer id);
 
-	Invoice save(Invoice invoice);
-
 	List<Invoice> getAll();
 
 	List<Invoice> getAll(int limit, int offset);
+
+	void update(Invoice invoice);
+
+	void insert(Invoice invoice);
 
 }

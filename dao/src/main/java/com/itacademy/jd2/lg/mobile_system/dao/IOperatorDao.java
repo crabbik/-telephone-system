@@ -11,7 +11,7 @@ public interface IOperatorDao {
 
 	void update(Operator operator);
 
-	void insert(Operator operator);
+	int insert(Operator operator);
 
 	List<Operator> getAll();
 

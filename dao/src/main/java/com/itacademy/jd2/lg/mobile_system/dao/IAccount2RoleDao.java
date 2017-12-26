@@ -11,7 +11,7 @@ public interface IAccount2RoleDao {
 
 	void update(Account2Role account2Role);
 
-	void insert(Account2Role account2Role);
+	int insert(Account2Role account2Role);
 
 	List<Account2Role> getAll();
 

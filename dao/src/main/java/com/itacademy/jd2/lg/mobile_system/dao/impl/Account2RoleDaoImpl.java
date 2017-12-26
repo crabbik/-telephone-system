@@ -29,7 +29,7 @@ public class Account2RoleDaoImpl extends AbstractDaoImpl implements IAccount2Rol
 			@Override
 			public Account2Role execute(Connection c, Statement stmt) throws SQLException {
 				Account2Role account2Role = null;
-				String sqlGet = "select * from \"account2Role\" where id=" + id;
+				String sqlGet = "select * from account_2_role where id=" + id;
 				ResultSet rs = stmt.executeQuery(sqlGet);
 				LOGGER.debug("created ResultSet");
 				if (rs.next()) {
@@ -47,15 +47,23 @@ public class Account2RoleDaoImpl extends AbstractDaoImpl implements IAccount2Rol
 	}
 
 	@Override
-	public void insert(Account2Role account2Role) {
-		String sqlInsert = "insert into \"account2Role\" (account_id,role_id) values (?,?)";
+	public int insert(Account2Role account2Role) {
+		String sqlInsert = "insert into account_2_role (account_id,role_id) values (?,?)";
 		LOGGER.debug("insert SQL:{}", sqlInsert);
 		try (Connection c = getConnection();
 				PreparedStatement preparedStatement = c.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, account2Role.getAccountId());
 			preparedStatement.setInt(2, account2Role.getRoleId());
 			preparedStatement.executeUpdate();
-			LOGGER.info("insert user from db:{}", account2Role);
+			LOGGER.info("insert Account2Role from db:{}", account2Role);
+			ResultSet rs = preparedStatement.getGeneratedKeys();
+			LOGGER.debug("created ResulSet");
+			rs.next();
+			int id = rs.getInt("id");
+			LOGGER.debug("return generated key {}", id);
+			rs.close();
+			LOGGER.debug("ResulSet closed");
+			return id;
 		} catch (Exception e) {
 			throw new SQLExecutionExecption(e);
 		}
@@ -63,13 +71,13 @@ public class Account2RoleDaoImpl extends AbstractDaoImpl implements IAccount2Rol
 
 	@Override
 	public void update(Account2Role account2Role) {
-		String sqlUpdate = "update \"account2Role\" set account_id=?, role_id=? where id=?";
+		String sqlUpdate = "update account_2_role set account_id=?, role_id=? where id=?";
 		LOGGER.debug("update SQL: {}", sqlUpdate);
 		try (Connection c = getConnection(); PreparedStatement preparedStatement = c.prepareStatement(sqlUpdate)) {
 			preparedStatement.setInt(1, account2Role.getAccountId());
 			preparedStatement.setInt(2, account2Role.getRoleId());
 			preparedStatement.executeUpdate();
-			LOGGER.info("update user:{}", account2Role);
+			LOGGER.info("update Account2Role:{}", account2Role);
 		} catch (Exception e) {
 			throw new SQLExecutionExecption(e);
 		}
@@ -81,9 +89,9 @@ public class Account2RoleDaoImpl extends AbstractDaoImpl implements IAccount2Rol
 
 			@Override
 			public List<Account2Role> execute(Connection c, Statement stmt) throws SQLException {
-				String sqlGetAll = "select * from \"account2Role\"";
+				String sqlGetAll = "select * from account_2_role";
 				LOGGER.debug("get all Account2Role SQL:{}", sqlGetAll);
-				List<Account2Role> listAccount2Role = sqlGetAllUser(sqlGetAll, stmt);
+				List<Account2Role> listAccount2Role = sqlGetAllAccount2Role(sqlGetAll, stmt);
 				LOGGER.info("received a list of data from the database:{}", listAccount2Role);
 				return listAccount2Role;
 			}
@@ -101,7 +109,7 @@ public class Account2RoleDaoImpl extends AbstractDaoImpl implements IAccount2Rol
 
 	@Override
 	protected String getTableName() {
-		String tableName = "\"account2Role\"";
+		String tableName = "account_2_role";
 		LOGGER.debug("return table name to remove data:{}", tableName);
 		return tableName;
 	}
@@ -112,9 +120,9 @@ public class Account2RoleDaoImpl extends AbstractDaoImpl implements IAccount2Rol
 
 			@Override
 			public List<Account2Role> execute(Connection c, Statement stmt) throws SQLException {
-				String sqlGetAll = String.format("select * from \"account2Role\" limit %s offset %s", limit, offset);
-				LOGGER.debug("get all user SQL:{}", sqlGetAll);
-				List<Account2Role> listAccount2Role = sqlGetAllUser(sqlGetAll, stmt);
+				String sqlGetAll = String.format("select * from account_2_role limit %s offset %s", limit, offset);
+				LOGGER.debug("get all Account2Role SQL:{}", sqlGetAll);
+				List<Account2Role> listAccount2Role = sqlGetAllAccount2Role(sqlGetAll, stmt);
 				LOGGER.info("received a list of data from the database:{}", listAccount2Role);
 				return listAccount2Role;
 			}
@@ -123,15 +131,15 @@ public class Account2RoleDaoImpl extends AbstractDaoImpl implements IAccount2Rol
 
 	}
 
-	private List<Account2Role> sqlGetAllUser(String sql, Statement stmt) throws SQLException {
+	private List<Account2Role> sqlGetAllAccount2Role(String sql, Statement stmt) throws SQLException {
 		List<Account2Role> listAccount2Role = new ArrayList<>();
 		ResultSet rs = stmt.executeQuery(sql);
 		LOGGER.debug("created ResulSet");
 		while (rs.next()) {
 			Account2Role account2Role = mapToAccount2Role(rs);
-			LOGGER.debug("read user from the database: {}", account2Role);
+			LOGGER.debug("read Account2Role from the database: {}", account2Role);
 			listAccount2Role.add(account2Role);
-			LOGGER.debug("user added from list");
+			LOGGER.debug("Account2Role added from list");
 		}
 		rs.close();
 		LOGGER.debug("ResulSet closed");

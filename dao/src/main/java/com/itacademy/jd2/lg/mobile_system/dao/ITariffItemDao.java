@@ -11,7 +11,7 @@ public interface ITariffItemDao {
 
 	void update(TariffItem tariffItem);
 
-	void insert(TariffItem tariffItem);
+	int insert(TariffItem tariffItem);
 
 	List<TariffItem> getAll();
 

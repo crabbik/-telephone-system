@@ -9,10 +9,13 @@ public interface IServiceHistoryService {
 
 	void remove(Integer id);
 
-	ServiceHistory save(ServiceHistory serviceHistory);
-
 	List<ServiceHistory> getAll();
 
 	List<ServiceHistory> getAll(int limit, int offset);
 
+	void insert(ServiceHistory serviceHistory);
+
+	void update(ServiceHistory serviceHistory);
+
 }
+

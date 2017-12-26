@@ -17,8 +17,7 @@ import com.itacademy.jd2.lg.mobile_system.dao.exception.SQLExecutionExecption;
 
 public class AccountDaoImpl extends AbstractDaoImpl implements IAccountDao {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(AccountDaoImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AccountDaoImpl.class);
 	public static final IAccountDao ACCOUNT_DAO = new AccountDaoImpl();
 
 	private AccountDaoImpl() {
@@ -26,19 +25,17 @@ public class AccountDaoImpl extends AbstractDaoImpl implements IAccountDao {
 	}
 
 	public Account get(Integer id) {
-		return this.<Account> executeWithConnection(new DBAction<Account>() {
+		return this.<Account>executeWithConnection(new DBAction<Account>() {
 
 			@Override
-			public Account execute(Connection c, Statement stmt)
-					throws SQLException {
+			public Account execute(Connection c, Statement stmt) throws SQLException {
 				Account account = null;
-				String sqlGet = "select * from \"account\" where id=" + id;
+				String sqlGet = "select * from account where id=" + id;
 				ResultSet rs = stmt.executeQuery(sqlGet);
 				LOGGER.debug("created ResultSet");
 				if (rs.next()) {
 					account = mapToAccount(rs);
-					LOGGER.debug("read account from the database: {}",
-							account.toString());
+					LOGGER.debug("read account from the database: {}", account.toString());
 				}
 				rs.close();
 				LOGGER.debug("ResultSet closed");
@@ -51,12 +48,11 @@ public class AccountDaoImpl extends AbstractDaoImpl implements IAccountDao {
 	}
 
 	@Override
-	public void insert(Account account) {
-		String sqlInsert = "insert into \"account\" (id,email,password, created, modified) values (?,?,?,?,?)";
+	public int insert(Account account) {
+		String sqlInsert = "insert into account (id,email,password, created, modified) values (?,?,?,?,?)";
 		LOGGER.debug("insert SQL:{}", sqlInsert);
 		try (Connection c = getConnection();
-				PreparedStatement preparedStatement = c.prepareStatement(
-						sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
+				PreparedStatement preparedStatement = c.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, account.getId());
 			preparedStatement.setString(2, account.getEmail());
 			preparedStatement.setString(3, account.getPassword());
@@ -64,6 +60,14 @@ public class AccountDaoImpl extends AbstractDaoImpl implements IAccountDao {
 			preparedStatement.setTimestamp(5, account.getModified());
 			preparedStatement.executeUpdate();
 			LOGGER.info("insert account from db:{}", account);
+			ResultSet rs = preparedStatement.getGeneratedKeys();
+			LOGGER.debug("created ResulSet");
+			rs.next();
+			int id = rs.getInt("id");
+			LOGGER.debug("return generated key {}", id);
+			rs.close();
+			LOGGER.debug("ResulSet closed");
+			return id;
 		} catch (Exception e) {
 			throw new SQLExecutionExecption(e);
 		}
@@ -71,11 +75,9 @@ public class AccountDaoImpl extends AbstractDaoImpl implements IAccountDao {
 
 	@Override
 	public void update(Account account) {
-		String sqlUpdate = "update \"account\" set email=?, password=?, modified=? where id=?";
+		String sqlUpdate = "update account set email=?, password=?, modified=? where id=?";
 		LOGGER.debug("update SQL: {}", sqlUpdate);
-		try (Connection c = getConnection();
-				PreparedStatement preparedStatement = c
-						.prepareStatement(sqlUpdate)) {
+		try (Connection c = getConnection(); PreparedStatement preparedStatement = c.prepareStatement(sqlUpdate)) {
 			preparedStatement.setString(1, account.getEmail());
 			preparedStatement.setString(2, account.getPassword());
 			preparedStatement.setTimestamp(3, account.getModified());
@@ -89,23 +91,18 @@ public class AccountDaoImpl extends AbstractDaoImpl implements IAccountDao {
 
 	@Override
 	public List<Account> getAll() {
-		return this
-				.<List<Account>> executeWithConnection(new DBAction<List<Account>>() {
+		return this.<List<Account>>executeWithConnection(new DBAction<List<Account>>() {
 
-					@Override
-					public List<Account> execute(Connection c, Statement stmt)
-							throws SQLException {
-						String sqlGetAll = "select * from \"account\"";
-						LOGGER.debug("get all account SQL:{}", sqlGetAll);
-						List<Account> listAccount = sqlGetAllUser(sqlGetAll,
-								stmt);
-						LOGGER.info(
-								"received a list of data from the database:{}",
-								listAccount);
-						return listAccount;
-					}
+			@Override
+			public List<Account> execute(Connection c, Statement stmt) throws SQLException {
+				String sqlGetAll = "select * from account";
+				LOGGER.debug("get all account SQL:{}", sqlGetAll);
+				List<Account> listAccount = sqlGetAllAccount(sqlGetAll, stmt);
+				LOGGER.info("received a list of data from the database:{}", listAccount);
+				return listAccount;
+			}
 
-				});
+		});
 
 	}
 
@@ -121,37 +118,29 @@ public class AccountDaoImpl extends AbstractDaoImpl implements IAccountDao {
 
 	@Override
 	protected String getTableName() {
-		String tableName = "\"account\"";
+		String tableName = "account";
 		LOGGER.debug("return table name to remove data:{}", tableName);
 		return tableName;
 	}
 
 	@Override
 	public List<Account> getAll(int limit, int offset) {
-		return this
-				.<List<Account>> executeWithConnection(new DBAction<List<Account>>() {
+		return this.<List<Account>>executeWithConnection(new DBAction<List<Account>>() {
 
-					@Override
-					public List<Account> execute(Connection c, Statement stmt)
-							throws SQLException {
-						String sqlGetAll = String.format(
-								"select * from \"account\" limit %s offset %s",
-								limit, offset);
-						LOGGER.debug("get all account SQL:{}", sqlGetAll);
-						List<Account> listAccount = sqlGetAllUser(sqlGetAll,
-								stmt);
-						LOGGER.info(
-								"received a list of data from the database:{}",
-								listAccount);
-						return listAccount;
-					}
+			@Override
+			public List<Account> execute(Connection c, Statement stmt) throws SQLException {
+				String sqlGetAll = String.format("select * from account limit %s offset %s", limit, offset);
+				LOGGER.debug("get all account SQL:{}", sqlGetAll);
+				List<Account> listAccount = sqlGetAllAccount(sqlGetAll, stmt);
+				LOGGER.info("received a list of data from the database:{}", listAccount);
+				return listAccount;
+			}
 
-				});
+		});
 
 	}
 
-	private List<Account> sqlGetAllUser(String sql, Statement stmt)
-			throws SQLException {
+	private List<Account> sqlGetAllAccount(String sql, Statement stmt) throws SQLException {
 		List<Account> listAccount = new ArrayList<>();
 		ResultSet rs = stmt.executeQuery(sql);
 		LOGGER.debug("created ResulSet");

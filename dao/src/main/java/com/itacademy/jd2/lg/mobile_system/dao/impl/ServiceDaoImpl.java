@@ -17,8 +17,7 @@ import com.itacademy.jd2.lg.mobile_system.dao.exception.SQLExecutionExecption;
 
 public class ServiceDaoImpl extends AbstractDaoImpl implements IServiceDao {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(ServiceDaoImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceDaoImpl.class);
 	public static final IServiceDao SERVICE_DAO = new ServiceDaoImpl();
 
 	private ServiceDaoImpl() {
@@ -26,19 +25,17 @@ public class ServiceDaoImpl extends AbstractDaoImpl implements IServiceDao {
 	}
 
 	public Service get(Integer id) {
-		return this.<Service> executeWithConnection(new DBAction<Service>() {
+		return this.<Service>executeWithConnection(new DBAction<Service>() {
 
 			@Override
-			public Service execute(Connection c, Statement stmt)
-					throws SQLException {
+			public Service execute(Connection c, Statement stmt) throws SQLException {
 				Service service = null;
-				String sqlGet = "select * from \"service\" where id=" + id;
+				String sqlGet = "select * from service where id=" + id;
 				ResultSet rs = stmt.executeQuery(sqlGet);
 				LOGGER.debug("created ResultSet");
 				if (rs.next()) {
 					service = mapToService(rs);
-					LOGGER.debug("read service from the database: {}",
-							service.toString());
+					LOGGER.debug("read service from the database: {}", service.toString());
 				}
 				rs.close();
 				LOGGER.debug("ResultSet closed");
@@ -51,12 +48,11 @@ public class ServiceDaoImpl extends AbstractDaoImpl implements IServiceDao {
 	}
 
 	@Override
-	public void insert(Service service) {
-		String sqlInsert = "insert into \"service\" (id,type, unit, deleted, created, modified) values (?,?,?,?,?,?)";
+	public int insert(Service service) {
+		String sqlInsert = "insert into service (id,type, unit, deleted, created, modified) values (?,?,?,?,?,?)";
 		LOGGER.debug("insert SQL:{}", sqlInsert);
 		try (Connection c = getConnection();
-				PreparedStatement preparedStatement = c.prepareStatement(
-						sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
+				PreparedStatement preparedStatement = c.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, service.getId());
 			preparedStatement.setString(2, service.getType());
 			preparedStatement.setString(3, service.getUnit());
@@ -65,6 +61,14 @@ public class ServiceDaoImpl extends AbstractDaoImpl implements IServiceDao {
 			preparedStatement.setTimestamp(6, service.getModified());
 			preparedStatement.executeUpdate();
 			LOGGER.info("insert service from db:{}", service);
+			ResultSet rs = preparedStatement.getGeneratedKeys();
+			LOGGER.debug("created ResulSet");
+			rs.next();
+			int id = rs.getInt("id");
+			LOGGER.debug("return generated key {}", id);
+			rs.close();
+			LOGGER.debug("ResulSet closed");
+			return id;
 		} catch (Exception e) {
 			throw new SQLExecutionExecption(e);
 		}
@@ -72,11 +76,9 @@ public class ServiceDaoImpl extends AbstractDaoImpl implements IServiceDao {
 
 	@Override
 	public void update(Service service) {
-		String sqlUpdate = "update \"service\" set type=?, unit=?, deleted=?, modified=? where id=?";
+		String sqlUpdate = "update service set type=?, unit=?, deleted=?, modified=? where id=?";
 		LOGGER.debug("update SQL: {}", sqlUpdate);
-		try (Connection c = getConnection();
-				PreparedStatement preparedStatement = c
-						.prepareStatement(sqlUpdate)) {
+		try (Connection c = getConnection(); PreparedStatement preparedStatement = c.prepareStatement(sqlUpdate)) {
 			preparedStatement.setString(1, service.getType());
 			preparedStatement.setString(2, service.getUnit());
 			preparedStatement.setBoolean(3, service.isDeleted());
@@ -91,23 +93,18 @@ public class ServiceDaoImpl extends AbstractDaoImpl implements IServiceDao {
 
 	@Override
 	public List<Service> getAll() {
-		return this
-				.<List<Service>> executeWithConnection(new DBAction<List<Service>>() {
+		return this.<List<Service>>executeWithConnection(new DBAction<List<Service>>() {
 
-					@Override
-					public List<Service> execute(Connection c, Statement stmt)
-							throws SQLException {
-						String sqlGetAll = "select * from \"service\"";
-						LOGGER.debug("get all service SQL:{}", sqlGetAll);
-						List<Service> listService = sqlGetAllService(sqlGetAll,
-								stmt);
-						LOGGER.info(
-								"received a list of data from the database:{}",
-								listService);
-						return listService;
-					}
+			@Override
+			public List<Service> execute(Connection c, Statement stmt) throws SQLException {
+				String sqlGetAll = "select * from service";
+				LOGGER.debug("get all service SQL:{}", sqlGetAll);
+				List<Service> listService = sqlGetAllService(sqlGetAll, stmt);
+				LOGGER.info("received a list of data from the database:{}", listService);
+				return listService;
+			}
 
-				});
+		});
 
 	}
 
@@ -124,37 +121,29 @@ public class ServiceDaoImpl extends AbstractDaoImpl implements IServiceDao {
 
 	@Override
 	protected String getTableName() {
-		String tableName = "\"service\"";
+		String tableName = "service";
 		LOGGER.debug("return table name to remove data:{}", tableName);
 		return tableName;
 	}
 
 	@Override
 	public List<Service> getAll(int limit, int offset) {
-		return this
-				.<List<Service>> executeWithConnection(new DBAction<List<Service>>() {
+		return this.<List<Service>>executeWithConnection(new DBAction<List<Service>>() {
 
-					@Override
-					public List<Service> execute(Connection c, Statement stmt)
-							throws SQLException {
-						String sqlGetAll = String.format(
-								"select * from \"service\" limit %s offset %s",
-								limit, offset);
-						LOGGER.debug("get all service SQL:{}", sqlGetAll);
-						List<Service> listService = sqlGetAllService(sqlGetAll,
-								stmt);
-						LOGGER.info(
-								"received a list of data from the database:{}",
-								listService);
-						return listService;
-					}
+			@Override
+			public List<Service> execute(Connection c, Statement stmt) throws SQLException {
+				String sqlGetAll = String.format("select * from service limit %s offset %s", limit, offset);
+				LOGGER.debug("get all service SQL:{}", sqlGetAll);
+				List<Service> listService = sqlGetAllService(sqlGetAll, stmt);
+				LOGGER.info("received a list of data from the database:{}", listService);
+				return listService;
+			}
 
-				});
+		});
 
 	}
 
-	private List<Service> sqlGetAllService(String sql, Statement stmt)
-			throws SQLException {
+	private List<Service> sqlGetAllService(String sql, Statement stmt) throws SQLException {
 		List<Service> listService = new ArrayList<>();
 		ResultSet rs = stmt.executeQuery(sql);
 		LOGGER.debug("created ResulSet");

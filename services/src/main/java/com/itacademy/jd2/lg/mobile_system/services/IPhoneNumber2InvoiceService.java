@@ -9,7 +9,9 @@ public interface IPhoneNumber2InvoiceService {
 
 	void remove(Integer id);
 
-	PhoneNumber2Invoice save(PhoneNumber2Invoice phoneNumber2Invoice);
+	void insert(PhoneNumber2Invoice phoneNumber2Invoice);
+
+	void update(PhoneNumber2Invoice phoneNumber2Invoice);
 
 	List<PhoneNumber2Invoice> getAll();
 

@@ -18,7 +18,7 @@ import com.itacademy.jd2.lg.mobile_system.dao.exception.SQLExecutionExecption;
 public class PhoneNumber2InvoiceDaoImpl extends AbstractDaoImpl implements IPhoneNumber2InvoiceDao {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PhoneNumber2InvoiceDaoImpl.class);
-	public static final IPhoneNumber2InvoiceDao PHONENUMBER2INVOICE_DAO = new PhoneNumber2InvoiceDaoImpl();
+	public static final IPhoneNumber2InvoiceDao PHONENUMBER_2_INVOICE_DAO = new PhoneNumber2InvoiceDaoImpl();
 
 	private PhoneNumber2InvoiceDaoImpl() {
 		super();
@@ -30,7 +30,7 @@ public class PhoneNumber2InvoiceDaoImpl extends AbstractDaoImpl implements IPhon
 			@Override
 			public PhoneNumber2Invoice execute(Connection c, Statement stmt) throws SQLException {
 				PhoneNumber2Invoice phoneNumber2Invoice = null;
-				String sqlGet = "select * from \"phoneNumber2Invoice\" where id=" + id;
+				String sqlGet = "select * from phoneNumber_2_invoice where id=" + id;
 				ResultSet rs = stmt.executeQuery(sqlGet);
 				LOGGER.debug("created ResultSet");
 				if (rs.next()) {
@@ -49,7 +49,7 @@ public class PhoneNumber2InvoiceDaoImpl extends AbstractDaoImpl implements IPhon
 
 	@Override
 	public void insert(PhoneNumber2Invoice phoneNumber2Invoice) {
-		String sqlInsert = "insert into \"phoneNumber2Invoice\" (invoice_id,phone_number_id) values (?,?)";
+		String sqlInsert = "insert into phoneNumber_2_invoice (invoice_id,phone_number_id) values (?,?)";
 		LOGGER.debug("insert SQL:{}", sqlInsert);
 		try (Connection c = getConnection();
 				PreparedStatement preparedStatement = c.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
@@ -64,7 +64,7 @@ public class PhoneNumber2InvoiceDaoImpl extends AbstractDaoImpl implements IPhon
 
 	@Override
 	public void update(PhoneNumber2Invoice phoneNumber2Invoice) {
-		String sqlUpdate = "update \"phoneNumber2Invoice\" set invoice_id=?, phone_number_id=? where id=?";
+		String sqlUpdate = "update phoneNumber_2_invoice set invoice_id=?, phone_number_id=? where id=?";
 		LOGGER.debug("update SQL: {}", sqlUpdate);
 		try (Connection c = getConnection(); PreparedStatement preparedStatement = c.prepareStatement(sqlUpdate)) {
 			preparedStatement.setInt(1, phoneNumber2Invoice.getInvoiceId());
@@ -82,9 +82,9 @@ public class PhoneNumber2InvoiceDaoImpl extends AbstractDaoImpl implements IPhon
 
 			@Override
 			public List<PhoneNumber2Invoice> execute(Connection c, Statement stmt) throws SQLException {
-				String sqlGetAll = "select * from \"phoneNumber2Invoice\"";
+				String sqlGetAll = "select * from phoneNumber_2_invoice";
 				LOGGER.debug("get all phoneNumber2Invoice SQL:{}", sqlGetAll);
-				List<PhoneNumber2Invoice> listPhoneNumber2Invoice = sqlGetAllUser(sqlGetAll, stmt);
+				List<PhoneNumber2Invoice> listPhoneNumber2Invoice = sqlGetAllPhoneNumber2Invoice(sqlGetAll, stmt);
 				LOGGER.info("received a list of data from the database:{}", listPhoneNumber2Invoice);
 				return listPhoneNumber2Invoice;
 			}
@@ -102,7 +102,7 @@ public class PhoneNumber2InvoiceDaoImpl extends AbstractDaoImpl implements IPhon
 
 	@Override
 	protected String getTableName() {
-		String tableName = "\"phoneNumber2Invoice\"";
+		String tableName = "phoneNumber_2_invoice";
 		LOGGER.debug("return table name to remove data:{}", tableName);
 		return tableName;
 	}
@@ -113,10 +113,10 @@ public class PhoneNumber2InvoiceDaoImpl extends AbstractDaoImpl implements IPhon
 
 			@Override
 			public List<PhoneNumber2Invoice> execute(Connection c, Statement stmt) throws SQLException {
-				String sqlGetAll = String.format("select * from \"phoneNumber2Invoice\" limit %s offset %s", limit,
+				String sqlGetAll = String.format("select * from phoneNumber_2_invoice limit %s offset %s", limit,
 						offset);
 				LOGGER.debug("get all user SQL:{}", sqlGetAll);
-				List<PhoneNumber2Invoice> listPhoneNumber2Invoice = sqlGetAllUser(sqlGetAll, stmt);
+				List<PhoneNumber2Invoice> listPhoneNumber2Invoice = sqlGetAllPhoneNumber2Invoice(sqlGetAll, stmt);
 				LOGGER.info("received a list of data from the database:{}", listPhoneNumber2Invoice);
 				return listPhoneNumber2Invoice;
 			}
@@ -125,7 +125,7 @@ public class PhoneNumber2InvoiceDaoImpl extends AbstractDaoImpl implements IPhon
 
 	}
 
-	private List<PhoneNumber2Invoice> sqlGetAllUser(String sql, Statement stmt) throws SQLException {
+	private List<PhoneNumber2Invoice> sqlGetAllPhoneNumber2Invoice(String sql, Statement stmt) throws SQLException {
 		List<PhoneNumber2Invoice> listPhoneNumber2Invoice = new ArrayList<>();
 		ResultSet rs = stmt.executeQuery(sql);
 		LOGGER.debug("created ResulSet");

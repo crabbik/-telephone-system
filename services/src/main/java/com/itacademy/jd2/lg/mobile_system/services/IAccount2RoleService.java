@@ -9,7 +9,9 @@ public interface IAccount2RoleService {
 
 	void remove(Integer id);
 
-	Account2Role save(Account2Role account2Role);
+	void insert(Account2Role account2Role);
+
+	void update(Account2Role account2Role);
 
 	List<Account2Role> getAll();
 

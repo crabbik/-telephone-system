@@ -11,7 +11,7 @@ public interface ITariffDao {
 
 	void update(Tariff tariff);
 
-	void insert(Tariff tariff);
+	int insert(Tariff tariff);
 
 	List<Tariff> getAll();
 

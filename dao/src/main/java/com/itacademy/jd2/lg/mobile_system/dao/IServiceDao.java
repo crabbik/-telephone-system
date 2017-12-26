@@ -12,7 +12,7 @@ public interface IServiceDao {
 
 	void update(Service service);
 
-	void insert(Service service);
+	int insert(Service service);
 
 	List<Service> getAll();
 

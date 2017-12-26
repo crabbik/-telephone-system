@@ -29,7 +29,7 @@ public class PhoneNumberDaoImpl extends AbstractDaoImpl implements IPhoneNumberD
 			@Override
 			public PhoneNumber execute(Connection c, Statement stmt) throws SQLException {
 				PhoneNumber phoneNumber = null;
-				String sqlGet = "select * from \"phoneNumber\" where id=" + id;
+				String sqlGet = "select * from phone_number where id=" + id;
 				ResultSet rs = stmt.executeQuery(sqlGet);
 				LOGGER.debug("created ResultSet");
 				if (rs.next()) {
@@ -47,8 +47,8 @@ public class PhoneNumberDaoImpl extends AbstractDaoImpl implements IPhoneNumberD
 	}
 
 	@Override
-	public void insert(PhoneNumber phoneNumber) {
-		String sqlInsert = "insert into \"phoneNumber\" (id,account_id, number, tariff_id, created, modified) values (?,?,?,?,?,?)";
+	public int insert(PhoneNumber phoneNumber) {
+		String sqlInsert = "insert into phone_number (id,account_id, number, tariff_id, created, modified) values (?,?,?,?,?,?)";
 		LOGGER.debug("insert SQL:{}", sqlInsert);
 		try (Connection c = getConnection();
 				PreparedStatement preparedStatement = c.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
@@ -60,6 +60,14 @@ public class PhoneNumberDaoImpl extends AbstractDaoImpl implements IPhoneNumberD
 			preparedStatement.setTimestamp(6, phoneNumber.getModified());
 			preparedStatement.executeUpdate();
 			LOGGER.info("insert phoneNumber from db:{}", phoneNumber);
+			ResultSet rs = preparedStatement.getGeneratedKeys();
+			LOGGER.debug("created ResulSet");
+			rs.next();
+			int id = rs.getInt("id");
+			LOGGER.debug("return generated key {}", id);
+			rs.close();
+			LOGGER.debug("ResulSet closed");
+			return id;
 		} catch (Exception e) {
 			throw new SQLExecutionExecption(e);
 		}
@@ -67,7 +75,7 @@ public class PhoneNumberDaoImpl extends AbstractDaoImpl implements IPhoneNumberD
 
 	@Override
 	public void update(PhoneNumber phoneNumber) {
-		String sqlUpdate = "update \"phoneNumber\" set account_id=?, number=?, tariff_id=?, modified=? where id=?";
+		String sqlUpdate = "update phone_number set account_id=?, number=?, tariff_id=?, modified=? where id=?";
 		LOGGER.debug("update SQL: {}", sqlUpdate);
 		try (Connection c = getConnection(); PreparedStatement preparedStatement = c.prepareStatement(sqlUpdate)) {
 			preparedStatement.setInt(1, phoneNumber.getAccountId());
@@ -88,8 +96,8 @@ public class PhoneNumberDaoImpl extends AbstractDaoImpl implements IPhoneNumberD
 
 			@Override
 			public List<PhoneNumber> execute(Connection c, Statement stmt) throws SQLException {
-				String sqlGetAll = "select * from \"phoneNumber\"";
-				LOGGER.debug("get all user SQL:{}", sqlGetAll);
+				String sqlGetAll = "select * from phone_number";
+				LOGGER.debug("get all phone_number SQL:{}", sqlGetAll);
 				List<PhoneNumber> listPhoneNumber = sqlGetAllPhoneNumber(sqlGetAll, stmt);
 				LOGGER.info("received a list of data from the database:{}", listPhoneNumber);
 				return listPhoneNumber;
@@ -112,7 +120,7 @@ public class PhoneNumberDaoImpl extends AbstractDaoImpl implements IPhoneNumberD
 
 	@Override
 	protected String getTableName() {
-		String tableName = "\"phoneNumber\"";
+		String tableName = "phone_number";
 		LOGGER.debug("return table name to remove data:{}", tableName);
 		return tableName;
 	}
@@ -123,7 +131,7 @@ public class PhoneNumberDaoImpl extends AbstractDaoImpl implements IPhoneNumberD
 
 			@Override
 			public List<PhoneNumber> execute(Connection c, Statement stmt) throws SQLException {
-				String sqlGetAll = String.format("select * from \"phoneNumber\" limit %s offset %s", limit, offset);
+				String sqlGetAll = String.format("select * from phone_number limit %s offset %s", limit, offset);
 				LOGGER.debug("get all phoneNumber SQL:{}", sqlGetAll);
 				List<PhoneNumber> listPhoneNumber = sqlGetAllPhoneNumber(sqlGetAll, stmt);
 				LOGGER.info("received a list of data from the database:{}", listPhoneNumber);
