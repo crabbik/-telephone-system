@@ -11,7 +11,7 @@ public interface IPhoneNumberDao {
 
 	void update(PhoneNumber phoneNumber);
 
-	int insert(PhoneNumber phoneNumber);
+	void insert(PhoneNumber phoneNumber);
 
 	List<PhoneNumber> getAll();
 

@@ -11,7 +11,7 @@ public interface IAccountDao {
 
 	void update(Account account);
 
-	int insert(Account account);
+	void insert(Account account);
 
 	List<Account> getAll();
 
