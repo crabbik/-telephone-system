@@ -2,12 +2,29 @@ package com.itacademy.jd2.lg.mobile_system.dao.dbmodel;
 
 import java.sql.Date;
 
-public class Spent {
+public class ServiceHistory {
 	private Integer id;
 	private Date data;
-	private String type;
+	private Integer tariffItemId;
 	private Integer quantity;
 	private Integer sum;
+	private Integer phoneNumberId;
+
+	public Integer getTariffItemId() {
+		return tariffItemId;
+	}
+
+	public void setTariffItemId(Integer tariffItemId) {
+		this.tariffItemId = tariffItemId;
+	}
+
+	public Integer getPhoneNumberId() {
+		return phoneNumberId;
+	}
+
+	public void setPhoneNumberId(Integer phoneNumberId) {
+		this.phoneNumberId = phoneNumberId;
+	}
 
 	public Integer getId() {
 		return id;
@@ -23,14 +40,6 @@ public class Spent {
 
 	public void setData(Date data) {
 		this.data = data;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 	public Integer getQuantity() {

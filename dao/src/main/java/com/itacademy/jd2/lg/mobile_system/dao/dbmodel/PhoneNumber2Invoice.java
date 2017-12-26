@@ -1,8 +1,8 @@
 package com.itacademy.jd2.lg.mobile_system.dao.dbmodel;
 
-public class Client2Invoice {
+public class PhoneNumber2Invoice {
 	private Integer invoiceId;
-	private Integer clientId;
+	private Integer phoneNumberId;
 
 	public Integer getInvoiceId() {
 		return invoiceId;
@@ -12,12 +12,12 @@ public class Client2Invoice {
 		this.invoiceId = invoiceId;
 	}
 
-	public Integer getClientId() {
-		return clientId;
+	public Integer getPhoneNumberId() {
+		return phoneNumberId;
 	}
 
-	public void setClientId(Integer clientId) {
-		this.clientId = clientId;
+	public void setPhoneNumberId(Integer clientId) {
+		this.phoneNumberId = clientId;
 	}
 
 }

@@ -1,12 +1,30 @@
 package com.itacademy.jd2.lg.mobile_system.dao.dbmodel;
 
+import java.sql.Timestamp;
+
 public class Tariff {
 	private Integer id;
-	private String title;
+	private String name;
 	private Integer operatorId;
-	private Integer serviceId;
-	private Integer cost;
 	private boolean deleted;
+	private Timestamp created;
+	private Timestamp modified;
+
+	public Timestamp getCreated() {
+		return created;
+	}
+
+	public void setCreated(Timestamp created) {
+		this.created = created;
+	}
+
+	public Timestamp getModified() {
+		return modified;
+	}
+
+	public void setModified(Timestamp modified) {
+		this.modified = modified;
+	}
 
 	public Integer getId() {
 		return id;
@@ -16,12 +34,12 @@ public class Tariff {
 		this.id = id;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getName() {
+		return name;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setName(String title) {
+		this.name = title;
 	}
 
 	public Integer getOperatorId() {
@@ -30,22 +48,6 @@ public class Tariff {
 
 	public void setOperatorId(Integer operatorId) {
 		this.operatorId = operatorId;
-	}
-
-	public Integer getServiceId() {
-		return serviceId;
-	}
-
-	public void setServiceId(Integer serviceId) {
-		this.serviceId = serviceId;
-	}
-
-	public Integer getCost() {
-		return cost;
-	}
-
-	public void setCost(Integer cost) {
-		this.cost = cost;
 	}
 
 	public boolean isDeleted() {

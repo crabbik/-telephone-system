@@ -2,24 +2,13 @@ package com.itacademy.jd2.dz.library.services;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.Client;
-import com.itacademy.jd2.lg.mobile_system.services.IClientServices;
-import com.itacademy.jd2.lg.mobile_system.services.impl.ClientServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ClientServiceTest {
 
-	private IClientServices service = new ClientServiceImpl();
+	private static final Logger LOGGER = LoggerFactory.getLogger(ClientServiceTest.class);
 
-	@Test
-	public void testGetById() {
-		Client client = service.get(2);
-		Assert.assertNotNull(client);
-	}
+	// TODO other tests
 
-	@Test
-	public void testRemove() {
-		service.remove(2);
-		Assert.assertNull(service.get(2));
-	}
 }

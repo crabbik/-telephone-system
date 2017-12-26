@@ -5,7 +5,6 @@ public class Invoice {
 	private String type;
 	private Integer quantity;
 	private Integer sum;
-	private Integer day;
 	private Integer month;
 	private Integer year;
 
@@ -39,14 +38,6 @@ public class Invoice {
 
 	public void setSum(Integer sum) {
 		this.sum = sum;
-	}
-
-	public Integer getDay() {
-		return day;
-	}
-
-	public void setDay(Integer day) {
-		this.day = day;
 	}
 
 	public Integer getMonth() {

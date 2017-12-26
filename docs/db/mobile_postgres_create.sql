@@ -1,7 +1,7 @@
 CREATE TABLE "service_history" (
 	"id" serial NOT NULL,
 	"date" time with time zone NOT NULL,
-	"tariff_item_id" character varying NOT NULL,
+	"tariff_item_id" bigint NOT NULL,
 	"quantity" integer NOT NULL,
 	"sum" integer NOT NULL,
 	"phone_number_id" bigint NOT NULL,
@@ -74,7 +74,7 @@ CREATE TABLE "invoice" (
 
 
 
-CREATE TABLE "account_2_invoice" (
+CREATE TABLE "phone_number_2_invoice" (
 	"invoice_id" bigint NOT NULL,
 	"phone_number_id" bigint NOT NULL
 ) WITH (
@@ -88,6 +88,8 @@ CREATE TABLE "service" (
 	"type" character varying(50) NOT NULL,
 	"unit" character varying(50) NOT NULL,
 	"deleted" BOOLEAN NOT NULL DEFAULT 'false',
+	"created" TIMESTAMP NOT NULL,
+	"modified" TIMESTAMP NOT NULL,
 	CONSTRAINT service_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -148,8 +150,8 @@ ALTER TABLE "account" ADD CONSTRAINT "account_fk0" FOREIGN KEY ("id") REFERENCES
 ALTER TABLE "account_2_role" ADD CONSTRAINT "account_2_role_fk0" FOREIGN KEY ("account_id") REFERENCES "account"("id");
 
 
-ALTER TABLE "account_2_invoice" ADD CONSTRAINT "account_2_invoice_fk0" FOREIGN KEY ("invoice_id") REFERENCES "invoice"("id");
-ALTER TABLE "account_2_invoice" ADD CONSTRAINT "account_2_invoice_fk1" FOREIGN KEY ("phone_number_id") REFERENCES "phone_number"("id");
+ALTER TABLE "phone_number_2_invoice" ADD CONSTRAINT "phone_number_2_invoice_fk0" FOREIGN KEY ("invoice_id") REFERENCES "invoice"("id");
+ALTER TABLE "phone_number_2_invoice" ADD CONSTRAINT "phone_number_2_invoice_fk1" FOREIGN KEY ("phone_number_id") REFERENCES "phone_number"("id");
 
 
 ALTER TABLE "phone_number" ADD CONSTRAINT "phone_number_fk0" FOREIGN KEY ("account_id") REFERENCES "account"("id");
