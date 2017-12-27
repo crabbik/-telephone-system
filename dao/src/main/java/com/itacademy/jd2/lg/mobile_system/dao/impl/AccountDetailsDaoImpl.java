@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import com.itacademy.jd2.lg.mobile_system.dao.IAccountDetailsDao;
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.AccountDetails;
-import com.itacademy.jd2.lg.mobile_system.dao.exception.SQLExecutionExecption;
 
 public class AccountDetailsDaoImpl extends AbstractDaoImpl implements IAccountDetailsDao {
 
@@ -21,17 +20,15 @@ public class AccountDetailsDaoImpl extends AbstractDaoImpl implements IAccountDe
 	public static final IAccountDetailsDao ACCOUNTDETAILS_DAO = new AccountDetailsDaoImpl();
 
 	private AccountDetailsDaoImpl() {
-		super();
 	}
 
 	public AccountDetails get(Integer id) {
-		return this.<AccountDetails>executeWithConnection(new DBAction<AccountDetails>() {
-
+		return executeWithConnection(new StatementAction<AccountDetails>() {
 			@Override
-			public AccountDetails execute(Connection c, Statement stmt) throws SQLException {
+			public AccountDetails execute(Statement stmt) throws SQLException {
 				AccountDetails accountDetails = null;
-				String sqlGet = "select * from account_details where id=" + id;
-				ResultSet rs = stmt.executeQuery(sqlGet);
+				String sqlGetAccountDetails = "select * from account_details where id=" + id;
+				ResultSet rs = stmt.executeQuery(sqlGetAccountDetails);
 				LOGGER.debug("created ResultSet");
 				if (rs.next()) {
 					accountDetails = mapToAccountDetails(rs);
@@ -49,52 +46,71 @@ public class AccountDetailsDaoImpl extends AbstractDaoImpl implements IAccountDe
 
 	@Override
 	public int insert(AccountDetails accountDetails) {
-		String sqlInsert = "insert into account_details (id, last_name,first_name, created, modified) values (?,?,?,?,?)";
-		LOGGER.debug("insert SQL:{}", sqlInsert);
-		try (Connection c = getConnection();
-				PreparedStatement preparedStatement = c.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setInt(1, accountDetails.getId());
-			preparedStatement.setString(2, accountDetails.getLastName());
-			preparedStatement.setString(3, accountDetails.getFirstName());
-			preparedStatement.setTimestamp(4, accountDetails.getCreated());
-			preparedStatement.setTimestamp(5, accountDetails.getModified());
-			preparedStatement.executeUpdate();
-			LOGGER.info("insert accountDetails from db:{}", accountDetails);
-			ResultSet rs = preparedStatement.getGeneratedKeys();
-			LOGGER.debug("created ResulSet");
-			rs.next();
-			int id = rs.getInt("id");
-			LOGGER.debug("return generated key {}", id);
-			rs.close();
-			LOGGER.debug("ResulSet closed");
-			return id;
-		} catch (Exception e) {
-			throw new SQLExecutionExecption(e);
-		}
+		return executeWithConnection(new PreparedStatementAction<Integer>() {
+
+			@Override
+			public Integer doWithPreparedStatement(PreparedStatement pStmt) throws SQLException {
+				pStmt.setInt(1, accountDetails.getId());
+				pStmt.setString(2, accountDetails.getLastName());
+				pStmt.setString(3, accountDetails.getFirstName());
+				pStmt.setTimestamp(4, accountDetails.getCreated());
+				pStmt.setTimestamp(5, accountDetails.getModified());
+				pStmt.executeUpdate();
+				LOGGER.info("insert accountDetails from db:{}", accountDetails);
+				ResultSet rs = pStmt.getGeneratedKeys();
+				LOGGER.debug("created ResulSet");
+				rs.next();
+				int id = rs.getInt("id");
+				LOGGER.debug("return generated key {}", id);
+				rs.close();
+				LOGGER.debug("ResulSet closed");
+				return id;
+			}
+
+			@Override
+			public PreparedStatement prepareStatement(Connection c) throws SQLException {
+				String sqlInsertAccountDetails = "insert into account_details (id, last_name,first_name, created, modified) values (?,?,?,?,?)";
+				LOGGER.debug("insert SQL:{}", sqlInsertAccountDetails);
+				PreparedStatement preparedStatement = c.prepareStatement(sqlInsertAccountDetails,
+						Statement.RETURN_GENERATED_KEYS);
+				return preparedStatement;
+			}
+		});
+
 	}
 
 	@Override
 	public void update(AccountDetails accountDetails) {
-		String sqlUpdate = "update account_details set  last_name=?,first_name=?,  modified=? where id=?";
-		LOGGER.debug("update SQL: {}", sqlUpdate);
-		try (Connection c = getConnection(); PreparedStatement preparedStatement = c.prepareStatement(sqlUpdate)) {
-			preparedStatement.setString(1, accountDetails.getLastName());
-			preparedStatement.setString(2, accountDetails.getFirstName());
-			preparedStatement.setTimestamp(3, accountDetails.getModified());
-			preparedStatement.setInt(4, accountDetails.getId());
-			preparedStatement.executeUpdate();
-			LOGGER.info("update accountDetails:{}", accountDetails);
-		} catch (Exception e) {
-			throw new SQLExecutionExecption(e);
-		}
+		executeWithConnection(new PreparedStatementActionVoid() {
+
+			@Override
+			public void doWithPreparedStatement(PreparedStatement preparedStatement) throws SQLException {
+
+				preparedStatement.setString(1, accountDetails.getLastName());
+				preparedStatement.setString(2, accountDetails.getFirstName());
+				preparedStatement.setTimestamp(3, accountDetails.getModified());
+				preparedStatement.setInt(4, accountDetails.getId());
+				preparedStatement.executeUpdate();
+				LOGGER.info("update accountDetails:{}", accountDetails);
+			}
+
+			@Override
+			public PreparedStatement prepareStatement(Connection c) throws SQLException {
+				String sqlUpdateAccountDetails = "update account_details set  last_name=?,first_name=?,  modified=? where id=?";
+				LOGGER.debug("update SQL: {}", sqlUpdateAccountDetails);
+				PreparedStatement preparedStatement = c.prepareStatement(sqlUpdateAccountDetails);
+				return preparedStatement;
+			}
+
+		});
+
 	}
 
 	@Override
 	public List<AccountDetails> getAll() {
-		return this.<List<AccountDetails>>executeWithConnection(new DBAction<List<AccountDetails>>() {
-
+		return executeWithConnection(new StatementAction<List<AccountDetails>>() {
 			@Override
-			public List<AccountDetails> execute(Connection c, Statement stmt) throws SQLException {
+			public List<AccountDetails> execute(Statement stmt) throws SQLException {
 				String sqlGetAll = "select * from account_details";
 				LOGGER.debug("get all accountDetails SQL:{}", sqlGetAll);
 				List<AccountDetails> listAccountDetails = sqlGetAllAccountDetails(sqlGetAll, stmt);
@@ -125,10 +141,9 @@ public class AccountDetailsDaoImpl extends AbstractDaoImpl implements IAccountDe
 
 	@Override
 	public List<AccountDetails> getAll(int limit, int offset) {
-		return this.<List<AccountDetails>>executeWithConnection(new DBAction<List<AccountDetails>>() {
-
+		return executeWithConnection(new StatementAction<List<AccountDetails>>() {
 			@Override
-			public List<AccountDetails> execute(Connection c, Statement stmt) throws SQLException {
+			public List<AccountDetails> execute(Statement stmt) throws SQLException {
 				String sqlGetAll = String.format("select * from account_details limit %s offset %s", limit, offset);
 				LOGGER.debug("get all accountDetails SQL:{}", sqlGetAll);
 				List<AccountDetails> listAccountDetails = sqlGetAllAccountDetails(sqlGetAll, stmt);

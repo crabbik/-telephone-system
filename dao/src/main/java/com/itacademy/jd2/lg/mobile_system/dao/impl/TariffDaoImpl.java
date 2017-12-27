@@ -13,24 +13,21 @@ import org.slf4j.LoggerFactory;
 
 import com.itacademy.jd2.lg.mobile_system.dao.ITariffDao;
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.Tariff;
-import com.itacademy.jd2.lg.mobile_system.dao.exception.SQLExecutionExecption;
 
 public class TariffDaoImpl extends AbstractDaoImpl implements ITariffDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TariffDaoImpl.class);
 	public static final ITariffDao TARIFF_DAO = new TariffDaoImpl();
 
 	private TariffDaoImpl() {
-		super();
 	}
 
 	public Tariff get(Integer id) {
-		return this.<Tariff>executeWithConnection(new DBAction<Tariff>() {
-
+		return executeWithConnection(new StatementAction<Tariff>() {
 			@Override
-			public Tariff execute(Connection c, Statement stmt) throws SQLException {
+			public Tariff execute(Statement stmt) throws SQLException {
 				Tariff tariff = null;
-				String sqlGet = "select * from tariff where id=" + id;
-				ResultSet rs = stmt.executeQuery(sqlGet);
+				String sqlGetTariff = "select * from tariff where id=" + id;
+				ResultSet rs = stmt.executeQuery(sqlGetTariff);
 				LOGGER.debug("created ResultSet");
 				if (rs.next()) {
 					tariff = mapToTariff(rs);
@@ -59,54 +56,73 @@ public class TariffDaoImpl extends AbstractDaoImpl implements ITariffDao {
 
 	@Override
 	public void update(Tariff tariff) {
-		String sqlUpdate = "update tariff set operator_id=?, name=?, deleted=?, modified=? where id=?";
-		LOGGER.debug("update SQL: {}", sqlUpdate);
-		try (Connection c = getConnection(); PreparedStatement preparedStatement = c.prepareStatement(sqlUpdate)) {
-			preparedStatement.setInt(1, tariff.getOperatorId());
-			preparedStatement.setString(2, tariff.getName());
-			preparedStatement.setBoolean(3, tariff.isDeleted());
-			preparedStatement.setTimestamp(4, tariff.getModified());
-			preparedStatement.setInt(5, tariff.getId());
-			preparedStatement.executeUpdate();
-			LOGGER.info("update tariff:{}", tariff);
-		} catch (Exception e) {
-			throw new SQLExecutionExecption(e);
-		}
+		executeWithConnection(new PreparedStatementActionVoid() {
+
+			@Override
+			public void doWithPreparedStatement(PreparedStatement preparedStatement) throws SQLException {
+				preparedStatement.setInt(1, tariff.getOperatorId());
+				preparedStatement.setString(2, tariff.getName());
+				preparedStatement.setBoolean(3, tariff.isDeleted());
+				preparedStatement.setTimestamp(4, tariff.getModified());
+				preparedStatement.setInt(5, tariff.getId());
+				preparedStatement.executeUpdate();
+				LOGGER.info("update tariff:{}", tariff);
+			}
+
+			@Override
+			public PreparedStatement prepareStatement(Connection c) throws SQLException {
+				String sqlUpdateTariff = "update tariff set operator_id=?, name=?, deleted=?, modified=? where id=?";
+				LOGGER.debug("update SQL: {}", sqlUpdateTariff);
+
+				PreparedStatement preparedStatement = c.prepareStatement(sqlUpdateTariff);
+				return preparedStatement;
+			}
+
+		});
+
 	}
 
 	@Override
 	public int insert(Tariff tariff) {
-		String sqlInsert = "insert into tariff (id,operator_id, name, deleted, created, modified) values (?,?,?,?,?,?)";
-		LOGGER.debug("insert SQL:{}", sqlInsert);
-		try (Connection c = getConnection();
-				PreparedStatement preparedStatement = c.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setInt(1, tariff.getId());
-			preparedStatement.setInt(2, tariff.getOperatorId());
-			preparedStatement.setString(3, tariff.getName());
-			preparedStatement.setBoolean(4, tariff.isDeleted());
-			preparedStatement.setTimestamp(5, tariff.getCreated());
-			preparedStatement.setTimestamp(6, tariff.getModified());
-			preparedStatement.executeUpdate();
-			LOGGER.info("insert tariff from db:{}", tariff);
-			ResultSet rs = preparedStatement.getGeneratedKeys();
-			LOGGER.debug("created ResulSet");
-			rs.next();
-			int id = rs.getInt("id");
-			LOGGER.debug("return generated key {}", id);
-			rs.close();
-			LOGGER.debug("ResulSet closed");
-			return id;
-		} catch (Exception e) {
-			throw new SQLExecutionExecption(e);
-		}
+		return executeWithConnection(new PreparedStatementAction<Integer>() {
+
+			@Override
+			public Integer doWithPreparedStatement(PreparedStatement pStmt) throws SQLException {
+				pStmt.setInt(1, tariff.getId());
+				pStmt.setInt(2, tariff.getOperatorId());
+				pStmt.setString(3, tariff.getName());
+				pStmt.setBoolean(4, tariff.isDeleted());
+				pStmt.setTimestamp(5, tariff.getCreated());
+				pStmt.setTimestamp(6, tariff.getModified());
+				pStmt.executeUpdate();
+				LOGGER.info("insert tariff from db:{}", tariff);
+				ResultSet rs = pStmt.getGeneratedKeys();
+				LOGGER.debug("created ResulSet");
+				rs.next();
+				int id = rs.getInt("id");
+				LOGGER.debug("return generated key {}", id);
+				rs.close();
+				LOGGER.debug("ResulSet closed");
+				return id;
+			}
+
+			@Override
+			public PreparedStatement prepareStatement(Connection c) throws SQLException {
+				String sqlInsertTariff = "insert into tariff (id,operator_id, name, deleted, created, modified) values (?,?,?,?,?,?)";
+				LOGGER.debug("insert SQL:{}", sqlInsertTariff);
+				PreparedStatement preparedStatement = c.prepareStatement(sqlInsertTariff,
+						Statement.RETURN_GENERATED_KEYS);
+				return preparedStatement;
+			}
+		});
+
 	}
 
 	@Override
 	public List<Tariff> getAll() {
-		return this.<List<Tariff>>executeWithConnection(new DBAction<List<Tariff>>() {
-
+		return executeWithConnection(new StatementAction<List<Tariff>>() {
 			@Override
-			public List<Tariff> execute(Connection c, Statement stmt) throws SQLException {
+			public List<Tariff> execute(Statement stmt) throws SQLException {
 				String sqlGetAll = "select * from tariff";
 				LOGGER.debug("get all tariff SQL:{}", sqlGetAll);
 				List<Tariff> listTariff = sqlGetAllTariff(sqlGetAll, stmt);
@@ -127,10 +143,9 @@ public class TariffDaoImpl extends AbstractDaoImpl implements ITariffDao {
 
 	@Override
 	public List<Tariff> getAll(int limit, int offset) {
-		return this.<List<Tariff>>executeWithConnection(new DBAction<List<Tariff>>() {
-
+		return executeWithConnection(new StatementAction<List<Tariff>>() {
 			@Override
-			public List<Tariff> execute(Connection c, Statement stmt) throws SQLException {
+			public List<Tariff> execute(Statement stmt) throws SQLException {
 				String sqlGetAll = String.format("select * from tariff limit %s offset %s", limit, offset);
 				LOGGER.debug("get all tariff SQL:{}", sqlGetAll);
 				List<Tariff> listTariff = sqlGetAllTariff(sqlGetAll, stmt);

@@ -12,7 +12,7 @@ import com.itacademy.jd2.lg.mobile_system.services.IAccount2RoleService;
 
 public class Account2RoleServiceImpl implements IAccount2RoleService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Account2RoleServiceImpl.class);
-	public static final IAccount2RoleService ACCOUNT_SERVICE = new Account2RoleServiceImpl();
+	public static final IAccount2RoleService ACCOUNT2ROLE_SERVICE = new Account2RoleServiceImpl();
 
 	private Account2RoleServiceImpl() {
 

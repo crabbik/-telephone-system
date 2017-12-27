@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import com.itacademy.jd2.lg.mobile_system.dao.IServiceDao;
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.Service;
-import com.itacademy.jd2.lg.mobile_system.dao.exception.SQLExecutionExecption;
 
 public class ServiceDaoImpl extends AbstractDaoImpl implements IServiceDao {
 
@@ -21,17 +20,15 @@ public class ServiceDaoImpl extends AbstractDaoImpl implements IServiceDao {
 	public static final IServiceDao SERVICE_DAO = new ServiceDaoImpl();
 
 	private ServiceDaoImpl() {
-		super();
 	}
 
 	public Service get(Integer id) {
-		return this.<Service>executeWithConnection(new DBAction<Service>() {
-
+		return executeWithConnection(new StatementAction<Service>() {
 			@Override
-			public Service execute(Connection c, Statement stmt) throws SQLException {
+			public Service execute(Statement stmt) throws SQLException {
 				Service service = null;
-				String sqlGet = "select * from service where id=" + id;
-				ResultSet rs = stmt.executeQuery(sqlGet);
+				String sqlGetService = "select * from service where id=" + id;
+				ResultSet rs = stmt.executeQuery(sqlGetService);
 				LOGGER.debug("created ResultSet");
 				if (rs.next()) {
 					service = mapToService(rs);
@@ -49,54 +46,72 @@ public class ServiceDaoImpl extends AbstractDaoImpl implements IServiceDao {
 
 	@Override
 	public int insert(Service service) {
-		String sqlInsert = "insert into service (id,type, unit, deleted, created, modified) values (?,?,?,?,?,?)";
-		LOGGER.debug("insert SQL:{}", sqlInsert);
-		try (Connection c = getConnection();
-				PreparedStatement preparedStatement = c.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setInt(1, service.getId());
-			preparedStatement.setString(2, service.getType());
-			preparedStatement.setString(3, service.getUnit());
-			preparedStatement.setBoolean(4, service.isDeleted());
-			preparedStatement.setTimestamp(5, service.getCreated());
-			preparedStatement.setTimestamp(6, service.getModified());
-			preparedStatement.executeUpdate();
-			LOGGER.info("insert service from db:{}", service);
-			ResultSet rs = preparedStatement.getGeneratedKeys();
-			LOGGER.debug("created ResulSet");
-			rs.next();
-			int id = rs.getInt("id");
-			LOGGER.debug("return generated key {}", id);
-			rs.close();
-			LOGGER.debug("ResulSet closed");
-			return id;
-		} catch (Exception e) {
-			throw new SQLExecutionExecption(e);
-		}
+		return executeWithConnection(new PreparedStatementAction<Integer>() {
+
+			@Override
+			public Integer doWithPreparedStatement(PreparedStatement pStmt) throws SQLException {
+				pStmt.setInt(1, service.getId());
+				pStmt.setString(2, service.getType());
+				pStmt.setString(3, service.getUnit());
+				pStmt.setBoolean(4, service.isDeleted());
+				pStmt.setTimestamp(5, service.getCreated());
+				pStmt.setTimestamp(6, service.getModified());
+				pStmt.executeUpdate();
+				LOGGER.info("insert service from db:{}", service);
+				ResultSet rs = pStmt.getGeneratedKeys();
+				LOGGER.debug("created ResulSet");
+				rs.next();
+				int id = rs.getInt("id");
+				LOGGER.debug("return generated key {}", id);
+				rs.close();
+				LOGGER.debug("ResulSet closed");
+				return id;
+			}
+
+			@Override
+			public PreparedStatement prepareStatement(Connection c) throws SQLException {
+				String sqlInsertService = "insert into service (id,type, unit, deleted, created, modified) values (?,?,?,?,?,?)";
+				LOGGER.debug("insert SQL:{}", sqlInsertService);
+				PreparedStatement preparedStatement = c.prepareStatement(sqlInsertService,
+						Statement.RETURN_GENERATED_KEYS);
+				return preparedStatement;
+			}
+		});
+
 	}
 
 	@Override
 	public void update(Service service) {
-		String sqlUpdate = "update service set type=?, unit=?, deleted=?, modified=? where id=?";
-		LOGGER.debug("update SQL: {}", sqlUpdate);
-		try (Connection c = getConnection(); PreparedStatement preparedStatement = c.prepareStatement(sqlUpdate)) {
-			preparedStatement.setString(1, service.getType());
-			preparedStatement.setString(2, service.getUnit());
-			preparedStatement.setBoolean(3, service.isDeleted());
-			preparedStatement.setTimestamp(4, service.getModified());
-			preparedStatement.setInt(5, service.getId());
-			preparedStatement.executeUpdate();
-			LOGGER.info("update service:{}", service);
-		} catch (Exception e) {
-			throw new SQLExecutionExecption(e);
-		}
+		executeWithConnection(new PreparedStatementActionVoid() {
+
+			@Override
+			public void doWithPreparedStatement(PreparedStatement preparedStatement) throws SQLException {
+				preparedStatement.setString(1, service.getType());
+				preparedStatement.setString(2, service.getUnit());
+				preparedStatement.setBoolean(3, service.isDeleted());
+				preparedStatement.setTimestamp(4, service.getModified());
+				preparedStatement.setInt(5, service.getId());
+				preparedStatement.executeUpdate();
+				LOGGER.info("update service:{}", service);
+			}
+
+			@Override
+			public PreparedStatement prepareStatement(Connection c) throws SQLException {
+				String sqlUpdateService = "update service set type=?, unit=?, deleted=?, modified=? where id=?";
+				LOGGER.debug("update SQL: {}", sqlUpdateService);
+				PreparedStatement preparedStatement = c.prepareStatement(sqlUpdateService);
+				return preparedStatement;
+			}
+
+		});
+
 	}
 
 	@Override
 	public List<Service> getAll() {
-		return this.<List<Service>>executeWithConnection(new DBAction<List<Service>>() {
-
+		return executeWithConnection(new StatementAction<List<Service>>() {
 			@Override
-			public List<Service> execute(Connection c, Statement stmt) throws SQLException {
+			public List<Service> execute(Statement stmt) throws SQLException {
 				String sqlGetAll = "select * from service";
 				LOGGER.debug("get all service SQL:{}", sqlGetAll);
 				List<Service> listService = sqlGetAllService(sqlGetAll, stmt);
@@ -128,10 +143,9 @@ public class ServiceDaoImpl extends AbstractDaoImpl implements IServiceDao {
 
 	@Override
 	public List<Service> getAll(int limit, int offset) {
-		return this.<List<Service>>executeWithConnection(new DBAction<List<Service>>() {
-
+		return executeWithConnection(new StatementAction<List<Service>>() {
 			@Override
-			public List<Service> execute(Connection c, Statement stmt) throws SQLException {
+			public List<Service> execute(Statement stmt) throws SQLException {
 				String sqlGetAll = String.format("select * from service limit %s offset %s", limit, offset);
 				LOGGER.debug("get all service SQL:{}", sqlGetAll);
 				List<Service> listService = sqlGetAllService(sqlGetAll, stmt);

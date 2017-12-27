@@ -11,7 +11,7 @@ public interface IPhoneNumber2InvoiceDao {
 
 	void update(PhoneNumber2Invoice phoneNumber2Invoice);
 
-	void insert(PhoneNumber2Invoice phoneNumber2Invoice);
+	int insert(PhoneNumber2Invoice phoneNumber2Invoice);
 
 	List<PhoneNumber2Invoice> getAll();
 

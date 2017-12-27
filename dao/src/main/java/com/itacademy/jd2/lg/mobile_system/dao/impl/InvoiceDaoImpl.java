@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import com.itacademy.jd2.lg.mobile_system.dao.IInvoiceDao;
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.Invoice;
-import com.itacademy.jd2.lg.mobile_system.dao.exception.SQLExecutionExecption;
 
 public class InvoiceDaoImpl extends AbstractDaoImpl implements IInvoiceDao {
 
@@ -21,17 +20,16 @@ public class InvoiceDaoImpl extends AbstractDaoImpl implements IInvoiceDao {
 	public static final IInvoiceDao INVOICE_DAO = new InvoiceDaoImpl();
 
 	private InvoiceDaoImpl() {
-		super();
 	}
 
 	public Invoice get(Integer id) {
-		return this.<Invoice>executeWithConnection(new DBAction<Invoice>() {
+		return executeWithConnection(new StatementAction<Invoice>() {
 
 			@Override
-			public Invoice execute(Connection c, Statement stmt) throws SQLException {
+			public Invoice execute(Statement stmt) throws SQLException {
 				Invoice invoice = null;
-				String sqlGet = "select * from invoice where id=" + id;
-				ResultSet rs = stmt.executeQuery(sqlGet);
+				String sqlGetInvoice = "select * from invoice where id=" + id;
+				ResultSet rs = stmt.executeQuery(sqlGetInvoice);
 				LOGGER.debug("created ResultSet");
 				if (rs.next()) {
 					invoice = mapToInvoice(rs);
@@ -49,55 +47,75 @@ public class InvoiceDaoImpl extends AbstractDaoImpl implements IInvoiceDao {
 
 	@Override
 	public int insert(Invoice invoice) {
-		String sqlInsert = "insert into invoice (id,type, quantity, sum, month, year) values (?,?,?,?,?,?)";
-		LOGGER.debug("insert SQL:{}", sqlInsert);
-		try (Connection c = getConnection();
-				PreparedStatement preparedStatement = c.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setInt(1, invoice.getId());
-			preparedStatement.setString(2, invoice.getType());
-			preparedStatement.setInt(3, invoice.getQuantity());
-			preparedStatement.setInt(4, invoice.getSum());
-			preparedStatement.setInt(5, invoice.getMonth());
-			preparedStatement.setInt(6, invoice.getYear());
-			preparedStatement.executeUpdate();
-			LOGGER.info("insert invoice from db:{}", invoice);
-			ResultSet rs = preparedStatement.getGeneratedKeys();
-			LOGGER.debug("created ResulSet");
-			rs.next();
-			int id = rs.getInt("id");
-			LOGGER.debug("return generated key {}", id);
-			rs.close();
-			LOGGER.debug("ResulSet closed");
-			return id;
-		} catch (Exception e) {
-			throw new SQLExecutionExecption(e);
-		}
+		return executeWithConnection(new PreparedStatementAction<Integer>() {
+
+			@Override
+			public Integer doWithPreparedStatement(PreparedStatement pStmt) throws SQLException {
+
+				pStmt.setInt(1, invoice.getId());
+				pStmt.setString(2, invoice.getType());
+				pStmt.setInt(3, invoice.getQuantity());
+				pStmt.setInt(4, invoice.getSum());
+				pStmt.setInt(5, invoice.getMonth());
+				pStmt.setInt(6, invoice.getYear());
+				pStmt.executeUpdate();
+				LOGGER.info("insert invoice from db:{}", invoice);
+				ResultSet rs = pStmt.getGeneratedKeys();
+				LOGGER.debug("created ResulSet");
+				rs.next();
+				int id = rs.getInt("id");
+				LOGGER.debug("return generated key {}", id);
+				rs.close();
+				LOGGER.debug("ResulSet closed");
+				return id;
+			}
+
+			@Override
+			public PreparedStatement prepareStatement(Connection c) throws SQLException {
+				String sqlInsertInvoice = "insert into invoice (id,type, quantity, sum, month, year) values (?,?,?,?,?,?)";
+				LOGGER.debug("insert SQL:{}", sqlInsertInvoice);
+				PreparedStatement preparedStatement = c.prepareStatement(sqlInsertInvoice,
+						Statement.RETURN_GENERATED_KEYS);
+				return preparedStatement;
+			}
+		});
+
 	}
 
 	@Override
 	public void update(Invoice invoice) {
-		String sqlUpdate = "update invoice set type=?, quantity=?, sum=?, month=?, year=? where id=?";
-		LOGGER.debug("update SQL: {}", sqlUpdate);
-		try (Connection c = getConnection(); PreparedStatement preparedStatement = c.prepareStatement(sqlUpdate)) {
-			preparedStatement.setString(1, invoice.getType());
-			preparedStatement.setInt(2, invoice.getQuantity());
-			preparedStatement.setInt(3, invoice.getSum());
-			preparedStatement.setInt(4, invoice.getMonth());
-			preparedStatement.setInt(5, invoice.getYear());
-			preparedStatement.setInt(8, invoice.getId());
-			preparedStatement.executeUpdate();
-			LOGGER.info("update invoice:{}", invoice);
-		} catch (Exception e) {
-			throw new SQLExecutionExecption(e);
-		}
+		executeWithConnection(new PreparedStatementActionVoid() {
+
+			@Override
+			public void doWithPreparedStatement(PreparedStatement preparedStatement) throws SQLException {
+
+				preparedStatement.setString(1, invoice.getType());
+				preparedStatement.setInt(2, invoice.getQuantity());
+				preparedStatement.setInt(3, invoice.getSum());
+				preparedStatement.setInt(4, invoice.getMonth());
+				preparedStatement.setInt(5, invoice.getYear());
+				preparedStatement.setInt(8, invoice.getId());
+				preparedStatement.executeUpdate();
+				LOGGER.info("update invoice:{}", invoice);
+			}
+
+			@Override
+			public PreparedStatement prepareStatement(Connection c) throws SQLException {
+				String sqlUpdateInvoice = "update invoice set type=?, quantity=?, sum=?, month=?, year=? where id=?";
+				LOGGER.debug("update SQL: {}", sqlUpdateInvoice);
+				PreparedStatement preparedStatement = c.prepareStatement(sqlUpdateInvoice);
+				return preparedStatement;
+			}
+
+		});
+
 	}
 
 	@Override
 	public List<Invoice> getAll() {
-		return this.<List<Invoice>>executeWithConnection(new DBAction<List<Invoice>>() {
-
+		return executeWithConnection(new StatementAction<List<Invoice>>() {
 			@Override
-			public List<Invoice> execute(Connection c, Statement stmt) throws SQLException {
+			public List<Invoice> execute(Statement stmt) throws SQLException {
 				String sqlGetAll = "select * from invoice";
 				LOGGER.debug("get all invoice SQL:{}", sqlGetAll);
 				List<Invoice> listInvoice = sqlGetAllInvoice(sqlGetAll, stmt);
@@ -129,10 +147,9 @@ public class InvoiceDaoImpl extends AbstractDaoImpl implements IInvoiceDao {
 
 	@Override
 	public List<Invoice> getAll(int limit, int offset) {
-		return this.<List<Invoice>>executeWithConnection(new DBAction<List<Invoice>>() {
-
+		return executeWithConnection(new StatementAction<List<Invoice>>() {
 			@Override
-			public List<Invoice> execute(Connection c, Statement stmt) throws SQLException {
+			public List<Invoice> execute(Statement stmt) throws SQLException {
 				String sqlGetAll = String.format("select * from invoice limit %s offset %s", limit, offset);
 				LOGGER.debug("get all invoice SQL:{}", sqlGetAll);
 				List<Invoice> listInvoice = sqlGetAllInvoice(sqlGetAll, stmt);

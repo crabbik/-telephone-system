@@ -13,24 +13,21 @@ import org.slf4j.LoggerFactory;
 
 import com.itacademy.jd2.lg.mobile_system.dao.IOperatorDao;
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.Operator;
-import com.itacademy.jd2.lg.mobile_system.dao.exception.SQLExecutionExecption;
 
 public class OperatorDaoImpl extends AbstractDaoImpl implements IOperatorDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(OperatorDaoImpl.class);
 	public static final IOperatorDao OPERATOR_DAO = new OperatorDaoImpl();
 
 	private OperatorDaoImpl() {
-		super();
 	}
 
 	public Operator get(Integer id) {
-		return this.<Operator>executeWithConnection(new DBAction<Operator>() {
-
+		return executeWithConnection(new StatementAction<Operator>() {
 			@Override
-			public Operator execute(Connection c, Statement stmt) throws SQLException {
+			public Operator execute(Statement stmt) throws SQLException {
 				Operator operator = null;
-				String sqlGet = "select * from operator where id=" + id;
-				ResultSet rs = stmt.executeQuery(sqlGet);
+				String sqlGetOperator = "select * from operator where id=" + id;
+				ResultSet rs = stmt.executeQuery(sqlGetOperator);
 				LOGGER.debug("created ResultSet");
 				if (rs.next()) {
 					operator = mapToOperator(rs);
@@ -48,53 +45,71 @@ public class OperatorDaoImpl extends AbstractDaoImpl implements IOperatorDao {
 
 	@Override
 	public int insert(Operator operator) {
-		String sqlInsert = "insert into operator (id,title, deleted, created, modified) values (?,?,?,?,?)";
-		LOGGER.debug("insert SQL:{}", sqlInsert);
-		try (Connection c = getConnection();
-				PreparedStatement preparedStatement = c.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setInt(1, operator.getId());
-			preparedStatement.setString(2, operator.getTitle());
-			preparedStatement.setBoolean(3, operator.isDeleted());
-			preparedStatement.setTimestamp(4, operator.getCreated());
-			preparedStatement.setTimestamp(5, operator.getModified());
-			preparedStatement.executeUpdate();
-			LOGGER.info("insert operator from db:{}", operator);
-			ResultSet rs = preparedStatement.getGeneratedKeys();
-			LOGGER.debug("created ResulSet");
-			rs.next();
-			int id = rs.getInt("id");
-			LOGGER.debug("return generated key {}", id);
-			rs.close();
-			LOGGER.debug("ResulSet closed");
-			return id;
-		} catch (Exception e) {
-			throw new SQLExecutionExecption(e);
-		}
+		return executeWithConnection(new PreparedStatementAction<Integer>() {
+
+			@Override
+			public Integer doWithPreparedStatement(PreparedStatement pStmt) throws SQLException {
+				pStmt.setInt(1, operator.getId());
+				pStmt.setString(2, operator.getTitle());
+				pStmt.setBoolean(3, operator.isDeleted());
+				pStmt.setTimestamp(4, operator.getCreated());
+				pStmt.setTimestamp(5, operator.getModified());
+				pStmt.executeUpdate();
+				LOGGER.info("insert operator from db:{}", operator);
+				ResultSet rs = pStmt.getGeneratedKeys();
+				LOGGER.debug("created ResulSet");
+				rs.next();
+				int id = rs.getInt("id");
+				LOGGER.debug("return generated key {}", id);
+				rs.close();
+				LOGGER.debug("ResulSet closed");
+				return id;
+			}
+
+			@Override
+			public PreparedStatement prepareStatement(Connection c) throws SQLException {
+				String sqlInsertOperator = "insert into operator (id,title, deleted, created, modified) values (?,?,?,?,?)";
+				LOGGER.debug("insert SQL:{}", sqlInsertOperator);
+				PreparedStatement preparedStatement = c.prepareStatement(sqlInsertOperator,
+						Statement.RETURN_GENERATED_KEYS);
+				return preparedStatement;
+			}
+		});
+
 	}
 
 	@Override
 	public void update(Operator operator) {
-		String sqlUpdate = "update operator set title=?, deleted=?, created=?, modified=? where id=?";
-		LOGGER.debug("update SQL: {}", sqlUpdate);
-		try (Connection c = getConnection(); PreparedStatement preparedStatement = c.prepareStatement(sqlUpdate)) {
-			preparedStatement.setString(1, operator.getTitle());
-			preparedStatement.setBoolean(2, operator.isDeleted());
-			preparedStatement.setTimestamp(3, operator.getCreated());
-			preparedStatement.setTimestamp(4, operator.getModified());
-			preparedStatement.setInt(5, operator.getId());
-			preparedStatement.executeUpdate();
-			LOGGER.info("update operator:{}", operator);
-		} catch (Exception e) {
-			throw new SQLExecutionExecption(e);
-		}
+		executeWithConnection(new PreparedStatementActionVoid() {
+
+			@Override
+			public void doWithPreparedStatement(PreparedStatement preparedStatement) throws SQLException {
+				preparedStatement.setString(1, operator.getTitle());
+				preparedStatement.setBoolean(2, operator.isDeleted());
+				preparedStatement.setTimestamp(3, operator.getCreated());
+				preparedStatement.setTimestamp(4, operator.getModified());
+				preparedStatement.setInt(5, operator.getId());
+				preparedStatement.executeUpdate();
+				LOGGER.info("update operator:{}", operator);
+			}
+
+			@Override
+			public PreparedStatement prepareStatement(Connection c) throws SQLException {
+				String sqlUpdateOperator = "update operator set title=?, deleted=?, created=?, modified=? where id=?";
+				LOGGER.debug("update SQL: {}", sqlUpdateOperator);
+				PreparedStatement preparedStatement = c.prepareStatement(sqlUpdateOperator);
+				return preparedStatement;
+			}
+
+		});
+
 	}
 
 	@Override
 	public List<Operator> getAll() {
-		return this.<List<Operator>>executeWithConnection(new DBAction<List<Operator>>() {
-
+		return executeWithConnection(new StatementAction<List<Operator>>() {
 			@Override
-			public List<Operator> execute(Connection c, Statement stmt) throws SQLException {
+			public List<Operator> execute(Statement stmt) throws SQLException {
 				String sqlGetAll = "select * from operator";
 				LOGGER.debug("get all operator SQL:{}", sqlGetAll);
 				List<Operator> listOperator = sqlGetAllOperator(sqlGetAll, stmt);
@@ -125,10 +140,9 @@ public class OperatorDaoImpl extends AbstractDaoImpl implements IOperatorDao {
 
 	@Override
 	public List<Operator> getAll(int limit, int offset) {
-		return this.<List<Operator>>executeWithConnection(new DBAction<List<Operator>>() {
-
+		return executeWithConnection(new StatementAction<List<Operator>>() {
 			@Override
-			public List<Operator> execute(Connection c, Statement stmt) throws SQLException {
+			public List<Operator> execute(Statement stmt) throws SQLException {
 				String sqlGetAll = String.format("select * from operator limit %s offset %s", limit, offset);
 				LOGGER.debug("get all operator SQL:{}", sqlGetAll);
 				List<Operator> listOperator = sqlGetAllOperator(sqlGetAll, stmt);

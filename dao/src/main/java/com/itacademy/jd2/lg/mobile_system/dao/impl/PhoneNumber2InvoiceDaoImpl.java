@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import com.itacademy.jd2.lg.mobile_system.dao.IPhoneNumber2InvoiceDao;
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.PhoneNumber2Invoice;
-import com.itacademy.jd2.lg.mobile_system.dao.exception.SQLExecutionExecption;
 
 public class PhoneNumber2InvoiceDaoImpl extends AbstractDaoImpl implements IPhoneNumber2InvoiceDao {
 
@@ -21,17 +20,15 @@ public class PhoneNumber2InvoiceDaoImpl extends AbstractDaoImpl implements IPhon
 	public static final IPhoneNumber2InvoiceDao PHONENUMBER_2_INVOICE_DAO = new PhoneNumber2InvoiceDaoImpl();
 
 	private PhoneNumber2InvoiceDaoImpl() {
-		super();
 	}
 
 	public PhoneNumber2Invoice get(Integer id) {
-		return this.<PhoneNumber2Invoice>executeWithConnection(new DBAction<PhoneNumber2Invoice>() {
-
+		return executeWithConnection(new StatementAction<PhoneNumber2Invoice>() {
 			@Override
-			public PhoneNumber2Invoice execute(Connection c, Statement stmt) throws SQLException {
+			public PhoneNumber2Invoice execute(Statement stmt) throws SQLException {
 				PhoneNumber2Invoice phoneNumber2Invoice = null;
-				String sqlGet = "select * from phoneNumber_2_invoice where id=" + id;
-				ResultSet rs = stmt.executeQuery(sqlGet);
+				String sqlGetPhoneNumber2Invoice = "select * from phoneNumber_2_invoice where id=" + id;
+				ResultSet rs = stmt.executeQuery(sqlGetPhoneNumber2Invoice);
 				LOGGER.debug("created ResultSet");
 				if (rs.next()) {
 					phoneNumber2Invoice = mapToPhoneNumber2Invoice(rs);
@@ -48,40 +45,66 @@ public class PhoneNumber2InvoiceDaoImpl extends AbstractDaoImpl implements IPhon
 	}
 
 	@Override
-	public void insert(PhoneNumber2Invoice phoneNumber2Invoice) {
-		String sqlInsert = "insert into phoneNumber_2_invoice (invoice_id,phone_number_id) values (?,?)";
-		LOGGER.debug("insert SQL:{}", sqlInsert);
-		try (Connection c = getConnection();
-				PreparedStatement preparedStatement = c.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setInt(1, phoneNumber2Invoice.getInvoiceId());
-			preparedStatement.setInt(2, phoneNumber2Invoice.getPhoneNumberId());
-			preparedStatement.executeUpdate();
-			LOGGER.info("insert phoneNumber2Invoice from db:{}", phoneNumber2Invoice);
-		} catch (Exception e) {
-			throw new SQLExecutionExecption(e);
-		}
+	public int insert(PhoneNumber2Invoice phoneNumber2Invoice) {
+		return executeWithConnection(new PreparedStatementAction<Integer>() {
+
+			@Override
+			public Integer doWithPreparedStatement(PreparedStatement pStmt) throws SQLException {
+				pStmt.setInt(1, phoneNumber2Invoice.getInvoiceId());
+				pStmt.setInt(2, phoneNumber2Invoice.getPhoneNumberId());
+				pStmt.executeUpdate();
+				LOGGER.info("insert account from db: {}", phoneNumber2Invoice);
+				ResultSet rs = pStmt.getGeneratedKeys();
+				LOGGER.debug("created ResulSet");
+				rs.next();
+				int id = rs.getInt("id");
+				LOGGER.debug("return generated key {}", id);
+				rs.close();
+				LOGGER.debug("ResulSet closed");
+				return id;
+			}
+
+			@Override
+			public PreparedStatement prepareStatement(Connection c) throws SQLException {
+				String sqlInsertPhoneNumber2Invoice = "insert into phoneNumber_2_invoice (invoice_id,phone_number_id) values (?,?)";
+				LOGGER.debug("insert SQL:{}", sqlInsertPhoneNumber2Invoice);
+				PreparedStatement preparedStatement = c.prepareStatement(sqlInsertPhoneNumber2Invoice,
+						Statement.RETURN_GENERATED_KEYS);
+				return preparedStatement;
+			}
+		});
+
 	}
 
 	@Override
 	public void update(PhoneNumber2Invoice phoneNumber2Invoice) {
-		String sqlUpdate = "update phoneNumber_2_invoice set invoice_id=?, phone_number_id=? where id=?";
-		LOGGER.debug("update SQL: {}", sqlUpdate);
-		try (Connection c = getConnection(); PreparedStatement preparedStatement = c.prepareStatement(sqlUpdate)) {
-			preparedStatement.setInt(1, phoneNumber2Invoice.getInvoiceId());
-			preparedStatement.setInt(4, phoneNumber2Invoice.getPhoneNumberId());
-			preparedStatement.executeUpdate();
-			LOGGER.info("update phoneNumber2Invoice:{}", phoneNumber2Invoice);
-		} catch (Exception e) {
-			throw new SQLExecutionExecption(e);
-		}
+		executeWithConnection(new PreparedStatementActionVoid() {
+
+			@Override
+			public void doWithPreparedStatement(PreparedStatement preparedStatement) throws SQLException {
+				preparedStatement.setInt(1, phoneNumber2Invoice.getInvoiceId());
+				preparedStatement.setInt(4, phoneNumber2Invoice.getPhoneNumberId());
+				preparedStatement.executeUpdate();
+				LOGGER.info("update phoneNumber2Invoice:{}", phoneNumber2Invoice);
+			}
+
+			@Override
+			public PreparedStatement prepareStatement(Connection c) throws SQLException {
+				String sqlUpdatePhoneNumber2Invoice = "update phoneNumber_2_invoice set invoice_id=?, phone_number_id=? where id=?";
+				LOGGER.debug("update SQL: {}", sqlUpdatePhoneNumber2Invoice);
+				PreparedStatement preparedStatement = c.prepareStatement(sqlUpdatePhoneNumber2Invoice);
+				return preparedStatement;
+			}
+
+		});
+
 	}
 
 	@Override
 	public List<PhoneNumber2Invoice> getAll() {
-		return this.<List<PhoneNumber2Invoice>>executeWithConnection(new DBAction<List<PhoneNumber2Invoice>>() {
-
+		return executeWithConnection(new StatementAction<List<PhoneNumber2Invoice>>() {
 			@Override
-			public List<PhoneNumber2Invoice> execute(Connection c, Statement stmt) throws SQLException {
+			public List<PhoneNumber2Invoice> execute(Statement stmt) throws SQLException {
 				String sqlGetAll = "select * from phoneNumber_2_invoice";
 				LOGGER.debug("get all phoneNumber2Invoice SQL:{}", sqlGetAll);
 				List<PhoneNumber2Invoice> listPhoneNumber2Invoice = sqlGetAllPhoneNumber2Invoice(sqlGetAll, stmt);
@@ -109,10 +132,9 @@ public class PhoneNumber2InvoiceDaoImpl extends AbstractDaoImpl implements IPhon
 
 	@Override
 	public List<PhoneNumber2Invoice> getAll(int limit, int offset) {
-		return this.<List<PhoneNumber2Invoice>>executeWithConnection(new DBAction<List<PhoneNumber2Invoice>>() {
-
+		return executeWithConnection(new StatementAction<List<PhoneNumber2Invoice>>() {
 			@Override
-			public List<PhoneNumber2Invoice> execute(Connection c, Statement stmt) throws SQLException {
+			public List<PhoneNumber2Invoice> execute(Statement stmt) throws SQLException {
 				String sqlGetAll = String.format("select * from phoneNumber_2_invoice limit %s offset %s", limit,
 						offset);
 				LOGGER.debug("get all user SQL:{}", sqlGetAll);
