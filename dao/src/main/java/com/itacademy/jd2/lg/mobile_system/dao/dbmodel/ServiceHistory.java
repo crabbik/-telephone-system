@@ -1,6 +1,6 @@
 package com.itacademy.jd2.lg.mobile_system.dao.dbmodel;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class ServiceHistory {
 	private Integer id;
@@ -38,8 +38,8 @@ public class ServiceHistory {
 		return data;
 	}
 
-	public void setData(Date data) {
-		this.data = data;
+	public void setData(Date date) {
+		this.data = date;
 	}
 
 	public Integer getQuantity() {
