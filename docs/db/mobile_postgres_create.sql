@@ -28,7 +28,7 @@ CREATE TABLE "account_details" (
 CREATE TABLE "operator" (
 	"id" serial NOT NULL,
 	"title" character varying(30) NOT NULL,
-	"deleted" BOOLEAN NOT NULL DEFAULT 'false',
+	"deleted" BOOLEAN NOT NULL,
 	"created " TIMESTAMP NOT NULL,
 	"modified" TIMESTAMP NOT NULL,
 	CONSTRAINT operator_pk PRIMARY KEY ("id")
@@ -87,7 +87,7 @@ CREATE TABLE "service" (
 	"id" serial NOT NULL,
 	"type" character varying(50) NOT NULL,
 	"unit" character varying(50) NOT NULL,
-	"deleted" BOOLEAN NOT NULL DEFAULT 'false',
+	"deleted" BOOLEAN NOT NULL,
 	"created" TIMESTAMP NOT NULL,
 	"modified" TIMESTAMP NOT NULL,
 	CONSTRAINT service_pk PRIMARY KEY ("id")
@@ -115,7 +115,7 @@ CREATE TABLE "tariff" (
 	"id" serial NOT NULL,
 	"operator_id" bigint NOT NULL,
 	"name" character varying NOT NULL,
-	"deleted" BOOLEAN NOT NULL DEFAULT 'false',
+	"deleted" BOOLEAN NOT NULL,
 	"created " TIMESTAMP NOT NULL,
 	"modified" TIMESTAMP NOT NULL,
 	CONSTRAINT tariff_pk PRIMARY KEY ("id")
@@ -130,7 +130,7 @@ CREATE TABLE "tariff_item" (
 	"tariif_id" bigint NOT NULL,
 	"service_id" bigint NOT NULL,
 	"cost" integer NOT NULL,
-	"deleted" BOOLEAN NOT NULL DEFAULT 'false',
+	"deleted" BOOLEAN NOT NULL,
 	"created " TIMESTAMP NOT NULL,
 	"modified" TIMESTAMP NOT NULL,
 	CONSTRAINT tariff_item_pk PRIMARY KEY ("id")

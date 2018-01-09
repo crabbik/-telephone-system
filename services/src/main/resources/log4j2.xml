@@ -21,15 +21,9 @@
 	</Appenders>
 
 	<Loggers>
-		<Root level="debug">
+		<Root level="info">
 			<AppenderRef ref="Console" />
 		</Root>
-
-		<Logger additivity="false" level="info"
-			name="com.itacademy.jd2.dz.library.dao.impl">
-			<AppenderRef ref="RollingFile" />
-			<AppenderRef ref="Console" />
-		</Logger>
 
 	</Loggers>
 

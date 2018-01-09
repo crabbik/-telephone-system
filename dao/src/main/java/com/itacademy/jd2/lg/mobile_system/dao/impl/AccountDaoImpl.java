@@ -29,6 +29,7 @@ public class AccountDaoImpl extends AbstractDaoImpl implements IAccountDao {
 		return tableName;
 	}
 
+	@Override
 	public Account get(Integer id) {
 		return executeWithConnection(new StatementAction<Account>() {
 
@@ -36,14 +37,15 @@ public class AccountDaoImpl extends AbstractDaoImpl implements IAccountDao {
 			public Account execute(Statement stmt) throws SQLException {
 				Account account = null;
 				String sqlGetAccount = "select * from account where id=" + id;
+				LOGGER.debug("execute {}", sqlGetAccount);
 				ResultSet rs = stmt.executeQuery(sqlGetAccount);
-				LOGGER.debug("created ResultSet");
+			
 				if (rs.next()) {
 					account = mapToAccount(rs);
 					LOGGER.debug("read account from the database: {}", account.toString());
 				}
 				rs.close();
-				LOGGER.debug("ResultSet closed");
+				// LOGGER.debug("ResultSet closed");
 				LOGGER.info("return account from db: {}", account);
 				return account;
 			}

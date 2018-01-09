@@ -1,6 +1,7 @@
 package com.itacademy.jd2.lg.mobile_system.dao.impl;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,9 +15,11 @@ import org.slf4j.LoggerFactory;
 import com.itacademy.jd2.lg.mobile_system.dao.IServiceHistoryDao;
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.ServiceHistory;
 
-public class ServiceHistoryDaoImpl extends AbstractDaoImpl implements IServiceHistoryDao {
+public class ServiceHistoryDaoImpl extends AbstractDaoImpl implements
+		IServiceHistoryDao {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceHistoryDaoImpl.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(ServiceHistoryDaoImpl.class);
 	public static final IServiceHistoryDao SERVICEHISTORY_DAO = new ServiceHistoryDaoImpl();
 
 	private ServiceHistoryDaoImpl() {
@@ -27,12 +30,14 @@ public class ServiceHistoryDaoImpl extends AbstractDaoImpl implements IServiceHi
 			@Override
 			public ServiceHistory execute(Statement stmt) throws SQLException {
 				ServiceHistory serviceHistory = null;
-				String sqlGetServiceHistory = "select * from service_history where id=" + id;
+				String sqlGetServiceHistory = "select * from service_history where id="
+						+ id;
 				ResultSet rs = stmt.executeQuery(sqlGetServiceHistory);
 				LOGGER.debug("created ResultSet");
 				if (rs.next()) {
 					serviceHistory = mapToServiceHistory(rs);
-					LOGGER.debug("read serviceHistory from the database: {}", serviceHistory.toString());
+					LOGGER.debug("read serviceHistory from the database: {}",
+							serviceHistory.toString());
 				}
 				rs.close();
 				LOGGER.debug("ResultSet closed");
@@ -49,9 +54,10 @@ public class ServiceHistoryDaoImpl extends AbstractDaoImpl implements IServiceHi
 		return executeWithConnection(new PreparedStatementAction<Integer>() {
 
 			@Override
-			public Integer doWithPreparedStatement(PreparedStatement pStmt) throws SQLException {
+			public Integer doWithPreparedStatement(PreparedStatement pStmt)
+					throws SQLException {
 				pStmt.setInt(1, serviceHistory.getId());
-				pStmt.setDate(2, serviceHistory.getData());
+				pStmt.setDate(2, (Date) serviceHistory.getData());
 				pStmt.setInt(3, serviceHistory.getTariffItemId());
 				pStmt.setInt(4, serviceHistory.getQuantity());
 				pStmt.setInt(5, serviceHistory.getSum());
@@ -69,10 +75,12 @@ public class ServiceHistoryDaoImpl extends AbstractDaoImpl implements IServiceHi
 			}
 
 			@Override
-			public PreparedStatement prepareStatement(Connection c) throws SQLException {
+			public PreparedStatement prepareStatement(Connection c)
+					throws SQLException {
 				String sqlInsertServiceHistory = "insert into service_history (id,date, tariff_item_id, quantity, sum, phone_number_id) values (?,?,?,?,?,?)";
 				LOGGER.debug("insert SQL:{}", sqlInsertServiceHistory);
-				PreparedStatement preparedStatement = c.prepareStatement(sqlInsertServiceHistory,
+				PreparedStatement preparedStatement = c.prepareStatement(
+						sqlInsertServiceHistory,
 						Statement.RETURN_GENERATED_KEYS);
 				return preparedStatement;
 			}
@@ -85,8 +93,9 @@ public class ServiceHistoryDaoImpl extends AbstractDaoImpl implements IServiceHi
 		executeWithConnection(new PreparedStatementActionVoid() {
 
 			@Override
-			public void doWithPreparedStatement(PreparedStatement preparedStatement) throws SQLException {
-				preparedStatement.setDate(1, serviceHistory.getData());
+			public void doWithPreparedStatement(
+					PreparedStatement preparedStatement) throws SQLException {
+				preparedStatement.setDate(1, (Date) serviceHistory.getData());
 				preparedStatement.setInt(2, serviceHistory.getTariffItemId());
 				preparedStatement.setInt(3, serviceHistory.getQuantity());
 				preparedStatement.setInt(4, serviceHistory.getSum());
@@ -97,10 +106,12 @@ public class ServiceHistoryDaoImpl extends AbstractDaoImpl implements IServiceHi
 			}
 
 			@Override
-			public PreparedStatement prepareStatement(Connection c) throws SQLException {
+			public PreparedStatement prepareStatement(Connection c)
+					throws SQLException {
 				String sqlUpdateServiceHistory = "update service_history set date=?, tariff_item_id=?,quantity=?, sum=?, phone_number_id=? where id=?";
 				LOGGER.debug("update SQL: {}", sqlUpdateServiceHistory);
-				PreparedStatement preparedStatement = c.prepareStatement(sqlUpdateServiceHistory);
+				PreparedStatement preparedStatement = c
+						.prepareStatement(sqlUpdateServiceHistory);
 				return preparedStatement;
 			}
 
@@ -112,11 +123,14 @@ public class ServiceHistoryDaoImpl extends AbstractDaoImpl implements IServiceHi
 	public List<ServiceHistory> getAll() {
 		return executeWithConnection(new StatementAction<List<ServiceHistory>>() {
 			@Override
-			public List<ServiceHistory> execute(Statement stmt) throws SQLException {
+			public List<ServiceHistory> execute(Statement stmt)
+					throws SQLException {
 				String sqlGetAll = "select * from service_history";
 				LOGGER.debug("get all serviceHistory SQL:{}", sqlGetAll);
-				List<ServiceHistory> listServiceHistory = sqlGetAllServiceHistory(sqlGetAll, stmt);
-				LOGGER.info("received a list of data from the database:{}", listServiceHistory);
+				List<ServiceHistory> listServiceHistory = sqlGetAllServiceHistory(
+						sqlGetAll, stmt);
+				LOGGER.info("received a list of data from the database:{}",
+						listServiceHistory);
 				return listServiceHistory;
 			}
 
@@ -124,7 +138,8 @@ public class ServiceHistoryDaoImpl extends AbstractDaoImpl implements IServiceHi
 
 	}
 
-	private ServiceHistory mapToServiceHistory(ResultSet rs) throws SQLException {
+	private ServiceHistory mapToServiceHistory(ResultSet rs)
+			throws SQLException {
 		ServiceHistory serviceHistory = new ServiceHistory();
 		serviceHistory.setId(rs.getInt("id"));
 		serviceHistory.setData(rs.getDate("date"));
@@ -146,11 +161,16 @@ public class ServiceHistoryDaoImpl extends AbstractDaoImpl implements IServiceHi
 	public List<ServiceHistory> getAll(int limit, int offset) {
 		return executeWithConnection(new StatementAction<List<ServiceHistory>>() {
 			@Override
-			public List<ServiceHistory> execute(Statement stmt) throws SQLException {
-				String sqlGetAll = String.format("select * from service_history limit %s offset %s", limit, offset);
+			public List<ServiceHistory> execute(Statement stmt)
+					throws SQLException {
+				String sqlGetAll = String.format(
+						"select * from service_history limit %s offset %s",
+						limit, offset);
 				LOGGER.debug("get all serviceHistory SQL:{}", sqlGetAll);
-				List<ServiceHistory> listServiceHistory = sqlGetAllServiceHistory(sqlGetAll, stmt);
-				LOGGER.info("received a list of data from the database:{}", listServiceHistory);
+				List<ServiceHistory> listServiceHistory = sqlGetAllServiceHistory(
+						sqlGetAll, stmt);
+				LOGGER.info("received a list of data from the database:{}",
+						listServiceHistory);
 				return listServiceHistory;
 			}
 
@@ -158,13 +178,15 @@ public class ServiceHistoryDaoImpl extends AbstractDaoImpl implements IServiceHi
 
 	}
 
-	private List<ServiceHistory> sqlGetAllServiceHistory(String sql, Statement stmt) throws SQLException {
+	private List<ServiceHistory> sqlGetAllServiceHistory(String sql,
+			Statement stmt) throws SQLException {
 		List<ServiceHistory> listServiceHistory = new ArrayList<>();
 		ResultSet rs = stmt.executeQuery(sql);
 		LOGGER.debug("created ResulSet");
 		while (rs.next()) {
 			ServiceHistory serviceHistory = mapToServiceHistory(rs);
-			LOGGER.debug("read serviceHistory from the database: {}", serviceHistory);
+			LOGGER.debug("read serviceHistory from the database: {}",
+					serviceHistory);
 			listServiceHistory.add(serviceHistory);
 			LOGGER.debug("serviceHistory added from list");
 		}

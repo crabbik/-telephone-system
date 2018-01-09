@@ -157,7 +157,7 @@ public class PhoneNumberDaoImpl extends AbstractDaoImpl implements IPhoneNumberD
 
 	}
 
-	private List<PhoneNumber> sqlGetAllPhoneNumber(String sql, Statement stmt) throws SQLException {
+	private List<PhoneNumber> sqlGetAllPhoneNumber(String sql, Statement stmt) throws SQLException {// FIXME rename - method name should be the verb
 		List<PhoneNumber> listPhoneNumber = new ArrayList<>();
 		ResultSet rs = stmt.executeQuery(sql);
 		LOGGER.debug("created ResulSet");

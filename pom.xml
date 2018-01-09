@@ -10,7 +10,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<spring.version>4.0.3.RELEASE</spring.version>
+		<spring.version>5.0.2.RELEASE</spring.version>
 		<jetty9.version>9.2.13.v20150730</jetty9.version>
 	</properties>
 
@@ -53,6 +53,13 @@
 				<artifactId>postgresql</artifactId>
 				<version>9.4-1200-jdbc41</version>
 			</dependency>
+			<!-- Spring -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+
 
 			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>

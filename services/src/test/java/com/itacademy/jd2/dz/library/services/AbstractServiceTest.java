@@ -40,20 +40,21 @@ import com.itacademy.jd2.lg.mobile_system.services.impl.TariffServiceImpl;
 
 public abstract class AbstractServiceTest {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractServiceTest.class);
-	private static IAccount2RoleService serviceAccount2role = Account2RoleServiceImpl.ACCOUNT2ROLE_SERVICE;
-	private static IAccountDetailsService serviceAccountDetails = AccountDetailsServiceImpl.ACCOUNTDETAILS_SERVICE;
-	private static IAccountService serviceAccount = AccountServiceImpl.ACCOUNT_SERVICE;
-	private static IInvoiceService serviceInvoice = InvoiceServiceImpl.INVOICE_SERVICE;
-	private static IOperatorService serviceOperator = OperatorServiceImpl.OPERATOR_SERVICE;
-	private static IPhoneNumber2InvoiceService servicePhoneNumber2Invoice = PhoneNumber2InvoiceServiceImpl.PHONENUMBER_2_INVOICE_DAO;
-	private static IPhoneNumberService servicePhoneNumber = PhoneNumberServiceImpl.PHONENUMBER_SERVICE;
-	private static IServiceHistoryService serviceServiceHistory = ServiceHistoryServiceImpl.SERVICEHISTORY_SERVICE;
-	private static IServiceService serviceService = ServiceServiceImpl.SERVICE_SERVICE;
-	private static ITariffItemService serviceTariffItem = TariffItemServiceImpl.TARIFFITEM_DAO;
-	private static ITariffService serviceTariff = TariffServiceImpl.TARIFF_DAO;
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(AbstractServiceTest.class);
+	protected IAccount2RoleService serviceAccount2role = Account2RoleServiceImpl.ACCOUNT2ROLE_SERVICE;
+	protected IAccountDetailsService serviceAccountDetails = AccountDetailsServiceImpl.ACCOUNTDETAILS_SERVICE;
+	protected IAccountService serviceAccount = AccountServiceImpl.ACCOUNT_SERVICE;
+	protected IInvoiceService serviceInvoice = InvoiceServiceImpl.INVOICE_SERVICE;
+	protected IOperatorService serviceOperator = OperatorServiceImpl.OPERATOR_SERVICE;
+	protected IPhoneNumber2InvoiceService servicePhoneNumber2Invoice = PhoneNumber2InvoiceServiceImpl.PHONENUMBER_2_INVOICE_DAO;
+	protected IPhoneNumberService servicePhoneNumber = PhoneNumberServiceImpl.PHONENUMBER_SERVICE;
+	protected IServiceHistoryService serviceServiceHistory = ServiceHistoryServiceImpl.SERVICEHISTORY_SERVICE;
+	protected IServiceService serviceService = ServiceServiceImpl.SERVICE_SERVICE;
+	protected ITariffItemService serviceTariffItem = TariffItemServiceImpl.TARIFFITEM_DAO;
+	protected ITariffService serviceTariff = TariffServiceImpl.TARIFF_DAO;
 
-	private AccountDetails accountDetails;
+	// private AccountDetails accountDetails;
 	private Account account;
 	private Invoice invoice;
 	private Operator operator;
@@ -65,7 +66,7 @@ public abstract class AbstractServiceTest {
 
 	protected AccountDetails createdAccountDetails() {
 		LOGGER.info("prepare data for AccountDetailsServiceTest");
-		accountDetails = new AccountDetails();
+		AccountDetails accountDetails = new AccountDetails();
 		accountDetails.setLastName("Иванов");
 		accountDetails.setFirstName("Иван");
 		if (accountDetails.getId() == null) {
@@ -75,10 +76,10 @@ public abstract class AbstractServiceTest {
 		}
 	}
 
-	protected void removeAccountDetails() {
+	/*protected void removeAccountDetails() {
 		serviceAccountDetails.remove(accountDetails.getId());
 
-	}
+	}*/
 
 	protected Account createdAccount() {
 		LOGGER.info("prepare data for AccountServiceTest");

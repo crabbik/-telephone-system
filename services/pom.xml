@@ -16,7 +16,7 @@
 			<groupId>com.itacademy.jd2.lg.mobile_system</groupId>
 			<artifactId>dao</artifactId>
 		</dependency>
-
+	
 
 		<dependency>
 			<groupId>junit</groupId>
