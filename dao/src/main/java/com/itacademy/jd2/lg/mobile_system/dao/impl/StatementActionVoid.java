@@ -5,6 +5,6 @@ import java.sql.Statement;
 
 import org.springframework.stereotype.Repository;
 @Repository
-public interface StatementAction<RETURN_TYPE> {
-	RETURN_TYPE execute(Statement stmt) throws SQLException;
+public interface  StatementActionVoid {
+	void execute(Statement stmt) throws SQLException;
 }

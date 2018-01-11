@@ -1,10 +1,13 @@
 package com.itacademy.jd2.dz.library.services;
 
 import java.util.Date;
-import java.util.List;
 
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.Account;
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.AccountDetails;
@@ -26,33 +29,35 @@ import com.itacademy.jd2.lg.mobile_system.services.IServiceHistoryService;
 import com.itacademy.jd2.lg.mobile_system.services.IServiceService;
 import com.itacademy.jd2.lg.mobile_system.services.ITariffItemService;
 import com.itacademy.jd2.lg.mobile_system.services.ITariffService;
-import com.itacademy.jd2.lg.mobile_system.services.impl.Account2RoleServiceImpl;
-import com.itacademy.jd2.lg.mobile_system.services.impl.AccountDetailsServiceImpl;
-import com.itacademy.jd2.lg.mobile_system.services.impl.AccountServiceImpl;
-import com.itacademy.jd2.lg.mobile_system.services.impl.InvoiceServiceImpl;
-import com.itacademy.jd2.lg.mobile_system.services.impl.OperatorServiceImpl;
-import com.itacademy.jd2.lg.mobile_system.services.impl.PhoneNumber2InvoiceServiceImpl;
-import com.itacademy.jd2.lg.mobile_system.services.impl.PhoneNumberServiceImpl;
-import com.itacademy.jd2.lg.mobile_system.services.impl.ServiceHistoryServiceImpl;
-import com.itacademy.jd2.lg.mobile_system.services.impl.ServiceServiceImpl;
-import com.itacademy.jd2.lg.mobile_system.services.impl.TariffItemServiceImpl;
-import com.itacademy.jd2.lg.mobile_system.services.impl.TariffServiceImpl;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "classpath:test-context.xml")
 public abstract class AbstractServiceTest {
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(AbstractServiceTest.class);
-	protected IAccount2RoleService serviceAccount2role = Account2RoleServiceImpl.ACCOUNT2ROLE_SERVICE;
-	protected IAccountDetailsService serviceAccountDetails = AccountDetailsServiceImpl.ACCOUNTDETAILS_SERVICE;
-	protected IAccountService serviceAccount = AccountServiceImpl.ACCOUNT_SERVICE;
-	protected IInvoiceService serviceInvoice = InvoiceServiceImpl.INVOICE_SERVICE;
-	protected IOperatorService serviceOperator = OperatorServiceImpl.OPERATOR_SERVICE;
-	protected IPhoneNumber2InvoiceService servicePhoneNumber2Invoice = PhoneNumber2InvoiceServiceImpl.PHONENUMBER_2_INVOICE_DAO;
-	protected IPhoneNumberService servicePhoneNumber = PhoneNumberServiceImpl.PHONENUMBER_SERVICE;
-	protected IServiceHistoryService serviceServiceHistory = ServiceHistoryServiceImpl.SERVICEHISTORY_SERVICE;
-	protected IServiceService serviceService = ServiceServiceImpl.SERVICE_SERVICE;
-	protected ITariffItemService serviceTariffItem = TariffItemServiceImpl.TARIFFITEM_DAO;
-	protected ITariffService serviceTariff = TariffServiceImpl.TARIFF_DAO;
+	@Autowired
+	protected IAccountDetailsService serviceAccountDetails;
+	@Autowired
+	protected IAccount2RoleService serviceAccount2role;
+	@Autowired
+	protected IAccountService serviceAccount;
+	@Autowired
+	protected IInvoiceService serviceInvoice;
+	@Autowired
+	protected IOperatorService serviceOperator;
+	@Autowired
+	protected IPhoneNumber2InvoiceService servicePhoneNumber2Invoice;
+	@Autowired
+	protected IPhoneNumberService servicePhoneNumber;
+	@Autowired
+	protected IServiceHistoryService serviceServiceHistory;
+	@Autowired
+	protected IServiceService serviceService;
+	@Autowired
+	protected ITariffItemService serviceTariffItem;
+	@Autowired
+	protected ITariffService serviceTariff;
 
 	// private AccountDetails accountDetails;
 	private Account account;
@@ -76,10 +81,10 @@ public abstract class AbstractServiceTest {
 		}
 	}
 
-	/*protected void removeAccountDetails() {
-		serviceAccountDetails.remove(accountDetails.getId());
-
-	}*/
+	/*
+	 * protected void removeAccountDetails() {
+	 * serviceAccountDetails.remove(accountDetails.getId());
+	 */
 
 	protected Account createdAccount() {
 		LOGGER.info("prepare data for AccountServiceTest");

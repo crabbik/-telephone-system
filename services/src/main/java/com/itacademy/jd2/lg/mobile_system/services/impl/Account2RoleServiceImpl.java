@@ -4,21 +4,18 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.itacademy.jd2.lg.mobile_system.dao.IAccount2RoleDao;
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.Account2Role;
 import com.itacademy.jd2.lg.mobile_system.dao.impl.Account2RoleDaoImpl;
 import com.itacademy.jd2.lg.mobile_system.services.IAccount2RoleService;
-
+@Service
 public class Account2RoleServiceImpl implements IAccount2RoleService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Account2RoleServiceImpl.class);
-	public static final IAccount2RoleService ACCOUNT2ROLE_SERVICE = new Account2RoleServiceImpl();
-
-	private Account2RoleServiceImpl() {
-
-	}
-
-	private IAccount2RoleDao dao = Account2RoleDaoImpl.ACCOUNT2ROLE_DAO;
+	@Autowired
+	private IAccount2RoleDao dao ;
 
 	@Override
 	public Account2Role get(Integer id) {

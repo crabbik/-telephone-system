@@ -10,10 +10,11 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.itacademy.jd2.lg.mobile_system.dao.IPhoneNumberDao;
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.PhoneNumber;
-
+@Repository
 public class PhoneNumberDaoImpl extends AbstractDaoImpl implements IPhoneNumberDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(PhoneNumberDaoImpl.class);
 	public static final IPhoneNumberDao PHONENUMBER_DAO = new PhoneNumberDaoImpl();

@@ -10,10 +10,11 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.itacademy.jd2.lg.mobile_system.dao.IOperatorDao;
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.Operator;
-
+@Repository
 public class OperatorDaoImpl extends AbstractDaoImpl implements IOperatorDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(OperatorDaoImpl.class);
 	public static final IOperatorDao OPERATOR_DAO = new OperatorDaoImpl();

@@ -6,21 +6,18 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.itacademy.jd2.lg.mobile_system.dao.IPhoneNumberDao;
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.PhoneNumber;
 import com.itacademy.jd2.lg.mobile_system.dao.impl.PhoneNumberDaoImpl;
 import com.itacademy.jd2.lg.mobile_system.services.IPhoneNumberService;
-
+@Service
 public class PhoneNumberServiceImpl implements IPhoneNumberService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(PhoneNumberServiceImpl.class);
-	public static final IPhoneNumberService PHONENUMBER_SERVICE = new PhoneNumberServiceImpl();
-
-	private PhoneNumberServiceImpl() {
-
-	}
-
-	private IPhoneNumberDao dao = PhoneNumberDaoImpl.PHONENUMBER_DAO;
+	@Autowired
+	private IPhoneNumberDao dao ;
 
 	@Override
 	public PhoneNumber get(Integer id) {

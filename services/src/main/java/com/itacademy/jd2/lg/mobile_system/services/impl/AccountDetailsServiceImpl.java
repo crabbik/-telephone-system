@@ -6,21 +6,18 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.itacademy.jd2.lg.mobile_system.dao.IAccountDetailsDao;
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.AccountDetails;
 import com.itacademy.jd2.lg.mobile_system.dao.impl.AccountDetailsDaoImpl;
 import com.itacademy.jd2.lg.mobile_system.services.IAccountDetailsService;
-
+@Service
 public class AccountDetailsServiceImpl implements IAccountDetailsService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AccountDetailsServiceImpl.class);
-	public static final IAccountDetailsService ACCOUNTDETAILS_SERVICE = new AccountDetailsServiceImpl();
-
-	private AccountDetailsServiceImpl() {
-
-	}
-
-	private IAccountDetailsDao dao = AccountDetailsDaoImpl.ACCOUNTDETAILS_DAO;
+	@Autowired
+	private IAccountDetailsDao dao;
 
 	@Override
 	public AccountDetails get(Integer id) {

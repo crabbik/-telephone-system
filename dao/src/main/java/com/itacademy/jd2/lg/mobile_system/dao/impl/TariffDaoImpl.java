@@ -10,10 +10,11 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.itacademy.jd2.lg.mobile_system.dao.ITariffDao;
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.Tariff;
-
+@Repository
 public class TariffDaoImpl extends AbstractDaoImpl implements ITariffDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TariffDaoImpl.class);
 	public static final ITariffDao TARIFF_DAO = new TariffDaoImpl();

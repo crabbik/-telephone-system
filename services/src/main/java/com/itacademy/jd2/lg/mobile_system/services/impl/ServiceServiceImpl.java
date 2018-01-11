@@ -6,22 +6,18 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itacademy.jd2.lg.mobile_system.dao.IServiceDao;
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.Service;
 import com.itacademy.jd2.lg.mobile_system.dao.impl.ServiceDaoImpl;
 import com.itacademy.jd2.lg.mobile_system.services.IServiceService;
-
+@org.springframework.stereotype.Service
 public class ServiceServiceImpl implements IServiceService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceServiceImpl.class);
-	public static final IServiceService SERVICE_SERVICE = new ServiceServiceImpl();
-
-	private ServiceServiceImpl() {
-
-	}
-
-	private IServiceDao dao = ServiceDaoImpl.SERVICE_DAO;
+	@Autowired
+	private IServiceDao dao ;
 
 	@Override
 	public Service get(Integer id) {

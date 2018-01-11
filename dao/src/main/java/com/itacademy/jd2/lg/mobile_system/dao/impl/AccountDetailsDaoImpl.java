@@ -10,10 +10,11 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.itacademy.jd2.lg.mobile_system.dao.IAccountDetailsDao;
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.AccountDetails;
-
+@Repository
 public class AccountDetailsDaoImpl extends AbstractDaoImpl implements IAccountDetailsDao {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AccountDetailsDaoImpl.class);

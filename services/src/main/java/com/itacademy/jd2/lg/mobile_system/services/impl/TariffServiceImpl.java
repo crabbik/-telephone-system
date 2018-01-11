@@ -6,22 +6,22 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.itacademy.jd2.lg.mobile_system.dao.ITariffDao;
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.Tariff;
 import com.itacademy.jd2.lg.mobile_system.dao.impl.TariffDaoImpl;
 import com.itacademy.jd2.lg.mobile_system.services.ITariffService;
 
+@Service
 public class TariffServiceImpl implements ITariffService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(TariffServiceImpl.class);
-	public static final ITariffService TARIFF_DAO = new TariffServiceImpl();
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(TariffServiceImpl.class);
 
-	private TariffServiceImpl() {
-
-	}
-
-	private ITariffDao dao = TariffDaoImpl.TARIFF_DAO;
+	@Autowired
+	private ITariffDao dao;
 
 	@Override
 	public Tariff get(Integer id) {

@@ -4,21 +4,18 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.itacademy.jd2.lg.mobile_system.dao.IServiceHistoryDao;
 import com.itacademy.jd2.lg.mobile_system.dao.dbmodel.ServiceHistory;
 import com.itacademy.jd2.lg.mobile_system.dao.impl.ServiceHistoryDaoImpl;
 import com.itacademy.jd2.lg.mobile_system.services.IServiceHistoryService;
-
+@Service
 public class ServiceHistoryServiceImpl implements IServiceHistoryService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceHistoryServiceImpl.class);
-	public static final IServiceHistoryService SERVICEHISTORY_SERVICE = new ServiceHistoryServiceImpl();
-
-	private ServiceHistoryServiceImpl() {
-
-	}
-
-	private IServiceHistoryDao dao = ServiceHistoryDaoImpl.SERVICEHISTORY_DAO;
+	@Autowired
+	private IServiceHistoryDao dao;
 
 	@Override
 	public ServiceHistory get(Integer id) {
