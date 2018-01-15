@@ -3,7 +3,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.itacademy.jd2.lg.mobile_system</groupId>
+	<groupId>com.itacademy.jd2.lg.ms</groupId>
 	<artifactId>parent-project</artifactId>
 	<version>1.0.0</version>
 
@@ -24,19 +24,19 @@
 		<dependencies>
 			<!-- Project modules -->
 			<dependency>
-				<groupId>com.itacademy.jd2.lg.mobile_system</groupId>
+				<groupId>com.itacademy.jd2.lg.ms</groupId>
 				<artifactId>dao</artifactId>
 				<version>1.0.0</version>
 			</dependency>
 
 			<dependency>
-				<groupId>com.itacademy.jd2.lg.mobile_system</groupId>
+				<groupId>com.itacademy.jd2.lg.ms</groupId>
 				<artifactId>services</artifactId>
 				<version>1.0.0</version>
 			</dependency>
 
 			<dependency>
-				<groupId>com.itacademy.jd2.lg.mobile_system</groupId>
+				<groupId>com.itacademy.jd2.lg.ms</groupId>
 				<artifactId>web</artifactId>
 				<version>1.0.0</version>
 			</dependency>

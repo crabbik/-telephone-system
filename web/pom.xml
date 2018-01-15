@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<groupId>com.itacademy.jd2.lg.mobile_system</groupId>
+		<groupId>com.itacademy.jd2.lg.ms</groupId>
 		<artifactId>parent-project</artifactId>
 		<version>1.0.0</version>
 	</parent>
@@ -16,7 +16,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.itacademy.jd2.lg.mobile_system</groupId>
+			<groupId>com.itacademy.jd2.lg.ms</groupId>
 			<artifactId>services</artifactId>
 		</dependency>
 
