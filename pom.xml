@@ -10,8 +10,14 @@
 	<packaging>pom</packaging>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>5.0.2.RELEASE</spring.version>
-		<jetty9.version>9.2.13.v20150730</jetty9.version>
+		<jetty9.version>9.2.15.v20160210</jetty9.version>
+		<jstl.version>1.2.1</jstl.version>
+		<tld.version>1.1.2</tld.version>
+		<servlets.version>3.1.0</servlets.version>
+		<jsp.version>2.3.1</jsp.version>
+		<tiles.version>3.0.8</tiles.version>
 	</properties>
 
 	<modules>
@@ -53,6 +59,7 @@
 				<artifactId>postgresql</artifactId>
 				<version>9.4-1200-jdbc41</version>
 			</dependency>
+
 			<!-- Spring -->
 			<dependency>
 				<groupId>org.springframework</groupId>
@@ -80,19 +87,54 @@
 			</dependency>
 
 			<dependency>
-				<groupId>javax.servlet</groupId>
-				<artifactId>jstl</artifactId>
-				<version>1.1.2</version>
+				<groupId>javax.servlet.jsp.jstl</groupId>
+				<artifactId>javax.servlet.jsp.jstl-api</artifactId>
+				<version>${jstl.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>org.apache.tiles</groupId>
+				<artifactId>tiles-extras</artifactId>
+				<version>${tiles.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>taglibs</groupId>
 				<artifactId>standard</artifactId>
-				<version>1.1.2</version>
+				<version>${tld.version}</version>
+			</dependency>
+			<!-- Servlet Dependency -->
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>${servlets.version}</version>
+				<scope>provided</scope>
 			</dependency>
 
+			<!-- JSP Dependency -->
+			<dependency>
+				<groupId>javax.servlet.jsp</groupId>
+				<artifactId>javax.servlet.jsp-api</artifactId>
+				<version>${jsp.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>apache-jsp</artifactId>
+				<version>9.2.15.v20160210</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.tomcat</groupId>
+				<artifactId>jasper</artifactId>
+				<version>6.0.53</version>
+			</dependency>
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjtools</artifactId>
+				<version>1.8.12</version>
+			</dependency>
 
+			<!-- logger -->
 			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-api</artifactId>
@@ -114,13 +156,17 @@
 				<version>2.1</version>
 			</dependency>
 
+
+			<!-- testing -->
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>4.12</version>
 				<scope>test</scope>
 			</dependency>
-<!-- JETTY DEPENDENCIES FOR TESTING -->
+
+
+			<!-- JETTY DEPENDENCIES FOR TESTING -->
 			<dependency>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-server</artifactId>
@@ -130,6 +176,12 @@
 			<dependency>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-webapp</artifactId>
+				<version>${jetty9.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-annotations</artifactId>
 				<version>${jetty9.version}</version>
 				<scope>test</scope>
 			</dependency>
@@ -145,15 +197,11 @@
 				<version>${jetty9.version}</version>
 				<scope>test</scope>
 			</dependency>
-
 		</dependencies>
 	</dependencyManagement>
 
-
-
 	<build>
-		<plugins>
-		</plugins>
+		<finalName>ms</finalName>
 		<pluginManagement>
 			<plugins>
 				<plugin>

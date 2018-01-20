@@ -8,7 +8,7 @@
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/dispatcher-servlet.xml</param-value>
+		<param-value>classpath*:webapp-context.xml</param-value>
 	</context-param>
 
 	<servlet>
@@ -19,11 +19,16 @@
 
 	<servlet-mapping>
 		<servlet-name>dispatcher</servlet-name>
-		<url-pattern>*.form</url-pattern>
+		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-
 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+	<jsp-config>
+		<jsp-property-group>
+			<url-pattern>*.jsp</url-pattern>
+			<page-encoding>UTF-8</page-encoding>
+		</jsp-property-group>
+	</jsp-config>
 </web-app>
