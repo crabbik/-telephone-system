@@ -5,21 +5,22 @@
 		<tbody>
 			<tr>
 				<th>ID</th>
-				<th>Title</th>
-				<th>Deleted</th>
+				<th>Email</th>
+				<th>Password</th>
 				<th>Created</th>
 				<th>Modified</th>
 			</tr>
-			<c:forEach var="cover" items="${requestScope.operators}"
-				varStatus="loopCounter">
-				<tr>
-					<td><c:out value="${operator.id}" /></td>
-					<td><c:out value="${operator.title}" /></td>
-					<td><c:out value="${operator.deleted}" /></td>
-					<td><c:out value="${operator.created}" /></td>
-					<td><c:out value="${operator.modified}" /></td>
-				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
+			 <c:forEach var="account" items="${requestScope.accounts}" varStatus="loopCounter">
+                <tr>
+                    <td><c:out value="${account.id}" /></td>
+                    <td><c:out value="${account.email}" /></td>
+                    <td><c:out value="${account.password}" /></td>
+                    <td><c:out value="${account.created}" /></td>
+                    <td><c:out value="${account.modified}" /></td>
+                    <td><a href="/account/${account.id}">Подробности</a>|<a href="/account/${account.id}/edit">изменить</a>|<a href="/account/${account.id}/delete">удалить</a></td>
+                </tr>
+            </c:forEach>
+        </tbody>
+    </table>
+    <a href="/account/add">Создать новый</a>
 </div>

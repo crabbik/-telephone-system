@@ -2,7 +2,7 @@ package com.itacademy.jd2.lg.ms.web.dto;
 
 import java.sql.Timestamp;
 
-public class OperatorDto {
+public class OperatorDTO {
 
 	private Integer id;
 	private String title;

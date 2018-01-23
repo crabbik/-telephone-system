@@ -13,5 +13,5 @@
 	<context:property-placeholder
 		ignore-unresolvable="false" location="classpath:db.properties" />
 	<import resource="classpath:service-context.xml" />
-	<context:component-scan base-package="com.itacademy.jd2.dz.library.web.converter" />
+	<context:component-scan base-package="com.itacademy.jd2.lg.ms.web.converter" />
 </beans>
