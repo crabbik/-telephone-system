@@ -158,7 +158,6 @@ ALTER TABLE "phone_number" ADD CONSTRAINT "phone_number_fk0" FOREIGN KEY ("accou
 ALTER TABLE "phone_number" ADD CONSTRAINT "phone_number_fk1" FOREIGN KEY ("tariff_id") REFERENCES "tariff"("id");
 
 ALTER TABLE "tariff" ADD CONSTRAINT "tariff_fk0" FOREIGN KEY ("operator_id") REFERENCES "operator"("id");
-ALTER TABLE "tariff" ADD CONSTRAINT "tariff_fk1" FOREIGN KEY ("name") REFERENCES ""("");
 
 ALTER TABLE "tariff_item" ADD CONSTRAINT "tariff_item_fk0" FOREIGN KEY ("tariif_id") REFERENCES "tariff"("id");
 ALTER TABLE "tariff_item" ADD CONSTRAINT "tariff_item_fk1" FOREIGN KEY ("service_id") REFERENCES "service"("id");
