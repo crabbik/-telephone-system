@@ -1,6 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <form:form method="POST" action="/account" modelAttribute="accountForm">
+	<form:input path="id" type="hidden" />
 	<table>
 		<tr>
 			<td>Почта</td>

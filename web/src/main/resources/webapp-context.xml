@@ -10,6 +10,9 @@
       http://www.springframework.org/schema/context 
       http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 
+
+<import resource="classpath:security-config.xml" />
+
 	<context:property-placeholder
 		ignore-unresolvable="false" location="classpath:db.properties" />
 	<import resource="classpath:service-context.xml" />
