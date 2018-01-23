@@ -28,7 +28,7 @@ CREATE TABLE "account_details" (
 CREATE TABLE "operator" (
 	"id" serial NOT NULL,
 	"title" character varying(30) NOT NULL,
-	"deleted" BOOLEAN NOT NULL,
+	"deleted" BOOLEAN NOT NULL DEFAULT 'false',
 	"created " TIMESTAMP NOT NULL,
 	"modified" TIMESTAMP NOT NULL,
 	CONSTRAINT operator_pk PRIMARY KEY ("id")
@@ -87,7 +87,7 @@ CREATE TABLE "service" (
 	"id" serial NOT NULL,
 	"type" character varying(50) NOT NULL,
 	"unit" character varying(50) NOT NULL,
-	"deleted" BOOLEAN NOT NULL,
+	"deleted" BOOLEAN NOT NULL DEFAULT 'false',
 	"created" TIMESTAMP NOT NULL,
 	"modified" TIMESTAMP NOT NULL,
 	CONSTRAINT service_pk PRIMARY KEY ("id")
@@ -115,7 +115,7 @@ CREATE TABLE "tariff" (
 	"id" serial NOT NULL,
 	"operator_id" bigint NOT NULL,
 	"name" character varying NOT NULL,
-	"deleted" BOOLEAN NOT NULL,
+	"deleted" BOOLEAN NOT NULL DEFAULT 'false',
 	"created " TIMESTAMP NOT NULL,
 	"modified" TIMESTAMP NOT NULL,
 	CONSTRAINT tariff_pk PRIMARY KEY ("id")
@@ -130,7 +130,7 @@ CREATE TABLE "tariff_item" (
 	"tariif_id" bigint NOT NULL,
 	"service_id" bigint NOT NULL,
 	"cost" integer NOT NULL,
-	"deleted" BOOLEAN NOT NULL,
+	"deleted" BOOLEAN NOT NULL DEFAULT 'false',
 	"created " TIMESTAMP NOT NULL,
 	"modified" TIMESTAMP NOT NULL,
 	CONSTRAINT tariff_item_pk PRIMARY KEY ("id")
@@ -143,9 +143,9 @@ CREATE TABLE "tariff_item" (
 ALTER TABLE "service_history" ADD CONSTRAINT "service_history_fk0" FOREIGN KEY ("tariff_item_id") REFERENCES "tariff_item"("id");
 ALTER TABLE "service_history" ADD CONSTRAINT "service_history_fk1" FOREIGN KEY ("phone_number_id") REFERENCES "phone_number"("id");
 
+ALTER TABLE "account_details" ADD CONSTRAINT "account_details_fk0" FOREIGN KEY ("id") REFERENCES "account"("id");
 
 
-ALTER TABLE "account" ADD CONSTRAINT "account_fk0" FOREIGN KEY ("id") REFERENCES "account_details"("id");
 
 ALTER TABLE "account_2_role" ADD CONSTRAINT "account_2_role_fk0" FOREIGN KEY ("account_id") REFERENCES "account"("id");
 
@@ -158,8 +158,6 @@ ALTER TABLE "phone_number" ADD CONSTRAINT "phone_number_fk0" FOREIGN KEY ("accou
 ALTER TABLE "phone_number" ADD CONSTRAINT "phone_number_fk1" FOREIGN KEY ("tariff_id") REFERENCES "tariff"("id");
 
 ALTER TABLE "tariff" ADD CONSTRAINT "tariff_fk0" FOREIGN KEY ("operator_id") REFERENCES "operator"("id");
-ALTER TABLE "tariff" ADD CONSTRAINT "tariff_fk1" FOREIGN KEY ("name") REFERENCES ""("");
 
 ALTER TABLE "tariff_item" ADD CONSTRAINT "tariff_item_fk0" FOREIGN KEY ("tariif_id") REFERENCES "tariff"("id");
 ALTER TABLE "tariff_item" ADD CONSTRAINT "tariff_item_fk1" FOREIGN KEY ("service_id") REFERENCES "service"("id");
-
