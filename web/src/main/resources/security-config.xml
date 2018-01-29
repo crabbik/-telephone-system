@@ -13,7 +13,11 @@
 
 	<http>
 		<intercept-url pattern="/account**" access="hasRole('ROLE_ADMIN')" />
-
+	
+	
+		<intercept-url pattern="/operator**" access="!isAnonymous()" />
+	
+	
 		<form-login login-page="/login" default-target-url="/"
 			authentication-failure-url="/login?error" username-parameter="username"
 			password-parameter="password" />

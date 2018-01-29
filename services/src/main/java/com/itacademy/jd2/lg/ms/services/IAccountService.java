@@ -13,6 +13,8 @@ public interface IAccountService {
 
 	List<Account> getAll();
 
-	List<Account> getAll(int limit, int offset);
+	Integer getCount();
+
+	List<Account> getAll(String sortColumn, boolean sortAscending, int limit, int offset);
 
 }
