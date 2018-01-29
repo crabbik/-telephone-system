@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.itacademy.jd2.lg.ms.dao.IOperatorDao;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Operator;
+
 @Repository
 public class OperatorDaoImpl extends AbstractDaoImpl implements IOperatorDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(OperatorDaoImpl.class);
@@ -168,13 +169,6 @@ public class OperatorDaoImpl extends AbstractDaoImpl implements IOperatorDao {
 		rs.close();
 		LOGGER.debug("ResulSet closed");
 		return listOperator;
-	}
-
-	@Override
-	protected String getIdName() {
-		String idName = "id";
-		LOGGER.debug("return id name to remove data:{}", idName);
-		return idName;
 	}
 
 }

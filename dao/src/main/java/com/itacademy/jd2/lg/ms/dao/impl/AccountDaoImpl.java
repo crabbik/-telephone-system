@@ -190,11 +190,4 @@ public class AccountDaoImpl extends AbstractDaoImpl implements IAccountDao {
 		return listAccount;
 	}
 
-	@Override
-	protected String getIdName() {
-		String idName = "id";
-		LOGGER.debug("return id name to remove data:{}", idName);
-		return idName;
-	}
-
 }

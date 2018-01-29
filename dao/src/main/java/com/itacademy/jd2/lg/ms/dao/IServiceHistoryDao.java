@@ -9,8 +9,6 @@ public interface IServiceHistoryDao {
 
 	void remove(Integer id);
 
-	void update(ServiceHistory serviceHistory);
-
 	int insert(ServiceHistory serviceHistory);
 
 	List<ServiceHistory> getAll();

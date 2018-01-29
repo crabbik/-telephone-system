@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.itacademy.jd2.lg.ms.dao.ITariffItemDao;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.TariffItem;
+
 @Repository
 public class TariffItemDaoImpl extends AbstractDaoImpl implements ITariffItemDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TariffItemDaoImpl.class);
@@ -177,13 +178,6 @@ public class TariffItemDaoImpl extends AbstractDaoImpl implements ITariffItemDao
 		rs.close();
 		LOGGER.debug("ResulSet closed");
 		return listTariffItem;
-	}
-
-	@Override
-	protected String getIdName() {
-		String idName = "id";
-		LOGGER.debug("return id name to remove data:{}", idName);
-		return idName;
 	}
 
 }

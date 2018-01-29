@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.itacademy.jd2.lg.ms.dao.IPhoneNumberDao;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.PhoneNumber;
+
 @Repository
 public class PhoneNumberDaoImpl extends AbstractDaoImpl implements IPhoneNumberDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(PhoneNumberDaoImpl.class);
@@ -158,7 +159,10 @@ public class PhoneNumberDaoImpl extends AbstractDaoImpl implements IPhoneNumberD
 
 	}
 
-	private List<PhoneNumber> sqlGetAllPhoneNumber(String sql, Statement stmt) throws SQLException {// FIXME rename - method name should be the verb
+	private List<PhoneNumber> sqlGetAllPhoneNumber(String sql, Statement stmt) throws SQLException {// FIXME rename -
+																									// method name
+																									// should be the
+																									// verb
 		List<PhoneNumber> listPhoneNumber = new ArrayList<>();
 		ResultSet rs = stmt.executeQuery(sql);
 		LOGGER.debug("created ResulSet");
@@ -171,13 +175,6 @@ public class PhoneNumberDaoImpl extends AbstractDaoImpl implements IPhoneNumberD
 		rs.close();
 		LOGGER.debug("ResulSet closed");
 		return listPhoneNumber;
-	}
-
-	@Override
-	protected String getIdName() {
-		String idName = "id";
-		LOGGER.debug("return id name to remove data:{}", idName);
-		return idName;
 	}
 
 }

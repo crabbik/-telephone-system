@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.itacademy.jd2.lg.ms.dao.IAccount2RoleDao;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Account2Role;
+
 @Repository
 public class Account2RoleDaoImpl extends AbstractDaoImpl implements IAccount2RoleDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Account2RoleDaoImpl.class);
@@ -161,13 +162,6 @@ public class Account2RoleDaoImpl extends AbstractDaoImpl implements IAccount2Rol
 		rs.close();
 		LOGGER.debug("ResulSet closed");
 		return listAccount2Role;
-	}
-
-	@Override
-	protected String getIdName() {
-		String idName = "id";
-		LOGGER.debug("return id name to remove data:{}", idName);
-		return idName;
 	}
 
 }

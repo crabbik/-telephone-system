@@ -55,7 +55,11 @@ public abstract class AbstractDaoImpl {
 
 	protected abstract String getTableName();
 
-	protected abstract String getIdName();
+	protected String getIdName() {
+		String idName = "id";
+		LOGGER.debug("return id name to remove data:{}", idName);
+		return idName;
+	}
 
 	protected Connection getConnection() throws SQLException {
 		LOGGER.debug("retrieve new db connection");

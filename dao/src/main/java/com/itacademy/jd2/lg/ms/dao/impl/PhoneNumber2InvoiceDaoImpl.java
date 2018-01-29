@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.itacademy.jd2.lg.ms.dao.IPhoneNumber2InvoiceDao;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.PhoneNumber2Invoice;
+
 @Repository
 public class PhoneNumber2InvoiceDaoImpl extends AbstractDaoImpl implements IPhoneNumber2InvoiceDao {
 
@@ -161,13 +162,6 @@ public class PhoneNumber2InvoiceDaoImpl extends AbstractDaoImpl implements IPhon
 		rs.close();
 		LOGGER.debug("ResulSet closed");
 		return listPhoneNumber2Invoice;
-	}
-
-	@Override
-	protected String getIdName() {
-		String idName = "id";
-		LOGGER.debug("return id name to remove data:{}", idName);
-		return idName;
 	}
 
 }

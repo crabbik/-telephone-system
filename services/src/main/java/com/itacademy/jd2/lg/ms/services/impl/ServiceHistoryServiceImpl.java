@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.itacademy.jd2.lg.ms.dao.IServiceHistoryDao;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.ServiceHistory;
-import com.itacademy.jd2.lg.ms.dao.impl.ServiceHistoryDaoImpl;
 import com.itacademy.jd2.lg.ms.services.IServiceHistoryService;
 @Service
 public class ServiceHistoryServiceImpl implements IServiceHistoryService {
@@ -27,11 +26,6 @@ public class ServiceHistoryServiceImpl implements IServiceHistoryService {
 		dao.remove(id);
 	}
 
-	@Override
-	public void update(ServiceHistory serviceHistory) {
-		dao.update(serviceHistory);
-
-	}
 
 	@Override
 	public void insert(ServiceHistory serviceHistory) {
@@ -46,6 +40,12 @@ public class ServiceHistoryServiceImpl implements IServiceHistoryService {
 	@Override
 	public List<ServiceHistory> getAll(int limit, int offset) {
 		return dao.getAll(limit, offset);
+	}
+
+	@Override
+	public void update(ServiceHistory serviceHistory) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

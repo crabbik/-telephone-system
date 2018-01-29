@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.itacademy.jd2.lg.ms.dao.IInvoiceDao;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Invoice;
+
 @Repository
 public class InvoiceDaoImpl extends AbstractDaoImpl implements IInvoiceDao {
 
@@ -175,13 +176,6 @@ public class InvoiceDaoImpl extends AbstractDaoImpl implements IInvoiceDao {
 		rs.close();
 		LOGGER.debug("ResulSet closed");
 		return listInvoice;
-	}
-
-	@Override
-	protected String getIdName() {
-		String idName = "id";
-		LOGGER.debug("return id name to remove data:{}", idName);
-		return idName;
 	}
 
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.itacademy.jd2.lg.ms.dao.IAccountDetailsDao;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.AccountDetails;
+
 @Repository
 public class AccountDetailsDaoImpl extends AbstractDaoImpl implements IAccountDetailsDao {
 
@@ -169,13 +170,6 @@ public class AccountDetailsDaoImpl extends AbstractDaoImpl implements IAccountDe
 		rs.close();
 		LOGGER.debug("ResulSet closed");
 		return listAccountDetails;
-	}
-
-	@Override
-	protected String getIdName() {
-		String idName = "id";
-		LOGGER.debug("return id name to remove data:{}", idName);
-		return idName;
 	}
 
 }

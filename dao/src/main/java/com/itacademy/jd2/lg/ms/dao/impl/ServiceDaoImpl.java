@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.itacademy.jd2.lg.ms.dao.IServiceDao;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Service;
+
 @Repository
 public class ServiceDaoImpl extends AbstractDaoImpl implements IServiceDao {
 
@@ -171,13 +172,6 @@ public class ServiceDaoImpl extends AbstractDaoImpl implements IServiceDao {
 		rs.close();
 		LOGGER.debug("ResulSet closed");
 		return listService;
-	}
-
-	@Override
-	protected String getIdName() {
-		String idName = "id";
-		LOGGER.debug("return id name to remove data:{}", idName);
-		return idName;
 	}
 
 }
