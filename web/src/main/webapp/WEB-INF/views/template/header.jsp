@@ -4,12 +4,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <header>
 	<nav>
-		<div class="nav-wrapper container">
+		<div class="nav-wrapper  teal ">
 			<sec:authorize access="!isAnonymous()">
 				<a class="right" href="/execute_logout"><i
 					class="material-icons">arrow_forward</i></a>
 			</sec:authorize>
-			<ul id="nav-mobile" class="left hide-on-med-and-down">
+			<ul id="nav-mobile" class="right hide-on-med-and-down">
 				<li><a href="/">Home</a></li>
 				<li><a href="/account">Accounts List</a></li>
 				<li><a href="/operator">Operators List</a></li>
