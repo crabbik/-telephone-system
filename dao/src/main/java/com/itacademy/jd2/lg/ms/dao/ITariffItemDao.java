@@ -3,18 +3,11 @@ package com.itacademy.jd2.lg.ms.dao;
 import java.util.List;
 
 import com.itacademy.jd2.lg.ms.dao.dbmodel.TariffItem;
+import com.itacademy.jd2.lg.ms.dao.filter.TariffItemFilter;
 
-public interface ITariffItemDao {
-	TariffItem get(Integer id);
+public interface ITariffItemDao extends IHibernateDao<TariffItem, Integer> {
+	Long count(TariffItemFilter filter);
 
-	void remove(Integer id);
-
-	void update(TariffItem tariffItem);
-
-	int insert(TariffItem tariffItem);
-
-	List<TariffItem> getAll();
-
-	List<TariffItem> getAll(int limit, int offset);
+	List<TariffItem> find(TariffItemFilter filter);
 
 }

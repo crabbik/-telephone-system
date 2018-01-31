@@ -11,18 +11,14 @@ import org.springframework.stereotype.Service;
 
 import com.itacademy.jd2.lg.ms.dao.IPhoneNumberDao;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.PhoneNumber;
-import com.itacademy.jd2.lg.ms.dao.impl.PhoneNumberDaoImpl;
+import com.itacademy.jd2.lg.ms.dao.filter.PhoneNumberFilter;
 import com.itacademy.jd2.lg.ms.services.IPhoneNumberService;
+
 @Service
 public class PhoneNumberServiceImpl implements IPhoneNumberService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(PhoneNumberServiceImpl.class);
 	@Autowired
-	private IPhoneNumberDao dao ;
-
-	@Override
-	public PhoneNumber get(Integer id) {
-		return dao.get(id);
-	}
+	private IPhoneNumberDao dao;
 
 	@Override
 	public void remove(Integer id) {
@@ -35,12 +31,16 @@ public class PhoneNumberServiceImpl implements IPhoneNumberService {
 		phoneNumber.setModified(modifiedDate);
 		if (phoneNumber.getId() == null) {
 			phoneNumber.setCreated(modifiedDate);
-			int id = dao.insert(phoneNumber);
-			phoneNumber.setId(id);
+			dao.insert(phoneNumber);
 		} else {
 			dao.update(phoneNumber);
 		}
 		return phoneNumber;
+	}
+
+	@Override
+	public PhoneNumber get(Integer id) {
+		return dao.get(id);
 	}
 
 	@Override
@@ -49,8 +49,12 @@ public class PhoneNumberServiceImpl implements IPhoneNumberService {
 	}
 
 	@Override
-	public List<PhoneNumber> getAll(int limit, int offset) {
-		return dao.getAll(limit, offset);
+	public Long getCount(PhoneNumberFilter filter) {
+		return dao.count(filter);
 	}
 
+	@Override
+	public List<PhoneNumber> getAll(PhoneNumberFilter filter) {
+		return dao.find(filter);
+	}
 }

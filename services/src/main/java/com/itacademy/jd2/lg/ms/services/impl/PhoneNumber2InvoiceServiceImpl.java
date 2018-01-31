@@ -1,5 +1,7 @@
 package com.itacademy.jd2.lg.ms.services.impl;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.itacademy.jd2.lg.ms.dao.IPhoneNumber2InvoiceDao;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.PhoneNumber2Invoice;
-import com.itacademy.jd2.lg.ms.dao.impl.PhoneNumber2InvoiceDaoImpl;
+import com.itacademy.jd2.lg.ms.dao.filter.PhoneNumber2InvoiceFilter;
 import com.itacademy.jd2.lg.ms.services.IPhoneNumber2InvoiceService;
+
 @Service
 public class PhoneNumber2InvoiceServiceImpl implements IPhoneNumber2InvoiceService {
 
@@ -16,14 +19,26 @@ public class PhoneNumber2InvoiceServiceImpl implements IPhoneNumber2InvoiceServi
 	private IPhoneNumber2InvoiceDao dao;
 
 	@Override
-	public PhoneNumber2Invoice get(Integer userId) {
-		return dao.get(userId);
+	public void remove(Integer id) {
+		dao.remove(id);
 	}
 
 	@Override
-	public void remove(Integer userId) {
-		dao.remove(userId);
+	public PhoneNumber2Invoice save(PhoneNumber2Invoice phoneNumber2Invoice) {
+		Timestamp modifiedDate = new Timestamp(new Date().getTime());
+		phoneNumber2Invoice.setModified(modifiedDate);
+		if (phoneNumber2Invoice.getId() == null) {
+			phoneNumber2Invoice.setCreated(modifiedDate);
+			dao.insert(phoneNumber2Invoice);
+		} else {
+			dao.update(phoneNumber2Invoice);
+		}
+		return phoneNumber2Invoice;
+	}
 
+	@Override
+	public PhoneNumber2Invoice get(Integer id) {
+		return dao.get(id);
 	}
 
 	@Override
@@ -32,19 +47,12 @@ public class PhoneNumber2InvoiceServiceImpl implements IPhoneNumber2InvoiceServi
 	}
 
 	@Override
-	public void update(PhoneNumber2Invoice phoneNumber2Invoice) {
-		dao.update(phoneNumber2Invoice);
-
+	public Long getCount(PhoneNumber2InvoiceFilter filter) {
+		return dao.count(filter);
 	}
 
 	@Override
-	public void insert(PhoneNumber2Invoice phoneNumber2Invoice) {
-		dao.insert(phoneNumber2Invoice);
+	public List<PhoneNumber2Invoice> getAll(PhoneNumber2InvoiceFilter filter) {
+		return dao.find(filter);
 	}
-
-	@Override
-	public List<PhoneNumber2Invoice> getAll(int limit, int offset) {
-		return dao.getAll(limit, offset);
-	}
-
 }

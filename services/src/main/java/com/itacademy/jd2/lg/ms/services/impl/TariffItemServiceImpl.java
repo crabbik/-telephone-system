@@ -11,18 +11,14 @@ import org.springframework.stereotype.Service;
 
 import com.itacademy.jd2.lg.ms.dao.ITariffItemDao;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.TariffItem;
-import com.itacademy.jd2.lg.ms.dao.impl.TariffItemDaoImpl;
+import com.itacademy.jd2.lg.ms.dao.filter.TariffItemFilter;
 import com.itacademy.jd2.lg.ms.services.ITariffItemService;
+
 @Service
 public class TariffItemServiceImpl implements ITariffItemService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TariffItemServiceImpl.class);
 	@Autowired
 	private ITariffItemDao dao;
-
-	@Override
-	public TariffItem get(Integer id) {
-		return dao.get(id);
-	}
 
 	@Override
 	public void remove(Integer id) {
@@ -35,12 +31,16 @@ public class TariffItemServiceImpl implements ITariffItemService {
 		tariffItem.setModified(modifiedDate);
 		if (tariffItem.getId() == null) {
 			tariffItem.setCreated(modifiedDate);
-			int id = dao.insert(tariffItem);
-			tariffItem.setId(id);
+			dao.insert(tariffItem);
 		} else {
 			dao.update(tariffItem);
 		}
 		return tariffItem;
+	}
+
+	@Override
+	public TariffItem get(Integer id) {
+		return dao.get(id);
 	}
 
 	@Override
@@ -49,8 +49,12 @@ public class TariffItemServiceImpl implements ITariffItemService {
 	}
 
 	@Override
-	public List<TariffItem> getAll(int limit, int offset) {
-		return dao.getAll(limit, offset);
+	public Long getCount(TariffItemFilter filter) {
+		return dao.count(filter);
 	}
 
+	@Override
+	public List<TariffItem> getAll(TariffItemFilter filter) {
+		return dao.find(filter);
+	}
 }

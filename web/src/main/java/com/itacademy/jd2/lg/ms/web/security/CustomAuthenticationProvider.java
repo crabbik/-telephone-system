@@ -26,7 +26,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		if (false) { // locked user
 			throw new DisabledException("1001");
 		}
-		if (!"nimda".equals(password)) {
+		if (!"1".equals(password)) {
 			throw new BadCredentialsException("1000");
 		}
 

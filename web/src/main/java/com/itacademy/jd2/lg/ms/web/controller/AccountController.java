@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.metamodel.SingularAttribute;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Account;
+import com.itacademy.jd2.lg.ms.dao.dbmodel.Account_;
+import com.itacademy.jd2.lg.ms.dao.filter.AccountFilter;
 import com.itacademy.jd2.lg.ms.services.IAccountService;
 import com.itacademy.jd2.lg.ms.web.converter.AccountFromDTOConverter;
 import com.itacademy.jd2.lg.ms.web.converter.AccountToDTOConverter;
@@ -55,15 +58,49 @@ public class AccountController {
 		listModel.setSort(sort);
 		listModel.setPage(pageNumber);
 
-		final int offset = listModel.getItemsPerPage() * (listModel.getPage() - 1);
-		final SortModel sortModel = listModel.getSort();
-		final List<Account> currentPageList = accountService.getAll(sortModel.getColumn(), sortModel.isAscending(),
-				listModel.getItemsPerPage(), offset);
+		AccountFilter accountFilter = buildFilter(listModel);
+
+		final List<Account> currentPageList = accountService.getAll(accountFilter);
 		listModel.setList(currentPageList.stream().map(toDTOConverter).collect(Collectors.toList()));
-		listModel.setTotalCount(accountService.getCount());
+		listModel.setTotalCount(accountService.getCount(accountFilter));
 
 		final ModelAndView mv = new ModelAndView("account.list");
 		return mv;
+	}
+
+	private AccountFilter buildFilter(ListModel<AccountDTO> listModel) {
+
+		SortModel sortModel = listModel.getSort();
+		final int offset = listModel.getItemsPerPage() * (listModel.getPage() - 1);
+
+		AccountFilter accountFilter = new AccountFilter();
+		accountFilter.setLimit(listModel.getItemsPerPage());
+		accountFilter.setOffset(offset);
+		accountFilter.setSortOrder(sortModel.isAscending());
+
+		SingularAttribute sortAttribute;
+		switch (sortModel.getColumn()) {
+		case "id":
+
+			sortAttribute = Account_.id;
+			break;
+		case "email":
+			sortAttribute = Account_.email;
+			break;
+		case "password":
+			sortAttribute = Account_.password;
+			break;
+		case "created":
+			sortAttribute = Account_.created;
+			break;
+		case "modified":
+			sortAttribute = Account_.modified;
+			break;
+		default:
+			throw new IllegalArgumentException("unsupported sort property:" + sortModel.getColumn());
+		}
+		accountFilter.setSortProperty(sortAttribute);
+		return accountFilter;
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.GET)

@@ -1,14 +1,25 @@
 package com.itacademy.jd2.lg.ms.dao.dbmodel;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class PhoneNumber {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
+public class PhoneNumber extends AbstractDbModel implements Serializable {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	@Column
 	private Integer accountId;
+	@Column
 	private String number;
+	@Column
 	private Integer tariffId;
-	private Timestamp created;
-	private Timestamp modified;
 
 	public Integer getId() {
 		return id;
@@ -40,22 +51,6 @@ public class PhoneNumber {
 
 	public void setTariffId(Integer tariffId) {
 		this.tariffId = tariffId;
-	}
-
-	public Timestamp getCreated() {
-		return created;
-	}
-
-	public void setCreated(Timestamp created) {
-		this.created = created;
-	}
-
-	public Timestamp getModified() {
-		return modified;
-	}
-
-	public void setModified(Timestamp modified) {
-		this.modified = modified;
 	}
 
 }

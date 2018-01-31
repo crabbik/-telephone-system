@@ -12,10 +12,10 @@
 	<tbody>
 		<tr>
 			<th><mytaglib:sort-link column="id">ID</mytaglib:sort-link></th>
-			<th><mytaglib:sort-link column="width">Email</mytaglib:sort-link></th>
-			<th><mytaglib:sort-link column="material">Password</mytaglib:sort-link></th>
-			<th><mytaglib:sort-link column="material">Created</mytaglib:sort-link></th>
-			<th><mytaglib:sort-link column="material">Modified</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link column="email">Email</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link column="password">Password</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link column="created">Created</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link column="modified">Modified</mytaglib:sort-link></th>
 			<th></th>
 		</tr>
 		<c:forEach var="account" items="${listModel.list}"

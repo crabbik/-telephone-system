@@ -1,5 +1,7 @@
 package com.itacademy.jd2.lg.ms.services.impl;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -9,20 +11,14 @@ import org.springframework.stereotype.Service;
 
 import com.itacademy.jd2.lg.ms.dao.IInvoiceDao;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Invoice;
-import com.itacademy.jd2.lg.ms.dao.impl.InvoiceDaoImpl;
+import com.itacademy.jd2.lg.ms.dao.filter.InvoiceFilter;
 import com.itacademy.jd2.lg.ms.services.IInvoiceService;
 
 @Service
 public class InvoiceServiceImpl implements IInvoiceService {
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(InvoiceServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(InvoiceServiceImpl.class);
 	@Autowired
 	private IInvoiceDao dao;
-
-	@Override
-	public Invoice get(Integer id) {
-		return dao.get(id);
-	}
 
 	@Override
 	public void remove(Integer id) {
@@ -30,14 +26,21 @@ public class InvoiceServiceImpl implements IInvoiceService {
 	}
 
 	@Override
-	public void update(Invoice invoice) {
-		dao.update(invoice);
-
+	public Invoice save(Invoice invoice) {
+		Timestamp modifiedDate = new Timestamp(new Date().getTime());
+		invoice.setModified(modifiedDate);
+		if (invoice.getId() == null) {
+			invoice.setCreated(modifiedDate);
+			dao.insert(invoice);
+		} else {
+			dao.update(invoice);
+		}
+		return invoice;
 	}
 
 	@Override
-	public void insert(Invoice invoice) {
-		dao.insert(invoice);
+	public Invoice get(Integer id) {
+		return dao.get(id);
 	}
 
 	@Override
@@ -46,8 +49,12 @@ public class InvoiceServiceImpl implements IInvoiceService {
 	}
 
 	@Override
-	public List<Invoice> getAll(int limit, int offset) {
-		return dao.getAll(limit, offset);
+	public Long getCount(InvoiceFilter filter) {
+		return dao.count(filter);
 	}
 
+	@Override
+	public List<Invoice> getAll(InvoiceFilter filter) {
+		return dao.find(filter);
+	}
 }

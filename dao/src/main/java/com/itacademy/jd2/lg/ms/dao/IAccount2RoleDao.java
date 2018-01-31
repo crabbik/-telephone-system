@@ -3,18 +3,11 @@ package com.itacademy.jd2.lg.ms.dao;
 import java.util.List;
 
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Account2Role;
+import com.itacademy.jd2.lg.ms.dao.filter.Account2RoleFilter;
 
-public interface IAccount2RoleDao {
-	Account2Role get(Integer id);
+public interface IAccount2RoleDao extends IHibernateDao<Account2Role, Integer> {
+	Long count(Account2RoleFilter filter);
 
-	void remove(Integer id);
-
-	void update(Account2Role account2Role);
-
-	int insert(Account2Role account2Role);
-
-	List<Account2Role> getAll();
-
-	List<Account2Role> getAll(int limit, int offset);
+	List<Account2Role> find(Account2RoleFilter filter);
 
 }

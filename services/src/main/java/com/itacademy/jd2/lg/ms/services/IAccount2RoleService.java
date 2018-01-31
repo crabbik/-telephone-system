@@ -2,19 +2,24 @@ package com.itacademy.jd2.lg.ms.services;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Account2Role;
+import com.itacademy.jd2.lg.ms.dao.filter.Account2RoleFilter;
 
 public interface IAccount2RoleService {
 	Account2Role get(Integer id);
 
+	@Transactional
 	void remove(Integer id);
 
-	void insert(Account2Role account2Role);
-
-	void update(Account2Role account2Role);
+	@Transactional
+	Account2Role save(Account2Role account2Role);
 
 	List<Account2Role> getAll();
 
-	List<Account2Role> getAll(int limit, int offset);
+	Long getCount(Account2RoleFilter filter);
+
+	List<Account2Role> getAll(Account2RoleFilter filter);
 
 }

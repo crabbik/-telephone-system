@@ -3,19 +3,12 @@ package com.itacademy.jd2.lg.ms.dao;
 import java.util.List;
 
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Invoice;
+import com.itacademy.jd2.lg.ms.dao.filter.InvoiceFilter;
 
-public interface IInvoiceDao {
+public interface IInvoiceDao extends IHibernateDao<Invoice, Integer> {
 
-	Invoice get(Integer id);
+	Long count(InvoiceFilter filter);
 
-	void remove(Integer id);
+	List<Invoice> find(InvoiceFilter filter);
 
-	void update(Invoice invoice);
-
-	int insert(Invoice invoice);
-
-	List<Invoice> getAll();
-
-	List<Invoice> getAll(int limit, int offset);
-	
 }

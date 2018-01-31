@@ -10,19 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itacademy.jd2.lg.ms.dao.IServiceDao;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Service;
-import com.itacademy.jd2.lg.ms.dao.impl.ServiceDaoImpl;
+import com.itacademy.jd2.lg.ms.dao.filter.ServiceFilter;
 import com.itacademy.jd2.lg.ms.services.IServiceService;
+
 @org.springframework.stereotype.Service
 public class ServiceServiceImpl implements IServiceService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceServiceImpl.class);
 	@Autowired
-	private IServiceDao dao ;
-
-	@Override
-	public Service get(Integer id) {
-		return dao.get(id);
-	}
+	private IServiceDao dao;
 
 	@Override
 	public void remove(Integer id) {
@@ -35,12 +31,16 @@ public class ServiceServiceImpl implements IServiceService {
 		service.setModified(modifiedDate);
 		if (service.getId() == null) {
 			service.setCreated(modifiedDate);
-			int id = dao.insert(service);
-			service.setId(id);
+			dao.insert(service);
 		} else {
 			dao.update(service);
 		}
 		return service;
+	}
+
+	@Override
+	public Service get(Integer id) {
+		return dao.get(id);
 	}
 
 	@Override
@@ -49,8 +49,12 @@ public class ServiceServiceImpl implements IServiceService {
 	}
 
 	@Override
-	public List<Service> getAll(int limit, int offset) {
-		return dao.getAll(limit, offset);
+	public Long getCount(ServiceFilter filter) {
+		return dao.count(filter);
 	}
 
+	@Override
+	public List<Service> getAll(ServiceFilter filter) {
+		return dao.find(filter);
+	}
 }

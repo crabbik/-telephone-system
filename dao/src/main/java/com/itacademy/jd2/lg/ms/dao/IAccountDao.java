@@ -3,18 +3,11 @@ package com.itacademy.jd2.lg.ms.dao;
 import java.util.List;
 
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Account;
+import com.itacademy.jd2.lg.ms.dao.filter.AccountFilter;
 
-public interface IAccountDao {
-	Account get(Integer id);
+public interface IAccountDao extends IHibernateDao<Account, Integer> {
+	Long count(AccountFilter filter);
 
-	void remove(Integer id);
-
-	void update(Account account);
-
-	int insert(Account account);
-
-	List<Account> getAll();
-
-	List<Account> getAll(int limit, int offset);
+	List<Account> find(AccountFilter filter);
 
 }

@@ -3,19 +3,12 @@ package com.itacademy.jd2.lg.ms.dao;
 import java.util.List;
 
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Service;
+import com.itacademy.jd2.lg.ms.dao.filter.ServiceFilter;
 
-public interface IServiceDao {
+public interface IServiceDao extends IHibernateDao<Service, Integer> {
 
-	Service get(Integer id);
+	Long count(ServiceFilter filter);
 
-	void remove(Integer id);
-
-	void update(Service service);
-
-	int insert(Service service);
-
-	List<Service> getAll();
-
-	List<Service> getAll(int limit, int offset);
+	List<Service> find(ServiceFilter filter);
 
 }

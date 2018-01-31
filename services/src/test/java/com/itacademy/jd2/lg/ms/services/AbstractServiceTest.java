@@ -34,8 +34,7 @@ import com.itacademy.jd2.lg.ms.services.ITariffService;
 @ContextConfiguration(locations = "classpath:test-context.xml")
 public abstract class AbstractServiceTest {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(AbstractServiceTest.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractServiceTest.class);
 	@Autowired
 	protected IAccountDetailsService serviceAccountDetails;
 	@Autowired
@@ -59,36 +58,16 @@ public abstract class AbstractServiceTest {
 	@Autowired
 	protected ITariffService serviceTariff;
 
-	// private AccountDetails accountDetails;
-	private Account account;
-	private Invoice invoice;
-	private Operator operator;
-	private PhoneNumber phoneNumber;
-	private ServiceHistory serviceHistory;
-	private Service service;
-	private TariffItem tariffItem;
-	private Tariff tariff;
-
-	protected AccountDetails createdAccountDetails() {
-		LOGGER.info("prepare data for AccountDetailsServiceTest");
-		AccountDetails accountDetails = new AccountDetails();
-		accountDetails.setLastName("Иванов");
-		accountDetails.setFirstName("Иван");
-		if (accountDetails.getId() == null) {
-			return serviceAccountDetails.save(accountDetails);
-		} else {
-			return accountDetails;
-		}
-	}
-
-	/*
-	 * protected void removeAccountDetails() {
-	 * serviceAccountDetails.remove(accountDetails.getId());
-	 */
+	protected Account account;
+	protected Operator operator;
+	protected PhoneNumber phoneNumber;
+	protected Service service;
+	protected TariffItem tariffItem;
+	protected Tariff tariff;
 
 	protected Account createdAccount() {
 		LOGGER.info("prepare data for AccountServiceTest");
-		account = new Account();
+		Account account = new Account();
 		account.setEmail("test@mail.ru");
 		account.setPassword("123456");
 		if (account.getId() == null) {
@@ -98,14 +77,22 @@ public abstract class AbstractServiceTest {
 		}
 	}
 
-	protected void removeAccount() {
-		serviceAccount.remove(account.getId());
-
+	protected AccountDetails createdAccountDetails() {
+		LOGGER.info("prepare data for AccountDetailsServiceTest");
+		AccountDetails accountDetails = new AccountDetails();
+		accountDetails.setId(account.getId());
+		accountDetails.setLastName("Иванов");
+		accountDetails.setFirstName("Иван");
+		if (accountDetails.getId() == null) {
+			return serviceAccountDetails.save(accountDetails);
+		} else {
+			return accountDetails;
+		}
 	}
 
 	protected Invoice createdInvoice() {
 		LOGGER.info("prepare data for InvoiceServiceTest");
-		invoice = new Invoice();
+		Invoice invoice = new Invoice();
 		invoice.setMonth(1);
 		invoice.setQuantity(10);
 		invoice.setSum(990);
@@ -115,14 +102,9 @@ public abstract class AbstractServiceTest {
 
 	}
 
-	protected void removeInvoice() {
-		serviceInvoice.remove(invoice.getId());
-
-	}
-
 	protected Operator createdOperator() {
 		LOGGER.info("prepare data for OperatorServiceTest");
-		operator = new Operator();
+		Operator operator = new Operator();
 		operator.setTitle("MTS");
 		operator.setDeleted(false);
 		if (operator.getId() == null) {
@@ -132,14 +114,9 @@ public abstract class AbstractServiceTest {
 		}
 	}
 
-	protected void removeOperator() {
-		serviceOperator.remove(operator.getId());
-
-	}
-
 	protected PhoneNumber createdPhoneNumber() {
 		LOGGER.info("prepare data for PhoneNumberServiceTest");
-		phoneNumber = new PhoneNumber();
+		PhoneNumber phoneNumber = new PhoneNumber();
 		phoneNumber.setAccountId(account.getId());
 		phoneNumber.setNumber("375297777777");
 		phoneNumber.setTariffId(tariff.getId());
@@ -150,14 +127,9 @@ public abstract class AbstractServiceTest {
 		}
 	}
 
-	protected void removePhoneNumber() {
-		servicePhoneNumber.remove(phoneNumber.getId());
-
-	}
-
 	protected ServiceHistory createdServiceHistory() {
 		LOGGER.info("prepare data for ServiceHistoryServiceTest");
-		serviceHistory = new ServiceHistory();
+		ServiceHistory serviceHistory = new ServiceHistory();
 		serviceHistory.setData(new Date());
 		serviceHistory.setPhoneNumberId(phoneNumber.getId());
 		serviceHistory.setQuantity(10);
@@ -167,14 +139,9 @@ public abstract class AbstractServiceTest {
 
 	}
 
-	protected void removeServiceHistory() {
-		serviceServiceHistory.remove(serviceHistory.getId());
-
-	}
-
 	protected Service createdService() {
 		LOGGER.info("prepare data for ServiceServiceTest");
-		service = new Service();
+		Service service = new Service();
 		service.setType("звонки");
 		service.setUnit("мин");
 		service.setDeleted(false);
@@ -185,14 +152,9 @@ public abstract class AbstractServiceTest {
 		}
 	}
 
-	protected void removeService() {
-		serviceService.remove(service.getId());
-
-	}
-
 	protected TariffItem createdTariffItem() {
 		LOGGER.info("prepare data for TariffItemServiceTest");
-		tariffItem = new TariffItem();
+		TariffItem tariffItem = new TariffItem();
 		tariffItem.setCost(10);
 		tariffItem.setServiceId(service.getId());
 		tariffItem.setTariffId(tariff.getId());
@@ -204,14 +166,9 @@ public abstract class AbstractServiceTest {
 		}
 	}
 
-	protected void removeTariffItem() {
-		serviceTariffItem.remove(tariffItem.getId());
-
-	}
-
 	protected Tariff createdTariff() {
 		LOGGER.info("prepare data for TariffServiceTest");
-		tariff = new Tariff();
+		Tariff tariff = new Tariff();
 		tariff.setName("Отличный");
 		tariff.setOperatorId(operator.getId());
 		tariff.setDeleted(false);
@@ -222,8 +179,4 @@ public abstract class AbstractServiceTest {
 		}
 	}
 
-	protected void removeTariff() {
-		serviceTariff.remove(tariff.getId());
-
-	}
 }

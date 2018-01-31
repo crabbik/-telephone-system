@@ -3,18 +3,11 @@ package com.itacademy.jd2.lg.ms.dao;
 import java.util.List;
 
 import com.itacademy.jd2.lg.ms.dao.dbmodel.PhoneNumber;
+import com.itacademy.jd2.lg.ms.dao.filter.PhoneNumberFilter;
 
-public interface IPhoneNumberDao {
-	PhoneNumber get(Integer id);
+public interface IPhoneNumberDao extends IHibernateDao<PhoneNumber, Integer> {
+	Long count(PhoneNumberFilter filter);
 
-	void remove(Integer id);
-
-	void update(PhoneNumber phoneNumber);
-
-	int insert(PhoneNumber phoneNumber);
-
-	List<PhoneNumber> getAll();
-
-	List<PhoneNumber> getAll(int limit, int offset);
+	List<PhoneNumber> find(PhoneNumberFilter filter);
 
 }

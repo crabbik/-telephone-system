@@ -1,29 +1,24 @@
 package com.itacademy.jd2.lg.ms.dao.dbmodel;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Account {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
+public class Account extends AbstractDbModel implements Serializable {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	@Column
 	private String email;
+	@Column
 	private String password;
-	private Timestamp created;
-	private Timestamp modified;
-
-	public Timestamp getCreated() {
-		return created;
-	}
-
-	public void setCreated(Timestamp created) {
-		this.created = created;
-	}
-
-	public Timestamp getModified() {
-		return modified;
-	}
-
-	public void setModified(Timestamp modified) {
-		this.modified = modified;
-	}
 
 	public Integer getId() {
 		return id;

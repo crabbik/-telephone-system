@@ -1,11 +1,27 @@
 package com.itacademy.jd2.lg.ms.dao.dbmodel;
 
-public class Invoice {
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
+public class Invoice  extends AbstractDbModel implements Serializable {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	@Column
 	private String type;
+	@Column
 	private Integer quantity;
+	@Column
 	private Integer sum;
+	@Column
 	private Integer month;
+	@Column
 	private Integer year;
 
 	public Integer getId() {

@@ -1,16 +1,27 @@
 package com.itacademy.jd2.lg.ms.dao.dbmodel;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class TariffItem {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
+public class TariffItem extends AbstractDbModel implements Serializable {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	@Column
 	private Integer tariffId;
+	@Column
 	private Integer serviceId;
+	@Column
 	private Integer cost;
+	@Column
 	private boolean deleted;
-	private Timestamp created;
-	private Timestamp modified;
 
 	public Integer getId() {
 		return id;
@@ -50,22 +61,6 @@ public class TariffItem {
 
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
-	}
-
-	public Timestamp getCreated() {
-		return created;
-	}
-
-	public void setCreated(Timestamp created) {
-		this.created = created;
-	}
-
-	public Timestamp getModified() {
-		return modified;
-	}
-
-	public void setModified(Timestamp modified) {
-		this.modified = modified;
 	}
 
 }

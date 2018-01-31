@@ -11,19 +11,15 @@ import org.springframework.stereotype.Service;
 
 import com.itacademy.jd2.lg.ms.dao.IOperatorDao;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Operator;
-import com.itacademy.jd2.lg.ms.dao.impl.OperatorDaoImpl;
+import com.itacademy.jd2.lg.ms.dao.filter.OperatorFilter;
 import com.itacademy.jd2.lg.ms.services.IOperatorService;
+
 @Service
 public class OperatorServiceImpl implements IOperatorService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(OperatorServiceImpl.class);
 	@Autowired
-	private IOperatorDao dao ;
-
-	@Override
-	public Operator get(Integer id) {
-		return dao.get(id);
-	}
+	private IOperatorDao dao;
 
 	@Override
 	public void remove(Integer id) {
@@ -36,12 +32,16 @@ public class OperatorServiceImpl implements IOperatorService {
 		operator.setModified(modifiedDate);
 		if (operator.getId() == null) {
 			operator.setCreated(modifiedDate);
-			int id = dao.insert(operator);
-			operator.setId(id);
+			dao.insert(operator);
 		} else {
 			dao.update(operator);
 		}
 		return operator;
+	}
+
+	@Override
+	public Operator get(Integer id) {
+		return dao.get(id);
 	}
 
 	@Override
@@ -50,8 +50,12 @@ public class OperatorServiceImpl implements IOperatorService {
 	}
 
 	@Override
-	public List<Operator> getAll(int limit, int offset) {
-		return dao.getAll(limit, offset);
+	public Long getCount(OperatorFilter filter) {
+		return dao.count(filter);
 	}
 
+	@Override
+	public List<Operator> getAll(OperatorFilter filter) {
+		return dao.find(filter);
+	}
 }

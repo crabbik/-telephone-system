@@ -3,18 +3,11 @@ package com.itacademy.jd2.lg.ms.dao;
 import java.util.List;
 
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Operator;
+import com.itacademy.jd2.lg.ms.dao.filter.OperatorFilter;
 
-public interface IOperatorDao {
-	Operator get(Integer id);
+public interface IOperatorDao extends IHibernateDao<Operator, Integer> {
+	Long count(OperatorFilter filter);
 
-	void remove(Integer id);
-
-	void update(Operator operator);
-
-	int insert(Operator operator);
-
-	List<Operator> getAll();
-
-	List<Operator> getAll(int limit, int offset);
+	List<Operator> find(OperatorFilter filter);
 
 }
