@@ -11,23 +11,12 @@ import javax.persistence.Id;
 
 @Entity
 public class PhoneNumber extends AbstractDbModel implements Serializable {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
 	@Column
 	private Integer accountId;
 	@Column
 	private String number;
 	@Column
 	private Integer tariffId;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public Integer getAccountId() {
 		return accountId;

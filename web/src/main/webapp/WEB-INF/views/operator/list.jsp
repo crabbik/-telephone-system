@@ -1,25 +1,41 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<div style="margin: 10px;">
-	<h4>List of Operators</h4>
-	<table style="width: 600px" class="reference">
-		<tbody>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="mytags" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="mytaglib"
+	uri="https://journaldev.com/jsp/tlds/mytags"%>
+
+<c:set var="pageListHolder" value="${operator}" scope="session" />
+<spring:url value="/operator" var="pageurl" />
+
+<h4>List of Operators</h4>
+<table class="bordered highlight">
+	<tbody>
+		<tr>
+			<th><mytaglib:sort-link column="id">ID</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link column="title">Title</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link column="deleted">Deleted</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link column="created">Created</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link column="modified">Modified</mytaglib:sort-link></th>
+			<th></th>
+		</tr>
+		<c:forEach var="operator" items="${listModel.list}"
+			varStatus="loopCounter">
 			<tr>
-				<th>ID</th>
-				<th>Title</th>
-				<th>Deleted</th>
-				<th>Created</th>
-				<th>Modified</th>
+				<td><c:out value="${operator.id}" /></td>
+				<td><c:out value="${operator.title}" /></td>
+				<td><c:out value="${operator.deleted}" /></td>
+				<td><c:out value="${operator.created}" /></td>
+				<td><c:out value="${operator.modified}" /></td>
+				<td class="right"><a class="btn-floating"
+					href="/operator/${operator.id}"><i class="material-icons">info</i></a>
+					<a class="btn-floating" href="/operator/${operator.id}/edit"><i
+						class="material-icons">edit</i></a> <a class="btn-floating red"
+					href="/operator/${operator.id}/delete"><i
+						class="material-icons">delete</i></a>
 			</tr>
-			<c:forEach var="cover" items="${requestScope.operators}"
-				varStatus="loopCounter">
-				<tr>
-					<td><c:out value="${operator.id}" /></td>
-					<td><c:out value="${operator.title}" /></td>
-					<td><c:out value="${operator.deleted}" /></td>
-					<td><c:out value="${operator.created}" /></td>
-					<td><c:out value="${operator.modified}" /></td>
-				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
-</div>
+		</c:forEach>
+	</tbody>
+</table>
+<mytags:paging />
+<a class="waves-effect waves-light btn right" href="/operator/add"><i
+	class="material-icons">add</i></a>

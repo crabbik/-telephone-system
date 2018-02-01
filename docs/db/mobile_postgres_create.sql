@@ -5,6 +5,8 @@ CREATE TABLE "service_history" (
 	"quantity" integer NOT NULL,
 	"sum" integer NOT NULL,
 	"phone_number_id" bigint NOT NULL,
+	"created" TIMESTAMP NOT NULL,
+	"modified" TIMESTAMP NOT NULL,
 	CONSTRAINT service_history_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -53,7 +55,11 @@ CREATE TABLE "account" (
 
 CREATE TABLE "account_2_role" (
 	"account_id" bigint NOT NULL,
-	"role_id" bigint NOT NULL
+	"role_id" bigint NOT NULL,
+	"created" TIMESTAMP NOT NULL,
+	"modified" TIMESTAMP NOT NULL,
+	"id" serial NOT NULL,
+	CONSTRAINT account_2_role_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
@@ -67,6 +73,8 @@ CREATE TABLE "invoice" (
 	"sum" integer NOT NULL,
 	"month" time with time zone NOT NULL,
 	"year" time with time zone NOT NULL,
+	"created" TIMESTAMP NOT NULL,
+	"modified" TIMESTAMP NOT NULL,
 	CONSTRAINT invoice_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -76,7 +84,11 @@ CREATE TABLE "invoice" (
 
 CREATE TABLE "phone_number_2_invoice" (
 	"invoice_id" bigint NOT NULL,
-	"phone_number_id" bigint NOT NULL
+	"phone_number_id" bigint NOT NULL,
+	"created" TIMESTAMP NOT NULL,
+	"modified" TIMESTAMP NOT NULL,
+	"id" serial NOT NULL,
+	CONSTRAINT phone_number_2_invoice_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
@@ -161,3 +173,4 @@ ALTER TABLE "tariff" ADD CONSTRAINT "tariff_fk0" FOREIGN KEY ("operator_id") REF
 
 ALTER TABLE "tariff_item" ADD CONSTRAINT "tariff_item_fk0" FOREIGN KEY ("tariif_id") REFERENCES "tariff"("id");
 ALTER TABLE "tariff_item" ADD CONSTRAINT "tariff_item_fk1" FOREIGN KEY ("service_id") REFERENCES "service"("id");
+

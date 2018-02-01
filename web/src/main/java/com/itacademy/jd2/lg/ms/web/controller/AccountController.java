@@ -32,6 +32,8 @@ import com.itacademy.jd2.lg.ms.web.util.SortModel;
 @RequestMapping(value = "/account")
 public class AccountController {
 
+	private static final String LOCAL_LIST_MODEL_NAME = "accountListModel";
+
 	@Autowired
 	private IAccountService accountService;
 
@@ -47,13 +49,14 @@ public class AccountController {
 			@RequestParam(name = "page", required = false) final Integer pageNumber) {
 
 		ListModel<AccountDTO> listModel;
-		if (req.getSession().getAttribute(ListModel.SESSION_ATTR_NAME) == null) {
+		if (req.getSession().getAttribute(LOCAL_LIST_MODEL_NAME) == null) {
 			listModel = new ListModel<>();
 			listModel.setSort(new SortModel("id"));
-			req.getSession().setAttribute(ListModel.SESSION_ATTR_NAME, listModel);
+			req.getSession().setAttribute(LOCAL_LIST_MODEL_NAME, listModel);
 		} else {
-			listModel = (ListModel<AccountDTO>) req.getSession().getAttribute(ListModel.SESSION_ATTR_NAME);
+			listModel = (ListModel<AccountDTO>) req.getSession().getAttribute(LOCAL_LIST_MODEL_NAME);
 		}
+		req.getSession().setAttribute(ListModel.SESSION_ATTR_NAME, listModel);
 
 		listModel.setSort(sort);
 		listModel.setPage(pageNumber);
@@ -109,11 +112,11 @@ public class AccountController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String save(@Valid @ModelAttribute("accountForm") final AccountDTO coverForm, final BindingResult result) {
+	public String save(@Valid @ModelAttribute("accountForm") final AccountDTO accountForm, final BindingResult result) {
 		if (result.hasErrors()) {
 			return "account.edit";
 		} else {
-			final Account account = fromDTOConverter.apply(coverForm);
+			final Account account = fromDTOConverter.apply(accountForm);
 			accountService.save(account);
 			return "redirect:/account";
 		}

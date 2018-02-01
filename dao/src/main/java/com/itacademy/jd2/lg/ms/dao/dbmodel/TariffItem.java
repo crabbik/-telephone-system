@@ -11,9 +11,6 @@ import javax.persistence.Id;
 
 @Entity
 public class TariffItem extends AbstractDbModel implements Serializable {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
 	@Column
 	private Integer tariffId;
 	@Column
@@ -22,14 +19,6 @@ public class TariffItem extends AbstractDbModel implements Serializable {
 	private Integer cost;
 	@Column
 	private boolean deleted;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public Integer getTariffId() {
 		return tariffId;

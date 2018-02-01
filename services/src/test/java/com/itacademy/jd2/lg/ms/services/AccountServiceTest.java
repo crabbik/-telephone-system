@@ -9,9 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Account;
+
 public class AccountServiceTest extends AbstractServiceTest {
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(AccountServiceTest.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AccountServiceTest.class);
 
 	@Test
 	public void testCRUD() {
@@ -48,12 +48,12 @@ public class AccountServiceTest extends AbstractServiceTest {
 
 		// remove account
 		LOGGER.info("test remove account");
-		serviceAccount.remove(account.getId());
+		serviceOperator.remove(account.getId());
 
 		// check that account was removed
 		LOGGER.info("check that account was removed");
 		try {
-			Assert.assertNull(serviceAccount.get(account.getId()));
+			Assert.assertNull(serviceOperator.get(account.getId()));
 		} catch (Exception e) {
 			LOGGER.info("account with this id does not exist");
 		}

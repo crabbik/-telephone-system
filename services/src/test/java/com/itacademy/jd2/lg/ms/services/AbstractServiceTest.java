@@ -80,7 +80,7 @@ public abstract class AbstractServiceTest {
 	protected AccountDetails createdAccountDetails() {
 		LOGGER.info("prepare data for AccountDetailsServiceTest");
 		AccountDetails accountDetails = new AccountDetails();
-		accountDetails.setId(account.getId());
+		accountDetails.setId(operator.getId());
 		accountDetails.setLastName("Иванов");
 		accountDetails.setFirstName("Иван");
 		if (accountDetails.getId() == null) {
@@ -117,7 +117,7 @@ public abstract class AbstractServiceTest {
 	protected PhoneNumber createdPhoneNumber() {
 		LOGGER.info("prepare data for PhoneNumberServiceTest");
 		PhoneNumber phoneNumber = new PhoneNumber();
-		phoneNumber.setAccountId(account.getId());
+		phoneNumber.setAccountId(operator.getId());
 		phoneNumber.setNumber("375297777777");
 		phoneNumber.setTariffId(tariff.getId());
 		if (phoneNumber.getId() == null) {
@@ -170,7 +170,7 @@ public abstract class AbstractServiceTest {
 		LOGGER.info("prepare data for TariffServiceTest");
 		Tariff tariff = new Tariff();
 		tariff.setName("Отличный");
-		tariff.setOperatorId(operator.getId());
+		tariff.setOperator(operator);
 		tariff.setDeleted(false);
 		if (tariff.getId() == null) {
 			return serviceTariff.save(tariff);

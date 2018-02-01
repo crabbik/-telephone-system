@@ -11,9 +11,6 @@ import javax.persistence.Id;
 
 @Entity
 public class Service extends AbstractDbModel implements Serializable {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
 	@Column
 	private String type;
 	@Column
@@ -27,14 +24,6 @@ public class Service extends AbstractDbModel implements Serializable {
 
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getType() {

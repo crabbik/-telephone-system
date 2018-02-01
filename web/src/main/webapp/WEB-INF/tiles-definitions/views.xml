@@ -17,18 +17,13 @@
 	<definition name="operator.edit" extends="DefaultTemplate">
 		<put-attribute name="body" value="/WEB-INF/views/operator/form.jsp" />
 	</definition>
-	<definition name="operator.details" extends="DefaultTemplate">
-		<put-attribute name="body"
-			value="/WEB-INF/views/operator/details.jsp" />
-	</definition>
+
 	<definition name="account.list" extends="DefaultTemplate">
 		<put-attribute name="body" value="/WEB-INF/views/account/list.jsp" />
 	</definition>
 	<definition name="account.edit" extends="DefaultTemplate">
 		<put-attribute name="body" value="/WEB-INF/views/account/form.jsp" />
 	</definition>
-	<definition name="account.details" extends="DefaultTemplate">
-		<put-attribute name="body" value="/WEB-INF/views/account/details.jsp" />
-	</definition>
+
 
 </tiles-definitions>

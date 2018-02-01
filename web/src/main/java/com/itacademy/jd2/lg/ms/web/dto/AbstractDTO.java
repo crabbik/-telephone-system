@@ -1,22 +1,15 @@
-package com.itacademy.jd2.lg.ms.dao.dbmodel;
+package com.itacademy.jd2.lg.ms.web.dto;
 
-import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotNull;
 
-@MappedSuperclass
-public class AbstractDbModel implements Serializable {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+public class AbstractDTO {
+
 	private Integer id;
-	@Column(updatable = false)
+
 	private Date created;
-	@Column
+
 	private Date modified;
 
 	public Integer getId() {

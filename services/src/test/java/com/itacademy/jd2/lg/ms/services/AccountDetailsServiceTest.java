@@ -3,14 +3,18 @@ package com.itacademy.jd2.lg.ms.services;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.itacademy.jd2.lg.ms.dao.dbmodel.Account;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.AccountDetails;
 
 public class AccountDetailsServiceTest extends AbstractServiceTest {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AccountDetailsServiceTest.class);
+
+	Account account;
 
 	@Test
 	public void testCRUD() {
@@ -23,7 +27,7 @@ public class AccountDetailsServiceTest extends AbstractServiceTest {
 			LOGGER.info("impossible to save AccountDetails ");
 		}
 		// fill the properties
-		accountDetails.setId(19);
+		accountDetails.setAccount(account);
 		accountDetails.setFirstName("Name");
 		accountDetails.setLastName("LastName");
 		// now save the account
