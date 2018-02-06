@@ -18,7 +18,6 @@ import com.itacademy.jd2.lg.ms.dao.dbmodel.Service;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.ServiceHistory;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Tariff;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.TariffItem;
-import com.itacademy.jd2.lg.ms.services.IAccount2RoleService;
 import com.itacademy.jd2.lg.ms.services.IAccountDetailsService;
 import com.itacademy.jd2.lg.ms.services.IAccountService;
 import com.itacademy.jd2.lg.ms.services.IInvoiceService;
@@ -37,8 +36,6 @@ public abstract class AbstractServiceTest {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractServiceTest.class);
 	@Autowired
 	protected IAccountDetailsService serviceAccountDetails;
-	@Autowired
-	protected IAccount2RoleService serviceAccount2role;
 	@Autowired
 	protected IAccountService serviceAccount;
 	@Autowired

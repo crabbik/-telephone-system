@@ -12,7 +12,15 @@
 			<ul id="nav-mobile" class="right hide-on-med-and-down">
 				<li><a href="/">Home</a></li>
 				<li><a href="/account">Accounts List</a></li>
-				<li><a href="/operator">Operators List</a></li>
+				<li><a href="/operator">Operators</a></li>
+				<li><a href="/accountDetails">Account Details</a></li>
+				<li><a href="/invoice">Invoice</a></li>
+				<li><a href="/phoneNumber">Phone Numbers</a></li>
+				<li><a href="/service">Services List</a></li>
+				<li><a href="/serviceHistory">Service History</a></li>
+				<li><a href="/tariff">Tariffs </a></li>
+				<li><a href="/tariffItem">Tariff Items</a></li>
+				<li><a href="/role">Role</a></li>
 			</ul>
 		</div>
 	</nav>

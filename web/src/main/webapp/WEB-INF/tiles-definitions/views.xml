@@ -25,5 +25,66 @@
 		<put-attribute name="body" value="/WEB-INF/views/account/form.jsp" />
 	</definition>
 
+	<definition name="accountDetails.list" extends="DefaultTemplate">
+		<put-attribute name="body"
+			value="/WEB-INF/views/accountDetails/list.jsp" />
+	</definition>
+	<definition name="accountDetails.edit" extends="DefaultTemplate">
+		<put-attribute name="body"
+			value="/WEB-INF/views/accountDetails/form.jsp" />
+	</definition>
+
+	<definition name="invoice.list" extends="DefaultTemplate">
+		<put-attribute name="body" value="/WEB-INF/views/invoice/list.jsp" />
+	</definition>
+	<definition name="invoice.edit" extends="DefaultTemplate">
+		<put-attribute name="body" value="/WEB-INF/views/invoice/form.jsp" />
+	</definition>
+
+	<definition name="phoneNumber.list" extends="DefaultTemplate">
+		<put-attribute name="body"
+			value="/WEB-INF/views/phoneNumber/list.jsp" />
+	</definition>
+	<definition name="phoneNumber.edit" extends="DefaultTemplate">
+		<put-attribute name="body"
+			value="/WEB-INF/views/phoneNumber/form.jsp" />
+	</definition>
+
+	<definition name="service.list" extends="DefaultTemplate">
+		<put-attribute name="body" value="/WEB-INF/views/service/list.jsp" />
+	</definition>
+	<definition name="service.edit" extends="DefaultTemplate">
+		<put-attribute name="body" value="/WEB-INF/views/service/form.jsp" />
+	</definition>
+
+	<definition name="serviceHistory.list" extends="DefaultTemplate">
+		<put-attribute name="body"
+			value="/WEB-INF/views/serviceHistory/list.jsp" />
+	</definition>
+	<definition name="serviceHistory.edit" extends="DefaultTemplate">
+		<put-attribute name="body"
+			value="/WEB-INF/views/serviceHistory/form.jsp" />
+	</definition>
+
+	<definition name="tariff.list" extends="DefaultTemplate">
+		<put-attribute name="body" value="/WEB-INF/views/tariff/list.jsp" />
+	</definition>
+	<definition name="tariff.edit" extends="DefaultTemplate">
+		<put-attribute name="body" value="/WEB-INF/views/tariff/form.jsp" />
+	</definition>
+
+	<definition name="tariffItem.list" extends="DefaultTemplate">
+		<put-attribute name="body" value="/WEB-INF/views/tariffItem/list.jsp" />
+	</definition>
+	<definition name="tariffItem.edit" extends="DefaultTemplate">
+		<put-attribute name="body" value="/WEB-INF/views/tariffItem/form.jsp" />
+	</definition>
+
+	<definition name="role.list" extends="DefaultTemplate">
+		<put-attribute name="body" value="/WEB-INF/views/role/list.jsp" />
+	</definition>
+	<definition name="role.edit" extends="DefaultTemplate">
+		<put-attribute name="body" value="/WEB-INF/views/role/form.jsp" />
+	</definition>
 
 </tiles-definitions>
