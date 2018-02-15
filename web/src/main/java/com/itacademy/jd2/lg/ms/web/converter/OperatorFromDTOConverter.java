@@ -18,6 +18,8 @@ public class OperatorFromDTOConverter implements Function<OperatorDTO,Operator>{
 		dbModel.setDeleted(dto.isDeleted());
 		dbModel.setCreated(dto.getCreated());
 		dbModel.setModified(dto.getModified());
+		
+		
 
 		return dbModel;
 	}

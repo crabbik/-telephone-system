@@ -16,6 +16,8 @@
 			<th><mytaglib:sort-link column="password">Password</mytaglib:sort-link></th>
 			<th><mytaglib:sort-link column="created">Created</mytaglib:sort-link></th>
 			<th><mytaglib:sort-link column="modified">Modified</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link column="details.lastName">LastName</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link column="details.firstName">FirstName</mytaglib:sort-link></th>
 			<th></th>
 		</tr>
 		<c:forEach var="account" items="${listModel.list}"
@@ -26,6 +28,8 @@
 				<td><c:out value="${account.password}" /></td>
 				<td><c:out value="${account.created}" /></td>
 				<td><c:out value="${account.modified}" /></td>
+				<td><c:out value="${account.details.lastName}" /></td>
+				<td><c:out value="${account.details.firstName}" /></td>
 				<td class="right"><a class="btn-floating"
 					href="/account/${account.id}"><i class="material-icons">info</i></a>
 					<a class="btn-floating" href="/account/${account.id}/edit"><i

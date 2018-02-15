@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Account;
+import com.itacademy.jd2.lg.ms.dao.dbmodel.AccountDetails_;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Account_;
 import com.itacademy.jd2.lg.ms.dao.filter.AccountFilter;
 import com.itacademy.jd2.lg.ms.services.IAccountService;
@@ -98,6 +99,12 @@ public class AccountController {
 			break;
 		case "modified":
 			sortAttribute = Account_.modified;
+			break;
+		case "details.firstName":
+			sortAttribute = AccountDetails_.firstName;
+			break;
+		case "details.lastName":
+			sortAttribute = AccountDetails_.lastName;
 			break;
 		default:
 			throw new IllegalArgumentException("unsupported sort property:" + sortModel.getColumn());

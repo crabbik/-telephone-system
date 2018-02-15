@@ -24,4 +24,10 @@
 			</ul>
 		</div>
 	</nav>
+
+	<div style="position: absolute; top: 20; left: 20">
+		<a
+			href="${requestScope['javax.servlet.forward.request_uri']}?langauge=en">en</a>|<a
+			href="${requestScope['javax.servlet.forward.request_uri']}?langauge=ru">ru</a>
+	</div>
 </header>

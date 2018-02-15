@@ -22,7 +22,6 @@ import com.itacademy.jd2.lg.ms.services.IAccountDetailsService;
 import com.itacademy.jd2.lg.ms.services.IAccountService;
 import com.itacademy.jd2.lg.ms.services.IInvoiceService;
 import com.itacademy.jd2.lg.ms.services.IOperatorService;
-import com.itacademy.jd2.lg.ms.services.IPhoneNumber2InvoiceService;
 import com.itacademy.jd2.lg.ms.services.IPhoneNumberService;
 import com.itacademy.jd2.lg.ms.services.IServiceHistoryService;
 import com.itacademy.jd2.lg.ms.services.IServiceService;
@@ -43,8 +42,6 @@ public abstract class AbstractServiceTest {
 	@Autowired
 	protected IOperatorService serviceOperator;
 	@Autowired
-	protected IPhoneNumber2InvoiceService servicePhoneNumber2Invoice;
-	@Autowired
 	protected IPhoneNumberService servicePhoneNumber;
 	@Autowired
 	protected IServiceHistoryService serviceServiceHistory;
@@ -55,29 +52,20 @@ public abstract class AbstractServiceTest {
 	@Autowired
 	protected ITariffService serviceTariff;
 
-	protected Account account;
-	protected Operator operator;
-	protected PhoneNumber phoneNumber;
-	protected Service service;
-	protected TariffItem tariffItem;
-	protected Tariff tariff;
-
-	protected Account createdAccount() {
+	protected Account createAccount() {
 		LOGGER.info("prepare data for AccountServiceTest");
 		Account account = new Account();
 		account.setEmail("test@mail.ru");
 		account.setPassword("123456");
-		if (account.getId() == null) {
-			return serviceAccount.save(account);
-		} else {
-			return account;
-		}
+		serviceAccount.save(account);
+		return account;
+
 	}
 
-	protected AccountDetails createdAccountDetails() {
+	protected AccountDetails createAccountDetails() {
 		LOGGER.info("prepare data for AccountDetailsServiceTest");
 		AccountDetails accountDetails = new AccountDetails();
-		accountDetails.setId(operator.getId());
+		accountDetails.setId(1);
 		accountDetails.setLastName("Иванов");
 		accountDetails.setFirstName("Иван");
 		if (accountDetails.getId() == null) {
@@ -87,7 +75,7 @@ public abstract class AbstractServiceTest {
 		}
 	}
 
-	protected Invoice createdInvoice() {
+	protected Invoice createInvoice() {
 		LOGGER.info("prepare data for InvoiceServiceTest");
 		Invoice invoice = new Invoice();
 		invoice.setMonth(1);
@@ -99,7 +87,7 @@ public abstract class AbstractServiceTest {
 
 	}
 
-	protected Operator createdOperator() {
+	protected Operator createOperator() {
 		LOGGER.info("prepare data for OperatorServiceTest");
 		Operator operator = new Operator();
 		operator.setTitle("MTS");
@@ -111,12 +99,9 @@ public abstract class AbstractServiceTest {
 		}
 	}
 
-	protected PhoneNumber createdPhoneNumber() {
+	protected PhoneNumber createPhoneNumber() {
 		LOGGER.info("prepare data for PhoneNumberServiceTest");
 		PhoneNumber phoneNumber = new PhoneNumber();
-		phoneNumber.setAccountId(operator.getId());
-		phoneNumber.setNumber("375297777777");
-		phoneNumber.setTariffId(tariff.getId());
 		if (phoneNumber.getId() == null) {
 			return servicePhoneNumber.save(phoneNumber);
 		} else {
@@ -124,19 +109,17 @@ public abstract class AbstractServiceTest {
 		}
 	}
 
-	protected ServiceHistory createdServiceHistory() {
+	protected ServiceHistory createServiceHistory() {
 		LOGGER.info("prepare data for ServiceHistoryServiceTest");
 		ServiceHistory serviceHistory = new ServiceHistory();
 		serviceHistory.setData(new Date());
-		serviceHistory.setPhoneNumberId(phoneNumber.getId());
 		serviceHistory.setQuantity(10);
 		serviceHistory.setSum(990);
-		serviceHistory.setTariffItemId(tariffItem.getId());
 		return serviceHistory;
 
 	}
 
-	protected Service createdService() {
+	protected Service createService() {
 		LOGGER.info("prepare data for ServiceServiceTest");
 		Service service = new Service();
 		service.setType("звонки");
@@ -149,12 +132,11 @@ public abstract class AbstractServiceTest {
 		}
 	}
 
-	protected TariffItem createdTariffItem() {
+	protected TariffItem createTariffItem() {
 		LOGGER.info("prepare data for TariffItemServiceTest");
 		TariffItem tariffItem = new TariffItem();
 		tariffItem.setCost(10);
-		tariffItem.setServiceId(service.getId());
-		tariffItem.setTariffId(tariff.getId());
+		tariffItem.setService(createService());
 		tariffItem.setDeleted(false);
 		if (tariffItem.getId() == null) {
 			return serviceTariffItem.save(tariffItem);
@@ -163,11 +145,11 @@ public abstract class AbstractServiceTest {
 		}
 	}
 
-	protected Tariff createdTariff() {
+	protected Tariff createTariff() {
 		LOGGER.info("prepare data for TariffServiceTest");
 		Tariff tariff = new Tariff();
 		tariff.setName("Отличный");
-		tariff.setOperator(operator);
+		tariff.setOperator(createOperator());
 		tariff.setDeleted(false);
 		if (tariff.getId() == null) {
 			return serviceTariff.save(tariff);

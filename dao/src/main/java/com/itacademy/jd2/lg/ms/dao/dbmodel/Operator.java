@@ -1,21 +1,30 @@
 package com.itacademy.jd2.lg.ms.dao.dbmodel;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 
 @Entity
-public class Operator extends AbstractDbModel implements Serializable {
+public class Operator extends AbstractDbModel {
 	@Column
 	private String title;
 	@Column
 	private boolean deleted;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "operator")
+	private List<Tariff> tariff;
+
+	public List<Tariff> getTariff() {
+		return tariff;
+	}
+
+	public void setTariff(List<Tariff> tariff) {
+		this.tariff = tariff;
+	}
 
 	public String getTitle() {
 		return title;

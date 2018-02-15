@@ -15,4 +15,15 @@
 			<required>true</required>
 		</attribute>
 	</tag>
+
+	<tag>
+		<name>i18n-link</name>
+		<tag-class>com.itacademy.jd2.lg.ms.web.tag.I18nLink</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<name>key</name>
+			<required>true</required>
+		</attribute>
+	</tag>
+
 </taglib>

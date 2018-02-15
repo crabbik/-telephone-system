@@ -8,7 +8,7 @@
 <spring:url value="/operator" var="pageurl" />
 
 <h4>List of Operators</h4>
-<table class="bordered highlight">
+<table class="striped">
 	<tbody>
 		<tr>
 			<th><mytaglib:sort-link column="id">ID</mytaglib:sort-link></th>

@@ -18,6 +18,7 @@ public class OperatorToDTOConverter implements Function<Operator, OperatorDTO> {
 		dto.setCreated(dbModel.getCreated());
 		dto.setModified(dbModel.getModified());
 
+		
 		return dto;
 	}
 

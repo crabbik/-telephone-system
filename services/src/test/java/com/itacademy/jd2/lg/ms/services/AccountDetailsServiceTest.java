@@ -3,7 +3,6 @@ package com.itacademy.jd2.lg.ms.services;
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +26,7 @@ public class AccountDetailsServiceTest extends AbstractServiceTest {
 			LOGGER.info("impossible to save AccountDetails ");
 		}
 		// fill the properties
-		accountDetails.setAccount(account);
+		// accountDetails.setAccount(account);
 		accountDetails.setFirstName("Name");
 		accountDetails.setLastName("LastName");
 		// now save the account

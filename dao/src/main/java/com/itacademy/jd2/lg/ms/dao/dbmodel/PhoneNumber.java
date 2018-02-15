@@ -1,29 +1,75 @@
 package com.itacademy.jd2.lg.ms.dao.dbmodel;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 
 @Entity
-public class PhoneNumber extends AbstractDbModel implements Serializable {
-	@Column
-	private Integer accountId;
+public class PhoneNumber extends AbstractDbModel {
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	private Account account;
+
 	@Column
 	private String number;
-	@Column
-	private Integer tariffId;
 
-	public Integer getAccountId() {
-		return accountId;
+	@OneToOne(fetch = FetchType.LAZY, optional = false)
+	private Tariff tariff;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "phone_number")
+	private List<ServiceHistory> serviceHistory;
+
+	@JoinTable(name = "phone_number_2_invoice", joinColumns = {
+			@JoinColumn(name = "phone_number_id") }, inverseJoinColumns = { @JoinColumn(name = "invoice_id") })
+	@ManyToMany(targetEntity = Invoice.class, fetch = FetchType.LAZY)
+	@OrderBy("name ASC")
+	private Set<Invoice> invoices = new HashSet<>();
+
+	public Set<Invoice> getCatalogs() {
+		return invoices;
 	}
 
-	public void setAccountId(Integer accountId) {
-		this.accountId = accountId;
+	public List<ServiceHistory> getServiceHistory() {
+		return serviceHistory;
+	}
+
+	public void setServiceHistory(List<ServiceHistory> serviceHistory) {
+		this.serviceHistory = serviceHistory;
+	}
+
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+
+	public Tariff getTariff() {
+		return tariff;
+	}
+
+	public void setTariff(Tariff tariff) {
+		this.tariff = tariff;
+	}
+
+	public Set<Invoice> getInvoices() {
+		return invoices;
+	}
+
+	public void setInvoices(Set<Invoice> invoices) {
+		this.invoices = invoices;
 	}
 
 	public String getNumber() {
@@ -32,14 +78,6 @@ public class PhoneNumber extends AbstractDbModel implements Serializable {
 
 	public void setNumber(String number) {
 		this.number = number;
-	}
-
-	public Integer getTariffId() {
-		return tariffId;
-	}
-
-	public void setTariffId(Integer tariffId) {
-		this.tariffId = tariffId;
 	}
 
 }

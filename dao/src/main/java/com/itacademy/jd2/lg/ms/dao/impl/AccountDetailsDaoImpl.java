@@ -52,8 +52,14 @@ public class AccountDetailsDaoImpl extends AbstractHibernateDaoImpl<AccountDetai
 		}
 
 		TypedQuery<AccountDetails> q = em.createQuery(cq);
-		setPaging(filter, q);
+		// setPaging(filter, q);
 		return q.getResultList();
+	}
+
+	@Override
+	public List<AccountDetails> getChildren(Integer parentId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

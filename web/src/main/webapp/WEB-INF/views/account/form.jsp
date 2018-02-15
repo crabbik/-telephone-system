@@ -21,6 +21,22 @@
 			</div>
 		</div>
 		<div class="row">
+			<div class="input-field col s12">
+				<form:input path="details.lastName" type="text"
+					disabled="${readonly}" />
+				<form:errors path="details.lastName" cssClass="red-text" />
+				<label for="width">Имя</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-field col s12">
+				<form:input path="details.firstName" type="text"
+					disabled="${readonly}" />
+				<form:errors path="details.firstName." cssClass="red-text" />
+				<label for="width">Фамилия</label>
+			</div>
+		</div>
+		<div class="row">
 			<div class="col s6"></div>
 			<div class="col s3">
 				<c:if test="${!readonly}">
