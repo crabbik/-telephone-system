@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Account;
+import com.itacademy.jd2.lg.ms.dao.dbmodel.AccountDetails;
 import com.itacademy.jd2.lg.ms.dao.filter.AccountFilter;
 
 public interface IAccountService {
@@ -16,10 +17,13 @@ public interface IAccountService {
 	@Transactional
 	Account save(Account account);
 
-	List<Account> getAll();
+	@Transactional
+	Account saveWithDetails(final Account account);
 
 	Long getCount(AccountFilter filter);
 
 	List<Account> getAll(AccountFilter filter);
+
+	AccountDetails getDetails(Integer id);
 
 }

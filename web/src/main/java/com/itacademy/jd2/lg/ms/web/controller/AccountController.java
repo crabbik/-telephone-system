@@ -62,7 +62,7 @@ public class AccountController {
 		listModel.setSort(sort);
 		listModel.setPage(pageNumber);
 
-		AccountFilter accountFilter = buildFilter(listModel);
+		final AccountFilter accountFilter = buildFilter(listModel);
 
 		final List<Account> currentPageList = accountService.getAll(accountFilter);
 		listModel.setList(currentPageList.stream().map(toDTOConverter).collect(Collectors.toList()));
@@ -74,10 +74,10 @@ public class AccountController {
 
 	private AccountFilter buildFilter(ListModel<AccountDTO> listModel) {
 
-		SortModel sortModel = listModel.getSort();
+		final SortModel sortModel = listModel.getSort();
 		final int offset = listModel.getItemsPerPage() * (listModel.getPage() - 1);
 
-		AccountFilter accountFilter = new AccountFilter();
+		final AccountFilter accountFilter = new AccountFilter();
 		accountFilter.setLimit(listModel.getItemsPerPage());
 		accountFilter.setOffset(offset);
 		accountFilter.setSortOrder(sortModel.isAscending());
@@ -124,7 +124,7 @@ public class AccountController {
 			return "account.edit";
 		} else {
 			final Account account = fromDTOConverter.apply(accountForm);
-			accountService.save(account);
+			accountService.saveWithDetails(account);
 			return "redirect:/account";
 		}
 	}

@@ -41,10 +41,6 @@ public class AccountServiceTest extends AbstractServiceTest {
 		accountUpdate.setEmail("emailNew");
 		serviceAccount.save(accountUpdate);
 
-		// get all account
-		LOGGER.info("test get all account");
-		List<Account> listAccount = serviceAccount.getAll();
-
 		// remove account
 		LOGGER.info("test remove account");
 		serviceOperator.remove(account.getId());
