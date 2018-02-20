@@ -56,10 +56,4 @@ public class AccountDetailsDaoImpl extends AbstractHibernateDaoImpl<AccountDetai
 		return q.getResultList();
 	}
 
-	@Override
-	public List<AccountDetails> getChildren(Integer parentId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

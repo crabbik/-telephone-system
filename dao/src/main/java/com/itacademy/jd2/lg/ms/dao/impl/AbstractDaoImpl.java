@@ -15,6 +15,9 @@ import org.springframework.beans.factory.annotation.Value;
 import com.itacademy.jd2.lg.ms.dao.exception.DBConfigLoadException;
 import com.itacademy.jd2.lg.ms.dao.exception.SQLExecutionException;
 import com.itacademy.jd2.lg.ms.dao.exception.UnexpectedResultException;
+import com.itacademy.jd2.lg.ms.dao.util.PreparedStatementAction;
+import com.itacademy.jd2.lg.ms.dao.util.PreparedStatementActionVoid;
+import com.itacademy.jd2.lg.ms.dao.util.StatementAction;
 
 public abstract class AbstractDaoImpl {
 

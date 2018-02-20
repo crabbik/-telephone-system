@@ -10,6 +10,4 @@ public interface IAccountDetailsDao extends IHibernateDao<AccountDetails, Intege
 
 	List<AccountDetails> find(AccountDetailsFilter filter);
 
-	List<AccountDetails> getChildren(Integer parentId);
-
 }

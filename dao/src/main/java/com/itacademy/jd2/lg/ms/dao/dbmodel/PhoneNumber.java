@@ -1,7 +1,6 @@
 package com.itacademy.jd2.lg.ms.dao.dbmodel;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -11,14 +10,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 
 @Entity
 public class PhoneNumber extends AbstractDbModel {
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Account.class)
 	private Account account;
 
 	@Column
@@ -26,9 +24,6 @@ public class PhoneNumber extends AbstractDbModel {
 
 	@OneToOne(fetch = FetchType.LAZY, optional = false)
 	private Tariff tariff;
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "phone_number")
-	private List<ServiceHistory> serviceHistory;
 
 	@JoinTable(name = "phone_number_2_invoice", joinColumns = {
 			@JoinColumn(name = "phone_number_id") }, inverseJoinColumns = { @JoinColumn(name = "invoice_id") })
@@ -38,14 +33,6 @@ public class PhoneNumber extends AbstractDbModel {
 
 	public Set<Invoice> getCatalogs() {
 		return invoices;
-	}
-
-	public List<ServiceHistory> getServiceHistory() {
-		return serviceHistory;
-	}
-
-	public void setServiceHistory(List<ServiceHistory> serviceHistory) {
-		this.serviceHistory = serviceHistory;
 	}
 
 	public Account getAccount() {

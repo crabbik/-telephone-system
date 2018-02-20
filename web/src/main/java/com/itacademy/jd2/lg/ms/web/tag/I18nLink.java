@@ -12,9 +12,14 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
 import com.itacademy.jd2.lg.ms.web.filter.I18nFilter;
 
 public class I18nLink extends SimpleTagSupport {
-	private String key;
 
-	private static final Map<String, ResourceBundle> bundles = new HashMap<>();
+	private String code;
+
+	private static final Map<String, ResourceBundle> bundles = new HashMap();
+
+	public void setCode(String code) {
+		this.code = code;
+	}
 
 	@Override
 	public void doTag() throws JspException, IOException {
@@ -24,23 +29,14 @@ public class I18nLink extends SimpleTagSupport {
 			language = "ru";
 		}
 
-		getJspContext().getOut().println(getBundle(language).getString(getKey()));
+		getJspContext().getOut().println(getBundle(language).getString(code));
 	}
 
 	public static ResourceBundle getBundle(String language) {
 		if (!bundles.containsKey(language)) {
-			ResourceBundle bundle = ResourceBundle.getBundle("i18n", new Locale(language));
+			ResourceBundle bundle = ResourceBundle.getBundle("Local", new Locale(language));
 			bundles.put(language, bundle);
 		}
 		return bundles.get(language);
 	}
-
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
-	}
-
 }

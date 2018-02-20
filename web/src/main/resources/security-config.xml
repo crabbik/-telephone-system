@@ -12,18 +12,21 @@
 	<context:component-scan base-package="com.itacademy.jd2.lg.ms.web.security" />
 
 	<http>
-		<intercept-url pattern="/account**" access="hasRole('ROLE_ADMIN')" />
-	
-	
-		<intercept-url pattern="/operator**" access="!isAnonymous()" />
-	
-	
-		<form-login login-page="/login" default-target-url="/"
+		<intercept-url pattern="/account**"
+			access="hasAnyRole ('ROLE_admin', 'ROLE_user')" />
+
+		<intercept-url pattern="/role**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/invoice**" access="hasRole('ROLE_user')" />
+
+
+
+
+		<form-login login-page="/login" default-target-url="/home"
 			authentication-failure-url="/login?error" username-parameter="username"
 			password-parameter="password" />
-		<logout logout-success-url="/login?logout" logout-url="/execute_logout"  />
+		<logout logout-success-url="/login?logout" logout-url="/execute_logout" />
 		<!-- enable csrf protection -->
-		<csrf  disabled="true"/>
+		<csrf disabled="true" />
 	</http>
 
 

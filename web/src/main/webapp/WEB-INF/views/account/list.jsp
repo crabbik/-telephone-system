@@ -3,6 +3,7 @@
 <%@ taglib prefix="mytags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="mytaglib"
 	uri="https://journaldev.com/jsp/tlds/mytags"%>
+<%@ taglib prefix="mylocal" uri="https://journaldev.com/jsp/tlds/mytags"%>
 
 <c:set var="pageListHolder" value="${account}" scope="session" />
 <spring:url value="/account" var="pageurl" />
@@ -14,8 +15,12 @@
 			<th><mytaglib:sort-link column="id">ID</mytaglib:sort-link></th>
 			<th><mytaglib:sort-link column="email">Email</mytaglib:sort-link></th>
 			<th><mytaglib:sort-link column="password">Password</mytaglib:sort-link></th>
-			<th><mytaglib:sort-link column="created">Created</mytaglib:sort-link></th>
-			<th><mytaglib:sort-link column="modified">Modified</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link column="created">
+					<mylocal:message key="created"></mylocal:message>
+				</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link column="modified">
+					<mylocal:message key="modified"></mylocal:message>
+				</mytaglib:sort-link></th>
 			<th><mytaglib:sort-link column="details.lastName">LastName</mytaglib:sort-link></th>
 			<th><mytaglib:sort-link column="details.firstName">FirstName</mytaglib:sort-link></th>
 			<th></th>

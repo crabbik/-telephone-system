@@ -8,6 +8,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -16,28 +17,40 @@ public class I18nFilter implements Filter {
 	public static final String USER_LANGUAGE = "userLanguage";
 
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
-
-		HttpServletRequest httpReq = (HttpServletRequest) request;
-
-		String langParameter = request.getParameter("language");
-
-		System.out.println("localization filter:" + langParameter);
-		if (langParameter != null) {
-			HttpSession session = httpReq.getSession();
-			session.setAttribute(USER_LANGUAGE, langParameter);
-		}
-
-		chain.doFilter(request, response);
-	}
-
-	@Override
 	public void destroy() {
+
 	}
 
 	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
+	public void doFilter(ServletRequest request, ServletResponse responce, FilterChain chain)
+			throws IOException, ServletException {
+		HttpServletRequest httpRequest = (HttpServletRequest) request;
+		HttpServletResponse httpResponce = (HttpServletResponse) responce;
+		String langParametr = httpRequest.getParameter("language");
+		HttpSession session = httpRequest.getSession();
+
+		if (langParametr != null) {
+			Cookie cookie = new Cookie("language", langParametr);
+			httpResponce.addCookie(cookie);
+
+			session.setAttribute(USER_LANGUAGE, langParametr);
+		}
+		if (session.getAttribute(USER_LANGUAGE) == null) {
+			Cookie[] cookies = httpRequest.getCookies();
+			if (cookies != null) {
+				for (Cookie cookie : cookies) {
+					if (cookie.getName().equals("language")) {
+						session.setAttribute(USER_LANGUAGE, cookie.getValue());
+					}
+				}
+			}
+		}
+		chain.doFilter(request, responce);
+	}
+
+	@Override
+	public void init(FilterConfig arg0) throws ServletException {
+
 	}
 
 }

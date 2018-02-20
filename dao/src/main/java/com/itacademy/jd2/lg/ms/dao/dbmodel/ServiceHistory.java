@@ -17,10 +17,10 @@ public class ServiceHistory extends AbstractDbModel {
 	@Column
 	private Integer sum;
 
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = ServiceHistory.class)
+	@ManyToOne(fetch = FetchType.LAZY, targetEntity = PhoneNumber.class)
 	private PhoneNumber phone_number;
 
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = ServiceHistory.class)
+	@ManyToOne(fetch = FetchType.LAZY, targetEntity = TariffItem.class)
 	private TariffItem tariff_item;
 
 	public TariffItem getTariff_item() {

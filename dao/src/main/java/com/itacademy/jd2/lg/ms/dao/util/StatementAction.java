@@ -1,4 +1,4 @@
-package com.itacademy.jd2.lg.ms.dao.impl;
+package com.itacademy.jd2.lg.ms.dao.util;
 
 import java.sql.SQLException;
 import java.sql.Statement;

@@ -15,6 +15,7 @@ public class AccountDTO extends AbstractDTO {
 	@NotNull
 	@Size(min = 1, max = 40)
 	private String password;
+
 	@NotNull
 	@Valid
 	private AccountDetailsDTO details = new AccountDetailsDTO();
