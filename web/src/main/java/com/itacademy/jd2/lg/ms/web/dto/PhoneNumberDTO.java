@@ -3,23 +3,29 @@ package com.itacademy.jd2.lg.ms.web.dto;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.itacademy.jd2.lg.ms.dao.dbmodel.Account;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Invoice;
-import com.itacademy.jd2.lg.ms.dao.dbmodel.Tariff;
 
 public class PhoneNumberDTO extends AbstractDTO {
 
-	private Account account;
+	private Integer accountId;
 	private String number;
-	private Tariff tariff;
+	private Integer tariffId;
 	private Set<Invoice> invoices = new HashSet<>();
 
-	public Account getAccount() {
-		return account;
+	public Integer getAccountId() {
+		return accountId;
 	}
 
-	public void setAccount(Account account) {
-		this.account = account;
+	public void setAccountId(Integer accountId) {
+		this.accountId = accountId;
+	}
+
+	public Integer getTariffId() {
+		return tariffId;
+	}
+
+	public void setTariffId(Integer tariffId) {
+		this.tariffId = tariffId;
 	}
 
 	public String getNumber() {
@@ -28,14 +34,6 @@ public class PhoneNumberDTO extends AbstractDTO {
 
 	public void setNumber(String number) {
 		this.number = number;
-	}
-
-	public Tariff getTariff() {
-		return tariff;
-	}
-
-	public void setTariff(Tariff tariff) {
-		this.tariff = tariff;
 	}
 
 	public Set<Invoice> getInvoices() {

@@ -8,8 +8,8 @@ import javax.persistence.ManyToOne;
 @Entity
 public class TariffItem extends AbstractDbModel {
 
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Service.class)
-	private Service service;
+	@ManyToOne(fetch = FetchType.LAZY, targetEntity = PhoneService.class)
+	private PhoneService phoneService;
 	@Column
 	private Integer cost;
 	@Column
@@ -18,12 +18,12 @@ public class TariffItem extends AbstractDbModel {
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Tariff.class)
 	private Tariff tariff;
 
-	public Service getService() {
-		return service;
+	public PhoneService getPhoneservice() {
+		return phoneService;
 	}
 
-	public void setService(Service service) {
-		this.service = service;
+	public void setPhoneservice(PhoneService phoneservice) {
+		this.phoneService = phoneservice;
 	}
 
 	public Tariff getTariff() {

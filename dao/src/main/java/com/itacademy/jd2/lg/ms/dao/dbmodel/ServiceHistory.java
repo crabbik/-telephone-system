@@ -1,6 +1,5 @@
 package com.itacademy.jd2.lg.ms.dao.dbmodel;
 
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,8 +8,6 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class ServiceHistory extends AbstractDbModel {
-	@Column
-	private Date data;
 
 	@Column
 	private Integer quantity;
@@ -37,14 +34,6 @@ public class ServiceHistory extends AbstractDbModel {
 
 	public void setPhone_number(PhoneNumber phone_number) {
 		this.phone_number = phone_number;
-	}
-
-	public Date getData() {
-		return data;
-	}
-
-	public void setData(Date date) {
-		this.data = date;
 	}
 
 	public Integer getQuantity() {

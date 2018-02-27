@@ -4,15 +4,15 @@ import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
-import com.itacademy.jd2.lg.ms.dao.dbmodel.Service;
-import com.itacademy.jd2.lg.ms.web.dto.ServiceDTO;
+import com.itacademy.jd2.lg.ms.dao.dbmodel.PhoneService;
+import com.itacademy.jd2.lg.ms.web.dto.PhoneServiceDTO;
 
 @Component
-public class ServiceFromDTOConverter implements Function<ServiceDTO, Service> {
+public class PhoneServiceFromDTOConverter implements Function<PhoneServiceDTO, PhoneService> {
 
 	@Override
-	public Service apply(ServiceDTO dto) {
-		Service dbModel = new Service();
+	public PhoneService apply(PhoneServiceDTO dto) {
+		PhoneService dbModel = new PhoneService();
 		dbModel.setId(dto.getId());
 		dbModel.setType(dto.getType());
 		dbModel.setUnit(dto.getUnit());

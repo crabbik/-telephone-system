@@ -8,17 +8,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.itacademy.jd2.lg.ms.dao.IServiceDao;
-import com.itacademy.jd2.lg.ms.dao.dbmodel.Service;
+import com.itacademy.jd2.lg.ms.dao.IPhoneServiceDao;
+import com.itacademy.jd2.lg.ms.dao.dbmodel.PhoneService;
 import com.itacademy.jd2.lg.ms.dao.filter.ServiceFilter;
-import com.itacademy.jd2.lg.ms.services.IServiceService;
+import com.itacademy.jd2.lg.ms.services.IPhoneServiceService;
 
 @org.springframework.stereotype.Service
-public class ServiceServiceImpl implements IServiceService {
+public class PhoneServiceServiceImpl implements IPhoneServiceService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PhoneServiceServiceImpl.class);
 	@Autowired
-	private IServiceDao dao;
+	private IPhoneServiceDao dao;
 
 	@Override
 	public void remove(Integer id) {
@@ -26,7 +26,7 @@ public class ServiceServiceImpl implements IServiceService {
 	}
 
 	@Override
-	public Service save(Service service) {
+	public PhoneService save(PhoneService service) {
 		Timestamp modifiedDate = new Timestamp(new Date().getTime());
 		service.setModified(modifiedDate);
 		if (service.getId() == null) {
@@ -39,12 +39,12 @@ public class ServiceServiceImpl implements IServiceService {
 	}
 
 	@Override
-	public Service get(Integer id) {
+	public PhoneService get(Integer id) {
 		return dao.get(id);
 	}
 
 	@Override
-	public List<Service> getAll() {
+	public List<PhoneService> getAll() {
 		return dao.getAll();
 	}
 
@@ -54,7 +54,7 @@ public class ServiceServiceImpl implements IServiceService {
 	}
 
 	@Override
-	public List<Service> getAll(ServiceFilter filter) {
+	public List<PhoneService> getAll(ServiceFilter filter) {
 		return dao.find(filter);
 	}
 }

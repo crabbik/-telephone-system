@@ -14,6 +14,8 @@ public class SortLink extends SimpleTagSupport {
 
 	private String column;
 
+	private String pageUrl;
+
 	@Override
 	public void doTag() throws JspException, IOException {
 
@@ -29,11 +31,10 @@ public class SortLink extends SimpleTagSupport {
 		if (sort == null) {
 			throw new IllegalArgumentException("default sorting should be set in list model");
 		}
-		final String originalUrl = (String) getJspContext().getAttribute("pageurl");
 
 		final String sortOrder = sort.isAscending() ? "desc" : "asc";
 
-		final String href = String.format("%s?sort=%s:%s", originalUrl, column, sortOrder);
+		final String href = String.format("%s?sort=%s:%s", pageUrl, column, sortOrder);
 
 		final StringWriter tagBodyWriter = new StringWriter();
 		getJspBody().invoke(tagBodyWriter); // copy tag body defined in jsp
@@ -51,6 +52,10 @@ public class SortLink extends SimpleTagSupport {
 
 	public void setColumn(final String column) {
 		this.column = column;
+	}
+
+	public void setPageUrl(String pageUrl) {
+		this.pageUrl = pageUrl;
 	}
 
 }

@@ -1,6 +1,6 @@
 package com.itacademy.jd2.lg.ms.web.dto;
 
-public class ServiceDTO extends AbstractDTO {
+public class PhoneServiceDTO extends AbstractDTO {
 
 	private String type;
 	private String unit;

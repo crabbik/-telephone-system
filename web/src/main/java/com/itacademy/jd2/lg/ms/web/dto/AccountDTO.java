@@ -1,10 +1,13 @@
 package com.itacademy.jd2.lg.ms.web.dto;
 
+import java.util.Set;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.itacademy.jd2.lg.ms.dao.dbmodel.AccountDetails;
+import com.itacademy.jd2.lg.ms.dao.dbmodel.Role;
 
 public class AccountDTO extends AbstractDTO {
 
@@ -19,6 +22,16 @@ public class AccountDTO extends AbstractDTO {
 	@NotNull
 	@Valid
 	private AccountDetailsDTO details = new AccountDetailsDTO();
+	
+	private Set<Role> roles;
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
 
 	public AccountDetailsDTO getDetails() {
 		return details;

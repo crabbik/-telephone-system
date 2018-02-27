@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.jpa.criteria.OrderImpl;
@@ -14,7 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.itacademy.jd2.lg.ms.dao.IPhoneNumberDao;
+import com.itacademy.jd2.lg.ms.dao.dbmodel.Account_;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.PhoneNumber;
+import com.itacademy.jd2.lg.ms.dao.dbmodel.PhoneNumber_;
 import com.itacademy.jd2.lg.ms.dao.filter.PhoneNumberFilter;
 
 @Repository
@@ -43,6 +46,9 @@ public class PhoneNumberDaoImpl extends AbstractHibernateDaoImpl<PhoneNumber, In
 		CriteriaQuery<PhoneNumber> cq = cb.createQuery(PhoneNumber.class);
 		Root<PhoneNumber> from = cq.from(PhoneNumber.class);
 		cq.select(from);
+		from.fetch(PhoneNumber_.account, JoinType.LEFT);
+		from.fetch(PhoneNumber_.tariff, JoinType.LEFT);
+		from.fetch(PhoneNumber_.invoices, JoinType.LEFT);
 		// set sort params
 
 		if (filter.getSortProperty() != null) {

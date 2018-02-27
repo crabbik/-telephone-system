@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Invoice;
 import com.itacademy.jd2.lg.ms.web.dto.InvoiceDTO;
+
 @Component
 public class InvoiceToDTOConverter implements Function<Invoice, InvoiceDTO> {
 
@@ -20,6 +21,7 @@ public class InvoiceToDTOConverter implements Function<Invoice, InvoiceDTO> {
 		dto.setYear(dbModel.getYear());
 		dto.setCreated(dbModel.getCreated());
 		dto.setModified(dbModel.getModified());
+		dto.setPhoneNumberId(dbModel.getPhoneNumber().getId());
 
 		return dto;
 	}

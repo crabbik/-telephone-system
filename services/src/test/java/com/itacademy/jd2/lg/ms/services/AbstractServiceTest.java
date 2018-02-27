@@ -14,7 +14,7 @@ import com.itacademy.jd2.lg.ms.dao.dbmodel.AccountDetails;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Invoice;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Operator;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.PhoneNumber;
-import com.itacademy.jd2.lg.ms.dao.dbmodel.Service;
+import com.itacademy.jd2.lg.ms.dao.dbmodel.PhoneService;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.ServiceHistory;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Tariff;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.TariffItem;
@@ -24,7 +24,7 @@ import com.itacademy.jd2.lg.ms.services.IInvoiceService;
 import com.itacademy.jd2.lg.ms.services.IOperatorService;
 import com.itacademy.jd2.lg.ms.services.IPhoneNumberService;
 import com.itacademy.jd2.lg.ms.services.IServiceHistoryService;
-import com.itacademy.jd2.lg.ms.services.IServiceService;
+import com.itacademy.jd2.lg.ms.services.IPhoneServiceService;
 import com.itacademy.jd2.lg.ms.services.ITariffItemService;
 import com.itacademy.jd2.lg.ms.services.ITariffService;
 
@@ -46,7 +46,7 @@ public abstract class AbstractServiceTest {
 	@Autowired
 	protected IServiceHistoryService serviceServiceHistory;
 	@Autowired
-	protected IServiceService serviceService;
+	protected IPhoneServiceService serviceService;
 	@Autowired
 	protected ITariffItemService serviceTariffItem;
 	@Autowired
@@ -112,16 +112,15 @@ public abstract class AbstractServiceTest {
 	protected ServiceHistory createServiceHistory() {
 		LOGGER.info("prepare data for ServiceHistoryServiceTest");
 		ServiceHistory serviceHistory = new ServiceHistory();
-		serviceHistory.setData(new Date());
 		serviceHistory.setQuantity(10);
 		serviceHistory.setSum(990);
 		return serviceHistory;
 
 	}
 
-	protected Service createService() {
+	protected PhoneService createService() {
 		LOGGER.info("prepare data for ServiceServiceTest");
-		Service service = new Service();
+		PhoneService service = new PhoneService();
 		service.setType("звонки");
 		service.setUnit("мин");
 		service.setDeleted(false);
@@ -136,7 +135,6 @@ public abstract class AbstractServiceTest {
 		LOGGER.info("prepare data for TariffItemServiceTest");
 		TariffItem tariffItem = new TariffItem();
 		tariffItem.setCost(10);
-		tariffItem.setService(createService());
 		tariffItem.setDeleted(false);
 		if (tariffItem.getId() == null) {
 			return serviceTariffItem.save(tariffItem);

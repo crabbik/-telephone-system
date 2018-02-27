@@ -11,11 +11,11 @@
 <table class="striped">
 	<tbody>
 		<tr>
-			<th><mytaglib:sort-link column="id">ID</mytaglib:sort-link></th>
-			<th><mytaglib:sort-link column="title">Title</mytaglib:sort-link></th>
-			<th><mytaglib:sort-link column="deleted">Deleted</mytaglib:sort-link></th>
-			<th><mytaglib:sort-link column="created">Created</mytaglib:sort-link></th>
-			<th><mytaglib:sort-link column="modified">Modified</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link pageUrl="${pageUrl}" column="id">ID</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link pageUrl="${pageUrl}" column="title">Title</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link pageUrl="${pageUrl}" column="deleted">Deleted</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link pageUrl="${pageUrl}" column="created">Created</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link pageUrl="${pageUrl}" column="modified">Modified</mytaglib:sort-link></th>
 			<th></th>
 		</tr>
 		<c:forEach var="operator" items="${listModel.list}"

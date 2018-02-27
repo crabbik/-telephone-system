@@ -8,17 +8,19 @@
 <spring:url value="/invoice" var="pageurl" />
 
 <h4>List of Invoice</h4>
-<table class="bordered highlight">
+<table class="striped">
 	<tbody>
 		<tr>
-			<th><mytaglib:sort-link column="id">ID</mytaglib:sort-link></th>
-			<th><mytaglib:sort-link column="type">type</mytaglib:sort-link></th>
-			<th><mytaglib:sort-link column="quantity">quantity</mytaglib:sort-link></th>
-			<th><mytaglib:sort-link column="sum">sum</mytaglib:sort-link></th>
-			<th><mytaglib:sort-link column="month">month</mytaglib:sort-link></th>
-			<th><mytaglib:sort-link column="year">year</mytaglib:sort-link></th>
-			<th><mytaglib:sort-link column="created">Created</mytaglib:sort-link></th>
-			<th><mytaglib:sort-link column="modified">Modified</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link pageUrl="${pageUrl}" column="id">ID</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link pageUrl="${pageUrl}" column="type">type</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link pageUrl="${pageUrl}" column="quantity">quantity</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link pageUrl="${pageUrl}" column="sum">sum</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link pageUrl="${pageUrl}" column="month">month</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link pageUrl="${pageUrl}" column="year">year</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link pageUrl="${pageUrl}" column="created">Created</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link pageUrl="${pageUrl}" column="modified">Modified</mytaglib:sort-link></th>
+			<th><mytaglib:sort-link pageUrl="${pageUrl}"
+					column="phoneNumberId">Phone Number Id</mytaglib:sort-link></th>
 			<th></th>
 		</tr>
 		<c:forEach var="invoice" items="${listModel.list}"
@@ -32,6 +34,7 @@
 				<td><c:out value="${invoice.year}" /></td>
 				<td><c:out value="${invoice.created}" /></td>
 				<td><c:out value="${invoice.modified}" /></td>
+				<td><c:out value="${invoice.phoneNumberId}" /></td>
 				<td class="right"><a class="btn-floating"
 					href="/invoice/${invoice.id}"><i class="material-icons">info</i></a>
 					<a class="btn-floating" href="/invoice/${invoice.id}/edit"><i

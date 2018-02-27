@@ -13,17 +13,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import com.itacademy.jd2.lg.ms.dao.IServiceDao;
-import com.itacademy.jd2.lg.ms.dao.dbmodel.Service;
+import com.itacademy.jd2.lg.ms.dao.IPhoneServiceDao;
+import com.itacademy.jd2.lg.ms.dao.dbmodel.PhoneService;
 import com.itacademy.jd2.lg.ms.dao.filter.ServiceFilter;
 
 @Repository
-public class ServiceDaoImpl extends AbstractHibernateDaoImpl<Service, Integer> implements IServiceDao {
+public class PhoneServiceDaoImpl extends AbstractHibernateDaoImpl<PhoneService, Integer> implements IPhoneServiceDao {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceDaoImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PhoneServiceDaoImpl.class);
 
-	protected ServiceDaoImpl() {
-		super(Service.class);
+	protected PhoneServiceDaoImpl() {
+		super(PhoneService.class);
 	}
 
 	@Override
@@ -31,18 +31,18 @@ public class ServiceDaoImpl extends AbstractHibernateDaoImpl<Service, Integer> i
 		EntityManager em = getEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-		Root<Service> from = cq.from(Service.class);
+		Root<PhoneService> from = cq.from(PhoneService.class);
 		cq.select(cb.count(from));
 		TypedQuery<Long> q = em.createQuery(cq);
 		return q.getSingleResult();
 	}
 
 	@Override
-	public List<Service> find(ServiceFilter filter) {
+	public List<PhoneService> find(ServiceFilter filter) {
 		EntityManager em = getEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<Service> cq = cb.createQuery(Service.class);
-		Root<Service> from = cq.from(Service.class);
+		CriteriaQuery<PhoneService> cq = cb.createQuery(PhoneService.class);
+		Root<PhoneService> from = cq.from(PhoneService.class);
 		cq.select(from);
 		// set sort params
 
@@ -50,7 +50,7 @@ public class ServiceDaoImpl extends AbstractHibernateDaoImpl<Service, Integer> i
 			cq.orderBy(new OrderImpl(from.get(filter.getSortProperty()), filter.isSortOrder()));
 		}
 
-		TypedQuery<Service> q = em.createQuery(cq);
+		TypedQuery<PhoneService> q = em.createQuery(cq);
 		setPaging(filter, q);
 		return q.getResultList();
 	}

@@ -1,21 +1,19 @@
 package com.itacademy.jd2.lg.ms.web.dto;
 
-import com.itacademy.jd2.lg.ms.dao.dbmodel.PhoneNumber;
-
 public class InvoiceDTO extends AbstractDTO {
-	private PhoneNumber phoneNumber;
+	private Integer phoneNumberId;
 	private String type;
 	private Integer quantity;
 	private Integer sum;
 	private Integer month;
 	private Integer year;
 
-	public PhoneNumber getPhoneNumber() {
-		return phoneNumber;
+	public Integer getPhoneNumberId() {
+		return phoneNumberId;
 	}
 
-	public void setPhoneNumber(PhoneNumber phoneNumber) {
-		this.phoneNumber = phoneNumber;
+	public void setPhoneNumberId(Integer phoneNumberId) {
+		this.phoneNumberId = phoneNumberId;
 	}
 
 	public String getType() {

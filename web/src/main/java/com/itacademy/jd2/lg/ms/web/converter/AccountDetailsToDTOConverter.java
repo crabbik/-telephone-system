@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.itacademy.jd2.lg.ms.dao.dbmodel.AccountDetails;
 import com.itacademy.jd2.lg.ms.web.dto.AccountDetailsDTO;
+
 @Component
 public class AccountDetailsToDTOConverter implements Function<AccountDetails, AccountDetailsDTO> {
 
@@ -17,6 +18,7 @@ public class AccountDetailsToDTOConverter implements Function<AccountDetails, Ac
 		dto.setLastName(dbModel.getLastName());
 		dto.setCreated(dbModel.getCreated());
 		dto.setModified(dbModel.getModified());
+		dto.setAccountId(dbModel.getAccount().getId());
 
 		return dto;
 	}

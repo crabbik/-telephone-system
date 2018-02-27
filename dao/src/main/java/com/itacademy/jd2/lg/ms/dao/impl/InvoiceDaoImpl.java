@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.jpa.criteria.OrderImpl;
@@ -14,7 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.itacademy.jd2.lg.ms.dao.IInvoiceDao;
+import com.itacademy.jd2.lg.ms.dao.dbmodel.Account_;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Invoice;
+import com.itacademy.jd2.lg.ms.dao.dbmodel.Invoice_;
 import com.itacademy.jd2.lg.ms.dao.filter.InvoiceFilter;
 
 @Repository
@@ -44,6 +47,7 @@ public class InvoiceDaoImpl extends AbstractHibernateDaoImpl<Invoice, Integer> i
 		CriteriaQuery<Invoice> cq = cb.createQuery(Invoice.class);
 		Root<Invoice> from = cq.from(Invoice.class);
 		cq.select(from);
+		from.fetch(Invoice_.phoneNumber, JoinType.LEFT);
 		// set sort params
 
 		if (filter.getSortProperty() != null) {

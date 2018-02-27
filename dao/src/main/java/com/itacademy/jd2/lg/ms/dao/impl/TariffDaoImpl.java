@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.jpa.criteria.OrderImpl;
@@ -14,7 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.itacademy.jd2.lg.ms.dao.ITariffDao;
+import com.itacademy.jd2.lg.ms.dao.dbmodel.ServiceHistory_;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Tariff;
+import com.itacademy.jd2.lg.ms.dao.dbmodel.Tariff_;
 import com.itacademy.jd2.lg.ms.dao.filter.TariffFilter;
 
 @Repository
@@ -43,6 +46,8 @@ public class TariffDaoImpl extends AbstractHibernateDaoImpl<Tariff, Integer> imp
 		CriteriaQuery<Tariff> cq = cb.createQuery(Tariff.class);
 		Root<Tariff> from = cq.from(Tariff.class);
 		cq.select(from);
+		from.fetch(Tariff_.number, JoinType.LEFT);
+		from.fetch(Tariff_.operator, JoinType.LEFT);
 		// set sort params
 
 		if (filter.getSortProperty() != null) {

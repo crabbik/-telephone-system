@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.jpa.criteria.OrderImpl;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Repository;
 
 import com.itacademy.jd2.lg.ms.dao.ITariffItemDao;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.TariffItem;
+import com.itacademy.jd2.lg.ms.dao.dbmodel.TariffItem_;
+import com.itacademy.jd2.lg.ms.dao.dbmodel.Tariff_;
 import com.itacademy.jd2.lg.ms.dao.filter.TariffItemFilter;
 
 @Repository
@@ -43,6 +46,8 @@ public class TariffItemDaoImpl extends AbstractHibernateDaoImpl<TariffItem, Inte
 		CriteriaQuery<TariffItem> cq = cb.createQuery(TariffItem.class);
 		Root<TariffItem> from = cq.from(TariffItem.class);
 		cq.select(from);
+		from.fetch(TariffItem_.phoneservice, JoinType.LEFT);
+		from.fetch(TariffItem_.tariff, JoinType.LEFT);
 		// set sort params
 
 		if (filter.getSortProperty() != null) {

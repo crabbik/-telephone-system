@@ -1,14 +1,11 @@
 package com.itacademy.jd2.lg.ms.web.dto;
 
-import com.itacademy.jd2.lg.ms.dao.dbmodel.Operator;
-import com.itacademy.jd2.lg.ms.dao.dbmodel.PhoneNumber;
-
 public class TariffDTO extends AbstractDTO {
 
 	private String name;
 	private boolean deleted;
-	private PhoneNumber number;
-	private Operator operator;
+	private Integer numberId;
+	private Integer operatorId;
 
 	public String getName() {
 		return name;
@@ -26,20 +23,20 @@ public class TariffDTO extends AbstractDTO {
 		this.deleted = deleted;
 	}
 
-	public PhoneNumber getNumber() {
-		return number;
+	public Integer getNumberId() {
+		return numberId;
 	}
 
-	public void setNumber(PhoneNumber number) {
-		this.number = number;
+	public void setNumberId(Integer numberId) {
+		this.numberId = numberId;
 	}
 
-	public Operator getOperator() {
-		return operator;
+	public Integer getOperatorId() {
+		return operatorId;
 	}
 
-	public void setOperator(Operator operator) {
-		this.operator = operator;
+	public void setOperatorId(Integer operatorId) {
+		this.operatorId = operatorId;
 	}
 
 }

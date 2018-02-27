@@ -67,7 +67,7 @@ public class AccountDetailsController {
 		listModel.setList(currentPageList.stream().map(toDTOConverter).collect(Collectors.toList()));
 		listModel.setTotalCount(accountDetailsService.getCount(accountDetailsFilter));
 
-		final ModelAndView mv = new ModelAndView("account.list");
+		final ModelAndView mv = new ModelAndView("accountDetails.list");
 		return mv;
 	}
 

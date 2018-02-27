@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.itacademy.jd2.lg.ms.dao.dbmodel.Tariff;
 import com.itacademy.jd2.lg.ms.web.dto.TariffDTO;
+
 @Component
 public class TariffToDTOConverter implements Function<Tariff, TariffDTO> {
 
@@ -17,6 +18,9 @@ public class TariffToDTOConverter implements Function<Tariff, TariffDTO> {
 		dto.setName(dbModel.getName());
 		dto.setCreated(dbModel.getCreated());
 		dto.setModified(dbModel.getModified());
+
+		dto.setNumberId(dbModel.getNumber().getId());
+		dto.setOperatorId(dbModel.getOperator().getId());
 
 		return dto;
 	}

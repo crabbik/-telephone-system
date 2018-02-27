@@ -42,7 +42,7 @@
 						<li><a href="/serviceHistory">Service History</a></li>
 						<li><a href="/accountDetails">Account Details</a></li>
 					</sec:authorize>
-					<li><a class="right" href="/execute_logout"><i
+					<li><a class="right" href="/execute_logout" title ="Выход"><i
 							class="material-icons">arrow_forward</i></a></li>
 				</sec:authorize>
 

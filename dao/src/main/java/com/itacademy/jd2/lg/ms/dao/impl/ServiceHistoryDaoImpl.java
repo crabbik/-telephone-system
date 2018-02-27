@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.jpa.criteria.OrderImpl;
@@ -14,7 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.itacademy.jd2.lg.ms.dao.IServiceHistoryDao;
+import com.itacademy.jd2.lg.ms.dao.dbmodel.PhoneNumber_;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.ServiceHistory;
+import com.itacademy.jd2.lg.ms.dao.dbmodel.ServiceHistory_;
 import com.itacademy.jd2.lg.ms.dao.filter.ServiceHistoryFilter;
 
 @Repository
@@ -45,6 +48,8 @@ public class ServiceHistoryDaoImpl extends AbstractHibernateDaoImpl<ServiceHisto
 		CriteriaQuery<ServiceHistory> cq = cb.createQuery(ServiceHistory.class);
 		Root<ServiceHistory> from = cq.from(ServiceHistory.class);
 		cq.select(from);
+		from.fetch(ServiceHistory_.phone_number, JoinType.LEFT);
+		from.fetch(ServiceHistory_.tariff_item, JoinType.LEFT);
 		// set sort params
 
 		if (filter.getSortProperty() != null) {

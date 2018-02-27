@@ -4,6 +4,7 @@ import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
+import com.itacademy.jd2.lg.ms.dao.dbmodel.Account;
 import com.itacademy.jd2.lg.ms.dao.dbmodel.AccountDetails;
 import com.itacademy.jd2.lg.ms.web.dto.AccountDetailsDTO;
 
@@ -18,6 +19,10 @@ public class AccountDetailsFromDTOConverter implements Function<AccountDetailsDT
 		dbModel.setLastName(dto.getLastName());
 		dbModel.setCreated(dto.getCreated());
 		dbModel.setModified(dto.getModified());
+		
+		Account account = new Account();
+		account.setId(dto.getAccountId());
+		dbModel.setAccount(account);
 
 		return dbModel;
 	}

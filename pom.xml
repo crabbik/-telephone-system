@@ -189,6 +189,12 @@
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-validator</artifactId>
 				<version>5.0.1.Final</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>jboss-logging</artifactId>
+						<groupId>org.jboss.logging</groupId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>javax.validation</groupId>
@@ -221,7 +227,12 @@
 				<version>1.8.12</version>
 			</dependency>
 
-			<!-- logger -->
+			<!-- Logging libraries -->
+			<dependency>
+				<groupId>org.jboss.logging</groupId>
+				<artifactId>jboss-logging</artifactId>
+				<version>3.2.0.Final</version>
+			</dependency>
 			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-api</artifactId>

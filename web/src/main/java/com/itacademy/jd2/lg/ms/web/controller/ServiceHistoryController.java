@@ -87,9 +87,6 @@ public class ServiceHistoryController {
 
 			sortAttribute = ServiceHistory_.id;
 			break;
-		case "data":
-			sortAttribute = ServiceHistory_.data;
-			break;
 		case "quantity":
 			sortAttribute = ServiceHistory_.quantity;
 			break;

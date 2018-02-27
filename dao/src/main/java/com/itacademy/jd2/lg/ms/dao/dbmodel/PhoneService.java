@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class Service extends AbstractDbModel {
+public class PhoneService extends AbstractDbModel {
 	@Column
 	private String type;
 	@Column

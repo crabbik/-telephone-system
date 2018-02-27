@@ -5,8 +5,6 @@ import java.util.Date;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.itacademy.jd2.lg.ms.dao.dbmodel.Account;
-
 public class AccountDetailsDTO {
 	private Integer id;
 	@NotNull
@@ -17,7 +15,15 @@ public class AccountDetailsDTO {
 	private String firstName;
 	private Date created;
 	private Date modified;
-	private Account account;
+	private Integer accountId;
+
+	public Integer getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(Integer accountId) {
+		this.accountId = accountId;
+	}
 
 	public Integer getId() {
 		return id;
@@ -41,14 +47,6 @@ public class AccountDetailsDTO {
 
 	public void setModified(Date modified) {
 		this.modified = modified;
-	}
-
-	public Account getAccount() {
-		return account;
-	}
-
-	public void setAccount(Account account) {
-		this.account = account;
 	}
 
 	public String getLastName() {

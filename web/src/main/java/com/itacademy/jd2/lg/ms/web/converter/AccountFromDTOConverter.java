@@ -16,6 +16,7 @@ public class AccountFromDTOConverter implements Function<AccountDTO, Account> {
 		dbModel.setId(dto.getId());
 		dbModel.setEmail(dto.getEmail());
 		dbModel.setPassword(dto.getPassword());
+		dbModel.setRoles(dto.getRoles());
 		dbModel.setCreated(dto.getCreated());
 		dbModel.setModified(dto.getModified());
 		AccountDetails accountDetails = new AccountDetails();
